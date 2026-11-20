@@ -1,16 +1,16 @@
 {
   "users": [
     {
-      "name": "vishnu",
-      "email": "vishnu@gmail.com",
+      "name": "Vishnu",
+      "email": "vishnu234@gmail.com",
       "password": "12345678",
-      "id": "xj-bLkOdfoU"
+      "id": "Z5EUNDkmNGU"
     },
     {
-      "name": "Vishnu Anoop",
-      "email": "vishnuanoop008@gmail.com",
+      "name": "Vishnu p",
+      "email": "vishnuanoop2345@gmail.com",
       "password": "12345678",
-      "id": "aqLoasmD8Fk"
+      "id": "5QDrVXqZyWc"
     }
   ],
   "products": [
@@ -287,69 +287,36 @@
   ],
   "cart": [
     {
-      "userId": "BCaE7-NqaLA",
-      "productId": "1",
-      "name": "Ultra 8 series",
-      "price": 1999,
-      "quantity": 1,
-      "image": "/src/assets/images/wwatch.png",
-      "id": "SJ_jlCuM7Ec"
-    },
-    {
-      "userId": "BCaE7-NqaLA",
-      "productId": "3",
-      "name": "Polo T-shirt",
-      "price": 550,
-      "quantity": 1,
-      "image": "/src/assets/images/shirt.png",
-      "id": "O3mBRNI5vjo"
-    },
-    {
-      "userId": "xj-bLkOdfoU",
-      "productId": "1",
-      "name": "Ultra 8 series",
-      "price": 1999,
-      "quantity": 4,
-      "image": "/src/assets/images/wwatch.png",
-      "id": "tjJFf3-6Yjc"
-    },
-    {
-      "userId": "aqLoasmD8Fk",
-      "productId": "5",
-      "name": "Zara Boot",
-      "price": 2299,
-      "quantity": 1,
-      "image": "/src/assets/images/boot1.png",
-      "id": "O9F0D3N74zg"
-    },
-    {
-      "userId": "aqLoasmD8Fk",
-      "productId": "3",
-      "name": "Polo T-shirt",
-      "price": 550,
-      "quantity": 1,
-      "image": "/src/assets/images/shirt.png",
-      "id": "DF1328CyzDM"
-    },
-    {
-      "userId": "aqLoasmD8Fk",
+      "userId": "5QDrVXqZyWc",
       "productId": "2",
       "name": "Robot Speaker",
       "price": 1299,
       "quantity": 1,
       "image": "/src/assets/images/robot.png",
-      "id": "zAyEWQeFA9g"
+      "id": "EH8Aae5DE64"
     },
     {
-      "userId": "aqLoasmD8Fk",
-      "productId": "1",
-      "name": "Ultra 8 series",
-      "price": 1999,
+      "userId": "5QDrVXqZyWc",
+      "productId": "3",
+      "name": "Polo T-shirt",
+      "price": 550,
       "quantity": 1,
-      "image": "/src/assets/images/wwatch.png",
-      "id": "Kitu_24EE9w"
+      "image": "/src/assets/images/shirt.png",
+      "id": "CmYDPSyivbs"
     }
   ],
-  "wishlist": []
-  
+  "wishlist": [
+    {
+      "userId": "5QDrVXqZyWc",
+      "productId": "2",
+      "name": "Robot Speaker",
+      "image": "/src/assets/images/robot.png",
+      "price": 1299,
+      "description": "Interactive robot toy for imaginative play.",
+      "rating": 5,
+      "inStock": true,
+      "id": "eRhd7jZhzsI"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

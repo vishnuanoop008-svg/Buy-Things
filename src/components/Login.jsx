@@ -1,20 +1,24 @@
+
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
 
-import { loginUser, closeAuthModal } from '../redux/authSlice';
+import {
+  loginUser,
+  closeAuthModal
+} from '../redux/authSlice';
 
 const Login = ({ openSignUp }) => {
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+
   const loading = useSelector(state => state.auth.loading);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async event => {
-    event.preventDefault();
+  // Handle login
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (!email || !password) {
       alert('Please enter email and password!');
@@ -22,13 +26,16 @@ const Login = ({ openSignUp }) => {
     }
 
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
+      await dispatch(loginUser({
+        email,
+        password
+      })).unwrap();
 
+      alert('Login Successful!');
+
+      // Close login modal
       dispatch(closeAuthModal());
 
-      // Return to the protected page, or go home after a direct /login visit.
-      const destination = location.state?.from?.pathname || '/';
-      navigate(destination, { replace: true });
     } catch (error) {
       alert(error || 'Login failed!');
     }
@@ -36,67 +43,98 @@ const Login = ({ openSignUp }) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-2xl font-bold">Login</h2>
+
+      <h2 className="text-2xl font-bold mb-4">
+        Login
+      </h2>
 
       <form onSubmit={handleSubmit}>
+
+        {/* Email */}
         <div className="mb-4">
-          <label className="block text-gray-700">Email</label>
+          <label className="block text-gray-700">
+            Email
+          </label>
+
           <input
             type="email"
             value={email}
-            onChange={event => setEmail(event.target.value)}
-            className="w-full border px-3 py-2"
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2 border"
             placeholder="Enter Email"
-            required
           />
         </div>
 
+        {/* Password */}
         <div className="mb-4">
-          <label className="block text-gray-700">Password</label>
+          <label className="block text-gray-700">
+            Password
+          </label>
+
           <input
             type="password"
             value={password}
-            onChange={event => setPassword(event.target.value)}
-            className="w-full border px-3 py-2"
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border"
             placeholder="Enter Password"
-            required
           />
         </div>
 
+        {/* Remember Me */}
         <div className="mb-4 flex items-center justify-between">
+
           <label className="inline-flex items-center">
-            <input type="checkbox" className="form-checkbox" />
-            <span className="ml-2 text-gray-700">Remember Me</span>
+            <input
+              type="checkbox"
+              className="form-checkbox"
+            />
+
+            <span className="ml-2 text-gray-700">
+              Remember Me
+            </span>
           </label>
 
-          <a href="#" className="text-black">
+          <a
+            href="#"
+            className="text-black"
+          >
             Forgot Password?
           </a>
+
         </div>
 
+        {/* Login Button */}
         <div className="mb-4">
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-violet-900 py-2 text-white disabled:opacity-50"
+            className="w-full bg-violet-900 text-white py-2 disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
+
         </div>
+
       </form>
 
-      {openSignUp && (
-        <div className="text-center">
-          <span className="text-gray-700">Don&apos;t have an Account?</span>
-          <button
-            type="button"
-            className="ml-2 text-black"
-            onClick={openSignUp}
-          >
-            Sign Up
-          </button>
-        </div>
-      )}
+      {/* Sign Up */}
+      <div className="text-center">
+
+        <span className="text-gray-700">
+          Don't have an Account?
+        </span>
+
+        <button
+          type="button"
+          className="text-black ml-2"
+          onClick={openSignUp}
+        >
+          Sign Up
+        </button>
+
+      </div>
+
     </div>
   );
 };

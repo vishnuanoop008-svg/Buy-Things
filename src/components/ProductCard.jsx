@@ -1,71 +1,86 @@
 import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { addToCart } from '../redux/cartSlice';
-import { addToWishlist, removeFromWishlist } from '../redux/wishlistSlice';
+import {
+  addToWishlist,
+  removeFromWishlist
+} from '../redux/wishlistSlice';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector(state => state.auth.user);
-  const wishlistItems = useSelector(state => state.wishlist?.items ?? []);
+  const user = useSelector((state) => state.auth.user);
+  const wishlistItems = useSelector(
+    (state) => state.wishlist?.items ?? []
+  );
 
   const productId = product.productId ?? product.id;
 
   const wishlistProduct = wishlistItems.find(
-    item => String(item.productId) === String(productId)
+    (item) =>
+      String(item.productId ?? item.id) === String(productId)
   );
 
   const isWishlisted = Boolean(wishlistProduct);
   const rating = Math.max(0, Math.min(5, Number(product.rating) || 0));
 
+  // Older saved wishlist entries might not contain inStock.
+  const inStock = product.inStock !== false;
+
   const openProduct = () => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${productId}`);
   };
 
-  const handleCardKeyDown = event => {
+  const handleCardKeyDown = (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openProduct();
     }
   };
 
-  const handleAddToCart = async event => {
+  const handleAddToCart = async (event) => {
     event.stopPropagation();
 
     if (!user?.id) {
-      alert('Please login first!');
+      toast.error('Please log in first.');
+      return;
+    }
+
+    if (!inStock) {
+      toast.error('This product is out of stock.');
       return;
     }
 
     try {
       await dispatch(addToCart(product)).unwrap();
-      alert('Product added to cart successfully!');
+      toast.success('Product added to cart successfully!');
     } catch (error) {
-      console.error('Add to cart error:', error);
-      alert(error || 'Unable to add product to cart!');
+      toast.error(error || 'Unable to add product to cart.');
     }
   };
 
-  const handleWishlist = async event => {
+  const handleWishlist = async (event) => {
     event.stopPropagation();
 
     if (!user?.id) {
-      alert('Please login first!');
+      toast.error('Please log in first.');
       return;
     }
 
     try {
       if (isWishlisted) {
         await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
+        toast.success('Removed from wishlist.');
       } else {
         await dispatch(addToWishlist(product)).unwrap();
-        alert('Added to Wishlist Successfully!');
+        toast.success('Added to Wishlist Successfully!');
       }
     } catch (error) {
-      alert(error || 'Wishlist operation failed!');
+      toast.error(error || 'Wishlist operation failed.');
     }
   };
 
@@ -76,7 +91,7 @@ const ProductCard = ({ product }) => {
       onClick={openProduct}
       onKeyDown={handleCardKeyDown}
       aria-label={`View ${product.name}`}
-      className="relative cursor-pointer transform rounded border bg-white p-4 shadow transition-transform duration-300 hover:scale-105"
+      className="relative transform cursor-pointer rounded border bg-white p-4 shadow transition-transform duration-300 hover:scale-105"
     >
       <button
         type="button"
@@ -104,28 +119,30 @@ const ProductCard = ({ product }) => {
         className="mt-2 flex items-center"
         aria-label={`Rating: ${rating} out of 5`}
       >
-        {[1, 2, 3, 4, 5].map(star => (
+        {[1, 2, 3, 4, 5].map((star) => (
           <FaStar
             key={star}
-            className={star <= rating ? 'text-yellow-500' : 'text-gray-300'}
+            className={
+              star <= rating ? 'text-yellow-500' : 'text-gray-300'
+            }
           />
         ))}
       </div>
 
       <p
         className={
-          product.inStock
+          inStock
             ? 'mt-2 text-sm text-green-700'
             : 'mt-2 text-sm text-red-600'
         }
       >
-        {product.inStock ? 'In stock' : 'Out of stock'}
+        {inStock ? 'In stock' : 'Out of stock'}
       </p>
 
       <button
         type="button"
         onClick={handleAddToCart}
-        disabled={product.inStock === false}
+        disabled={!inStock}
         className="group absolute bottom-4 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-violet-900 text-sm text-white transition-all duration-300 hover:w-32 hover:bg-violet-800 disabled:cursor-not-allowed disabled:bg-gray-400"
       >
         <span className="group-hover:hidden">+</span>
