@@ -54,13 +54,13 @@ export const addToCart = createAsyncThunk(
       const response = await axios.get(
         `${'http://localhost:5000/cart'}?userId=${encodeURIComponent(user.id)}`
       );
- 
+
       const existingItem = response.data.find(
         item => String(item.productId) === String(productId)
       );
 
       if (existingItem) {
-        const updated = await axios.patch(`${'http://localhost:5000/cart'}/${existingItem.id}`, {
+        const updated = await axios.patch(`${API_URL}/${existingItem.id}`, {
           quantity: Number(existingItem.quantity || 1) + 1,
         });
         return updated.data;
