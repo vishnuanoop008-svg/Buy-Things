@@ -18,11 +18,21 @@ const productSlice = createSlice({
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
 
-      state.filteredData = state.products.filter(product =>
-        product.name.toLowerCase().includes(
-          action.payload.toLowerCase()
-        )
-      );
+      const searchValue = action.payload.trim().toLowerCase();
+
+      if (searchValue === '') {
+        state.filteredData = state.products;
+      } else {
+        const exactMatches = state.products.filter(product =>
+          product.name.toLowerCase() === searchValue
+        );
+
+        state.filteredData = exactMatches.length > 0
+          ? exactMatches
+          : state.products.filter(product =>
+              product.name.toLowerCase().includes(searchValue)
+            );
+      }
     }
   }
 });

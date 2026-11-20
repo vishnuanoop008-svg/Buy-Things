@@ -1,58 +1,138 @@
-import React from 'react';
-import { FaStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { addToCart } from '../redux/cartSlice';
-import { useDispatch } from 'react-redux';
+import { addToWishlist, removeFromWishlist } from '../redux/wishlistSlice';
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const wishlistItems = useSelector(state => state.wishlist?.items ?? []);
 
-    const handleAddToCart = (e, product) => {
-        e.stopPropagation();
-        e.preventDefault();
+  const productId = product.productId ?? product.id;
 
-        dispatch(addToCart(product));
-        alert("Products Added Successfully!");
-    };
+  const wishlistProduct = wishlistItems.find(
+    item => String(item.productId) === String(productId)
+  );
 
-    return (
-        <div className='bg-white p-4 shadow rounded relative border transform transition-transform duration-300 hover:scale-105'>
+  const isWishlisted = Boolean(wishlistProduct);
+  const rating = Math.max(0, Math.min(5, Number(product.rating) || 0));
 
-            <img
-                src={product.image}
-                alt={product.name}
-                className='w-full h-48 object-contain mb-4'
-            />
+  const openProduct = () => {
+    navigate(`/product/${product.id}`);
+  };
 
-            <h3 className='text-lg font-semibold'>
-                {product.name}
-            </h3>
+  const handleCardKeyDown = event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openProduct();
+    }
+  };
 
-            <p className='text-gray-500'>
-                ₹{product.price}
-            </p>
+  const handleAddToCart = async event => {
+    event.stopPropagation();
 
-            <div className='flex items-center mt-2'>
-                <FaStar className='text-yellow-500' />
-                <FaStar className='text-yellow-500' />
-                <FaStar className='text-yellow-500' />
-                <FaStar className='text-yellow-500' />
-                <FaStar className='text-yellow-500' />
-            </div>
+    if (!user?.id) {
+      alert('Please login first!');
+      return;
+    }
 
-            <button
-                type="button"
-                onClick={(e) => handleAddToCart(e, product)}
-                className="absolute bottom-4 right-2 flex items-center justify-center w-8 h-8 bg-red-600 group text-white text-sm rounded-full hover:w-32 hover:bg-red-700 transition-all duration-300 cursor-pointer"
-            >
-                <span className="group-hover:hidden">+</span>
-                <span className="hidden group-hover:block">
-                    Add to cart
-                </span>
-            </button>
+    try {
+      await dispatch(addToCart(product)).unwrap();
+      alert('Product added to cart successfully!');
+    } catch (error) {
+      console.error('Add to cart error:', error);
+      alert(error || 'Unable to add product to cart!');
+    }
+  };
 
-        </div>
-    );
+  const handleWishlist = async event => {
+    event.stopPropagation();
+
+    if (!user?.id) {
+      alert('Please login first!');
+      return;
+    }
+
+    try {
+      if (isWishlisted) {
+        await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
+      } else {
+        await dispatch(addToWishlist(product)).unwrap();
+        alert('Added to Wishlist Successfully!');
+      }
+    } catch (error) {
+      alert(error || 'Wishlist operation failed!');
+    }
+  };
+
+  return (
+    <article
+      role="link"
+      tabIndex={0}
+      onClick={openProduct}
+      onKeyDown={handleCardKeyDown}
+      aria-label={`View ${product.name}`}
+      className="relative cursor-pointer transform rounded border bg-white p-4 shadow transition-transform duration-300 hover:scale-105"
+    >
+      <button
+        type="button"
+        onClick={handleWishlist}
+        aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md"
+      >
+        {isWishlisted ? (
+          <FaHeart className="text-lg text-red-600" />
+        ) : (
+          <FaRegHeart className="text-lg text-gray-600" />
+        )}
+      </button>
+
+      <img
+        src={product.image}
+        alt={product.name}
+        className="mb-4 h-48 w-full object-contain"
+      />
+
+      <h3 className="text-lg font-semibold">{product.name}</h3>
+      <p className="text-gray-500">₹{product.price}</p>
+
+      <div
+        className="mt-2 flex items-center"
+        aria-label={`Rating: ${rating} out of 5`}
+      >
+        {[1, 2, 3, 4, 5].map(star => (
+          <FaStar
+            key={star}
+            className={star <= rating ? 'text-yellow-500' : 'text-gray-300'}
+          />
+        ))}
+      </div>
+
+      <p
+        className={
+          product.inStock
+            ? 'mt-2 text-sm text-green-700'
+            : 'mt-2 text-sm text-red-600'
+        }
+      >
+        {product.inStock ? 'In stock' : 'Out of stock'}
+      </p>
+
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        disabled={product.inStock === false}
+        className="group absolute bottom-4 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-violet-900 text-sm text-white transition-all duration-300 hover:w-32 hover:bg-violet-800 disabled:cursor-not-allowed disabled:bg-gray-400"
+      >
+        <span className="group-hover:hidden">+</span>
+        <span className="hidden group-hover:block">Add to cart</span>
+      </button>
+    </article>
+  );
 };
 
 export default ProductCard;

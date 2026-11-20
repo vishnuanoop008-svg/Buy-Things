@@ -1,118 +1,249 @@
 import React, { useState } from 'react';
-import { FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa';
+import {
+  FaHeart,
+  FaSearch,
+  FaShoppingCart,
+  FaUser
+} from 'react-icons/fa';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Login from './Login';
 import Register from './Register';
 import Modal from './Modal';
+
 import { setSearchTerm } from '../redux/productSlice';
 
+import {
+  logout,
+  openAuthModal,
+  closeAuthModal
+} from '../redux/authSlice';
+
+import { clearCartState } from '../redux/cartSlice';
+import { clearWishlist } from '../redux/wishlistSlice';
 
 const Navbar = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isLogin, setIsLogin] = useState(true)
-    const [search, setSearch] = useState('');
 
-   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
 
-   const handleSearchChange = (e) => {
-   const value = e.target.value;
-   setSearch(value);
-   dispatch(setSearchTerm(search));
-   navigate('/filter-data');
-   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const openSignUp =() => {
-        setIsLogin(false)
-        setIsModalOpen(true)
+  const { user, authModalOpen, authModalMode } = useSelector(
+    state => state.auth
+  );
+
+  const cartCount = useSelector(
+    state => state.cart.products.length
+  );
+
+  const wishlistCount = useSelector(
+    state => state.wishlist.items.length
+  );
+
+  // Search
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+    dispatch(setSearchTerm(value));
+    navigate('/filter-data');
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(setSearchTerm(search));
+    navigate('/filter-data');
+  };
+
+  // Open Login
+  const openLogin = () => {
+    dispatch(openAuthModal('login'));
+  };
+
+  // Open Register
+  const openSignUp = () => {
+    dispatch(openAuthModal('register'));
+  };
+
+  // Logout
+  const handleLogout = async () => {
+    try {
+
+      // 1. Clear wishlist from JSON Server
+      await dispatch(clearWishlist()).unwrap();
+
+      // 2. Clear cart from Redux
+      dispatch(clearCartState());
+
+      // 3. Logout user
+      dispatch(logout());
+
+      // 4. Close authentication modal
+      dispatch(closeAuthModal());
+
+      // 5. Redirect to home
+      navigate('/');
+
+      alert('Logged out successfully!');
+
+    } catch (error) {
+
+      alert('Unable to clear wishlist. Please try again.');
+
     }
+  };
 
-     const openLogin =() => {
-        setIsLogin(true)
-        setIsModalOpen(true)
-    }
+  return (
 
-    const totalQuantity = useSelector(
-        state => state.cart.totalQuantity
-    );
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white  ">
 
-    return (
-        <nav className="bg-white shadow-md">
+      <div className="container mx-auto px-4 md:px-16 lg:px-24 py-4 flex justify-between items-center">
 
-            <div className="container mx-auto px-4 md:px-16 lg:px-24 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <div className="text-lg font-bold">
+          <Link to="/">BUY THINGS</Link>
+        </div>
 
-                <div className="text-lg font-bold">
-                    <Link to="/">BUY THINGS</Link>
-                </div>
+        {/* Search */}
+        <div className="relative flex-1 mx-4">
 
-                <div className="relative flex-1 mx-4">
-                   <form onSubmit={handleSearchChange}>
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={search}
-                    onChange={handleSearchChange}
-                    className="w-full border py-2 px-4"
-                    />
+          <form onSubmit={handleSearchSubmit}>
 
-                 <button type="submit">
-                <FaSearch className="absolute top-3 right-3 text-red-500" />
-                 </button>
-                 </form>
-                </div>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={handleSearchChange}
+              className="w-full border py-2 px-4"
+            />
 
-                <div className="flex items-center space-x-4">
+            <button type="submit">
+              <FaSearch className="absolute top-3 right-3 text-violet-900" />
+            </button>
 
-                    <Link to="/cart" className="relative">
+          </form>
 
-                        <FaShoppingCart className="text-lg" />
+        </div>
 
-                        {totalQuantity > 0 && (
-                            <span className="absolute -top-3 -right-3 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                                {totalQuantity}
-                            </span>
-                        )}
+        {/* Cart, Wishlist and Login */}
+        <div className="flex items-center space-x-5">
 
-                    </Link>
+          {/* Cart */}
+          <Link to="/cart" className="relative">
 
-                    <button className="hidden md:block hover:underline"
-                    onClick ={() => setIsModalOpen(true)}>
-                        Login | Register
-                    </button>
+            <FaShoppingCart className="text-xl hover:text-violet-900" />
 
-                    <button className="block md:hidden">
-                        <FaUser />
-                    </button>
+            {cartCount > 0 && (
+              <span className="absolute -top-3 -right-3 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {cartCount}
+              </span>
+            )}
 
-                </div>
+          </Link>
+
+          {/* Wishlist */}
+          <Link to="/wishlist" className="relative">
+
+            <FaHeart className="text-xl hover:text-red-600 transition" />
+
+            {wishlistCount > 0 && (
+              <span className="absolute -top-3 -right-3 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {wishlistCount}
+              </span>
+            )}
+
+          </Link>
+
+          {/* Login / User */}
+          {user ? (
+
+            <div className="flex items-center gap-3">
+
+              <span className="text-sm font-semibold">
+                Hi, {user.name}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="text-sm text-red-600 hover:underline"
+              >
+                Logout
+              </button>
 
             </div>
 
-            <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">
+          ) : (
 
-                <Link to="/" className="hover:underline">
-                    Home
-                </Link>
+            <button
+              className="hidden md:block hover:underline"
+              onClick={openLogin}
+            >
+              Login | Register
+            </button>
 
-                <Link to="/shop" className="hover:underline">
-                    Shop
-                </Link>
+          )}
 
-                <Link to="/" className="hover:underline">
-                    Contact
-                </Link>
+          {!user && (
+            <button
+              className="block md:hidden"
+              onClick={openLogin}
+            >
+              <FaUser />
+            </button>
+          )}
 
-                <Link to="/" className="hover:underline">
-                    About
-                </Link>
+        </div>
 
-            </div>
-           <Modal isModalOpen ={isModalOpen} setIsModalOpen ={setIsModalOpen}>
-            {isLogin ? <Login openSignUp ={openSignUp}/> : <Register openLogin ={openLogin}/>}
-           </Modal>
-        </nav>
-    );
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">
+
+        <Link to="/" className="hover:underline">
+          Home
+        </Link>
+
+        <Link to="/shop" className="hover:underline">
+          Shop
+        </Link>
+
+        <Link to="/contact" className="hover:underline">
+          Contact
+        </Link>
+
+        <Link to="/about" className="hover:underline">
+          About
+        </Link>
+
+      </div>
+
+      {/* Login / Register Modal */}
+      <Modal
+        isModalOpen={authModalOpen}
+        setIsModalOpen={(value) => {
+          if (!value) dispatch(closeAuthModal());
+        }}
+      >
+
+        {authModalMode === 'login' ? (
+
+          <Login openSignUp={openSignUp} />
+
+        ) : (
+
+          <Register openLogin={openLogin} />
+
+        )}
+
+      </Modal>
+
+    </nav>
+
+  );
 };
 
 export default Navbar;

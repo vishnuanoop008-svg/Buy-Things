@@ -32,7 +32,7 @@ const Checkout = ({setOrder}) => {
     
 
   return (
-      <div className='container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24'>
+      <div className="container mx-auto px-4 pb-8 pt-36 md:px-16 lg:px-24">
         <h3 className='text-2xl font-semibold mb-4'>CHECKOUT</h3>
         <div className='flex flex-col md:flex-row justify-between gap-10 mt-8'>
         <div className ='md:w-2/3'>
@@ -189,7 +189,7 @@ const Checkout = ({setOrder}) => {
                 <span className ="font-semibold"> ₹{cart.totalPrice.toFixed(2)}</span>
             </div>
         </div>
-        <button className ="w-full bg-red-600 text-white py-2 mt-6 hover:bg-red-800"
+        <button className ="w-full bg-violet-900 text-white py-2 mt-6 hover:bg-red-800"
         onClick ={handleOrder}>
             Place Order
             </button>

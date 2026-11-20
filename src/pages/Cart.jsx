@@ -4,21 +4,33 @@ import EmptyCart from '../assets/images/emptycart.jpg';
 import { FaTrashAlt } from 'react-icons/fa';
 import Modal from '../components/Modal';
 import ChangeAddress from '../components/ChangeAddress';
-import { decreaseQuantity, increaseQuantity, removeFromCart } from '../redux/cartSlice';
+import {
+    decreaseQuantity,
+    increaseQuantity,
+    removeFromCart
+} from '../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
 
     const cart = useSelector(state => state.cart);
+
     const [address, setAddress] = useState('main street, 0012');
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const products = cart?.products ?? [];
+
+    const totalQuantity = cart?.totalQuantity ?? 0;
+
+    const totalPrice = cart?.totalPrice ?? 0;
 
     return (
-        <div className='container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24'>
+        <div className='<div className="container mx-auto min-h-96 px-4 pb-8 pt-36 md:px-16 lg:px-24">'>
 
-            {cart.products.length > 0 ? (
+            {products.length > 0 ? (
 
                 <div>
 
@@ -46,71 +58,83 @@ const Cart = () => {
 
                             {/* PRODUCT LIST */}
 
-                            {cart.products.map((product) => (
+                            {products.map((product) => {
 
-                                <div
-                                    key={product.id}
-                                    className='grid grid-cols-[minmax(0,2fr)_0.8fr_1fr_0.9fr_35px] items-center py-4 border-b'
-                                >
+                                const price = Number(product.price) || 0;
+                                const quantity = Number(product.quantity) || 0;
 
-                                    {/* PRODUCT IMAGE AND NAME */}
+                                return (
 
-                                    <div className='flex items-center gap-3 min-w-0'>
+                                    <div
+                                        key={product.id}
+                                        className='grid grid-cols-[minmax(0,2fr)_0.8fr_1fr_0.9fr_35px] items-center py-4 border-b'
+                                    >
 
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className='w-16 h-16 object-contain rounded'
-                                        />
+                                        {/* PRODUCT IMAGE AND NAME */}
 
-                                        <h3 className='text-sm font-semibold'>
-                                            {product.name}
-                                        </h3>
+                                        <div className='flex items-center gap-3 min-w-0'>
 
-                                    </div>
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className='w-16 h-16 object-contain rounded'
+                                            />
 
-                                    {/* PRICE */}
+                                            <h3 className='text-sm font-semibold'>
+                                                {product.name}
+                                            </h3>
 
-                                    <p className='text-sm'>
-                                        ₹{product.price}
-                                    </p>
+                                        </div>
 
-                                    {/* QUANTITY */}
+                                        {/* PRICE */}
 
-                                    <div className='flex items-center justify-center border w-fit'>
-
-                                        <button className='text-xl font-bold px-2 border-r'
-                                        onClick ={() =>dispatch(decreaseQuantity(product.id))}>
-                                            -
-                                        </button>
-
-                                        <p className='text-lg px-2'>
-                                            {product.quantity}
+                                        <p className='text-sm'>
+                                            ₹{price.toFixed(2)}
                                         </p>
 
-                                        <button className='text-xl px-2 border-l'
-                                        onClick ={() => dispatch(increaseQuantity(product.id))}>
-                                            +
+                                        {/* QUANTITY */}
+
+                                        <div className='flex items-center justify-center border w-fit'>
+
+                                            <button
+                                                className='text-xl font-bold px-2 border-r'
+                                                onClick={() => dispatch(decreaseQuantity(product.id))}
+                                            >
+                                                -
+                                            </button>
+
+                                            <p className='text-lg px-2'>
+                                                {quantity}
+                                            </p>
+
+                                            <button
+                                                className='text-xl px-2 border-l'
+                                                onClick={() => dispatch(increaseQuantity(product.id))}
+                                            >
+                                                +
+                                            </button>
+
+                                        </div>
+
+                                        {/* SUBTOTAL */}
+
+                                        <p className='text-sm font-medium'>
+                                            ₹{(price * quantity).toFixed(2)}
+                                        </p>
+
+                                        {/* REMOVE */}
+
+                                        <button
+                                            className='text-red-500 hover:text-red-700'
+                                            onClick={() => dispatch(removeFromCart(product.id))}
+                                        >
+                                            <FaTrashAlt />
                                         </button>
 
                                     </div>
 
-                                    {/* SUBTOTAL */}
-
-                                    <p className='text-sm font-medium'>
-                                        ₹{(product.quantity * product.price).toFixed(2)}
-                                    </p>
-
-                                    {/* REMOVE */}
-
-                                    <button className='text-red-500 hover:text-red-700'
-                                    onClick ={() => dispatch(removeFromCart(product.id))}>
-                                        <FaTrashAlt />
-                                    </button>
-
-                                </div>
-
-                            ))}
+                                );
+                            })}
 
                         </div>
 
@@ -125,7 +149,7 @@ const Cart = () => {
 
                             <div className='flex justify-between border-b py-3'>
                                 <span>Total Items:</span>
-                                <span>{cart.totalQuantity}</span>
+                                <span>{totalQuantity}</span>
                             </div>
 
                             <div className='border-b py-3'>
@@ -142,7 +166,10 @@ const Cart = () => {
                                         {address}
                                     </span>
 
-                                    <button className='text-blue-600 text-sm hover:underline' onClick ={() => setIsModalOpen(true)}>
+                                    <button
+                                        className='text-blue-600 text-sm hover:underline'
+                                        onClick={() => setIsModalOpen(true)}
+                                    >
                                         Change address
                                     </button>
 
@@ -155,13 +182,15 @@ const Cart = () => {
                                 <span>Total Price:</span>
 
                                 <span>
-                                    ₹{cart.totalPrice.toFixed(2)}
+                                    ₹{(Number(totalPrice) || 0).toFixed(2)}
                                 </span>
 
                             </div>
 
-                            <button className='w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition'
-                            onClick ={() => navigate('/checkout')}>
+                            <button
+                                className='w-full bg-violet-900 text-white py-3 rounded-lg hover:bg-red-700 transition'
+                                onClick={() => navigate('/checkout')}
+                            >
                                 Proceed to checkout
                             </button>
 
@@ -169,11 +198,15 @@ const Cart = () => {
 
                     </div>
 
-                    <Modal 
-                     isModalOpen= {isModalOpen}
-                     setIsModalOpen ={setIsModalOpen}>
-                        <ChangeAddress setAddress ={setAddress} setIsModalOpen ={setIsModalOpen}/>
-                     </Modal>
+                    <Modal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                    >
+                        <ChangeAddress
+                            setAddress={setAddress}
+                            setIsModalOpen={setIsModalOpen}
+                        />
+                    </Modal>
 
                 </div>
 

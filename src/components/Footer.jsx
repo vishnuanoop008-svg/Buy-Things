@@ -39,7 +39,7 @@ function Footer() {
           <input type ="email" placeholder ="Enter Email"
           className ='w-full p-2 rounded-l-lg bg-gray-800 border border-gray-600'
           />
-          <button className ='bg-red-600 text-white px-4 py-2 rounded-r-lg border-gray-600'>Subscribe</button>
+          <button className ='bg-violet-900 text-white px-4 py-2 rounded-r-lg border-gray-600'>Subscribe</button>
         </form>
         </div>
       </div>

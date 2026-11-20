@@ -1,0 +1,355 @@
+{
+  "users": [
+    {
+      "name": "vishnu",
+      "email": "vishnu@gmail.com",
+      "password": "12345678",
+      "id": "xj-bLkOdfoU"
+    },
+    {
+      "name": "Vishnu Anoop",
+      "email": "vishnuanoop008@gmail.com",
+      "password": "12345678",
+      "id": "aqLoasmD8Fk"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "image": "image9",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "description": "Stylish smartwatch with a bright display for everyday use.",
+      "rating": 5,
+      "inStock": true
+    },
+    {
+      "id": "2",
+      "image": "image8",
+      "name": "Robot Speaker",
+      "price": 1299,
+      "description": "Interactive robot toy for imaginative play.",
+      "rating": 5,
+      "inStock": true
+    },
+    {
+      "id": "3",
+      "image": "image10",
+      "name": "Polo T-shirt",
+      "price": 550,
+      "description": "Comfortable shirt with a versatile everyday design.",
+      "rating": 5,
+      "inStock": true
+    },
+    {
+      "id": "4",
+      "image": "image7",
+      "name": "Apple airpod-max",
+      "price": 5999,
+      "description": "Wireless headphones with cushioned ear cups and clear sound.",
+      "rating": 5,
+      "inStock": true
+    },
+    {
+      "id": "5",
+      "image": "image5",
+      "name": "Zara Boot",
+      "price": 2299,
+      "description": "Durable boots with a classic look and comfortable fit.",
+      "rating": 5,
+      "inStock": true
+    },
+    {
+      "id": "6",
+      "image": "image6",
+      "name": "Dove soap",
+      "price": 80,
+      "description": "Dove personal care product for a gentle everyday routine.",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": "7",
+      "image": "image4",
+      "name": "Jeans Cap",
+      "price": 400,
+      "description": "Casual cap with a comfortable fit for daily use.",
+      "rating": 4,
+      "inStock": false
+    },
+    {
+      "id": "8",
+      "image": "image3",
+      "name": "Old money watch",
+      "price": 750,
+      "description": "Classic wristwatch with a simple, versatile design.",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": "9",
+      "image": "image2",
+      "name": "Chappal",
+      "price": 799,
+      "description": "Comfortable sandals for everyday outings.",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": "10",
+      "image": "image1",
+      "name": "Leather Bag",
+      "price": 2000,
+      "description": "Everyday bag with a practical design and useful storage.",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": "11",
+      "image": "image11",
+      "name": "Hotweels-bike",
+      "price": 400,
+      "description": "Bike designed for fun rides and everyday adventures.",
+      "rating": 4.3,
+      "inStock": false
+    },
+    {
+      "id": "12",
+      "image": "image12",
+      "name": "Trimmer",
+      "price": 1650,
+      "description": "Grooming product from Bombay Shaving Company.",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": "13",
+      "image": "image13",
+      "name": "Timberland Boots",
+      "price": 3000,
+      "description": "Versatile boots with a sturdy build and classic style.",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": "14",
+      "image": "image14",
+      "name": "Shirts",
+      "price": 999,
+      "description": "Brown casual shirt with a relaxed, easy-to-style look.",
+      "rating": 4,
+      "inStock": true
+    },
+    {
+      "id": "15",
+      "image": "image15",
+      "name": "Chelsea women",
+      "price": 2899,
+      "description": "Chelsea boots for women with a timeless silhouette.",
+      "rating": 4.5,
+      "inStock": false
+    },
+    {
+      "id": "16",
+      "image": "image16",
+      "name": "Brown Chelsea women",
+      "price": 3300,
+      "description": "Children's boots designed for comfortable everyday wear.",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": "17",
+      "image": "image17",
+      "name": "Hotwheels",
+      "price": 1999,
+      "description": "Toy car for imaginative play and collecting.",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": "18",
+      "image": "image18",
+      "name": "Jeans",
+      "price": 899,
+      "description": "Classic jeans with a comfortable fit for daily wear.",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": "19",
+      "image": "image19",
+      "name": "Kids wear",
+      "price": 1000,
+      "description": "Kids' outfit designed for comfort and everyday style.",
+      "rating": 4.3,
+      "inStock": false
+    },
+    {
+      "id": "20",
+      "image": "image20",
+      "name": "Bag",
+      "price": 850,
+      "description": "Ladies' bag with a stylish look and room for essentials.",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": "21",
+      "image": "image21",
+      "name": "Casio",
+      "price": 2500,
+      "description": "Ladies' wristwatch with an elegant everyday design.",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": "22",
+      "image": "image22",
+      "name": "Robox",
+      "price": 1100,
+      "description": "Ladies' wristwatch that adds a polished touch to outfits.",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": "23",
+      "image": "image23",
+      "name": "Titan watch",
+      "price": 4000,
+      "description": "Men's wristwatch with a classic, versatile design.",
+      "rating": 4.2,
+      "inStock": false
+    },
+    {
+      "id": "24",
+      "image": "image24",
+      "name": "Fossil watch",
+      "price": 5500,
+      "description": "Men's wristwatch suited to everyday wear.",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": "25",
+      "image": "image25",
+      "name": "Sunglass for men",
+      "price": 599,
+      "description": "Men's glasses with a versatile frame for daily use.",
+      "rating": 4,
+      "inStock": true
+    },
+    {
+      "id": "26",
+      "image": "image26",
+      "name": "Remote car",
+      "price": 1999,
+      "description": "Toy car made for play and display.",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": "27",
+      "image": "image27",
+      "name": "Manscaped trimmer",
+      "price": 1300,
+      "description": "Electric trimmer designed for convenient grooming.",
+      "rating": 4.2,
+      "inStock": false
+    },
+    {
+      "id": "28",
+      "image": "image28",
+      "name": "Flask bottle",
+      "price": 2100,
+      "description": "Reusable water bottle for carrying drinks on the go.",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": "29",
+      "image": "image29",
+      "name": "Juice bottle",
+      "price": 499,
+      "description": "Water bottle with a practical design for everyday use.",
+      "rating": 4,
+      "inStock": true
+    },
+    {
+      "id": "30",
+      "image": "image30",
+      "name": "Leather wallet",
+      "price": 399,
+      "description": "Classic wallet with space for cards and cash.",
+      "rating": 4.3,
+      "inStock": true
+    }
+  ],
+  "cart": [
+    {
+      "userId": "BCaE7-NqaLA",
+      "productId": "1",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "quantity": 1,
+      "image": "/src/assets/images/wwatch.png",
+      "id": "SJ_jlCuM7Ec"
+    },
+    {
+      "userId": "BCaE7-NqaLA",
+      "productId": "3",
+      "name": "Polo T-shirt",
+      "price": 550,
+      "quantity": 1,
+      "image": "/src/assets/images/shirt.png",
+      "id": "O3mBRNI5vjo"
+    },
+    {
+      "userId": "xj-bLkOdfoU",
+      "productId": "1",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "quantity": 4,
+      "image": "/src/assets/images/wwatch.png",
+      "id": "tjJFf3-6Yjc"
+    },
+    {
+      "userId": "aqLoasmD8Fk",
+      "productId": "5",
+      "name": "Zara Boot",
+      "price": 2299,
+      "quantity": 1,
+      "image": "/src/assets/images/boot1.png",
+      "id": "O9F0D3N74zg"
+    },
+    {
+      "userId": "aqLoasmD8Fk",
+      "productId": "3",
+      "name": "Polo T-shirt",
+      "price": 550,
+      "quantity": 1,
+      "image": "/src/assets/images/shirt.png",
+      "id": "DF1328CyzDM"
+    },
+    {
+      "userId": "aqLoasmD8Fk",
+      "productId": "2",
+      "name": "Robot Speaker",
+      "price": 1299,
+      "quantity": 1,
+      "image": "/src/assets/images/robot.png",
+      "id": "zAyEWQeFA9g"
+    },
+    {
+      "userId": "aqLoasmD8Fk",
+      "productId": "1",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "quantity": 1,
+      "image": "/src/assets/images/wwatch.png",
+      "id": "Kitu_24EE9w"
+    }
+  ],
+  "wishlist": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
