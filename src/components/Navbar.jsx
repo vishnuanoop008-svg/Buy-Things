@@ -219,6 +219,10 @@ const Navbar = () => {
           About
         </Link>
 
+         <Link to="/about" className="hover:underline">
+          Order
+        </Link>
+
       </div>
 
       {/* Login / Register Modal */}

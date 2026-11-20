@@ -318,5 +318,5 @@
       "id": "eRhd7jZhzsI"
     }
   ],
-  "$schema": "./node_modules/json-server/schema.json"
+  "orders": []
 }
