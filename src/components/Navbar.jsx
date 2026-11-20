@@ -203,23 +203,23 @@ const Navbar = () => {
       {/* Navigation Links */}
       <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">
 
-        <Link to="/" className="hover:underline">
+        <Link to="/" className="hover:underline text-purple-800">
           Home
         </Link>
 
-        <Link to="/shop" className="hover:underline">
+        <Link to="/shop" className="hover:underline text-purple-800">
           Shop
         </Link>
 
-        <Link to="/contact" className="hover:underline">
+        <Link to="/contact" className="hover:underline text-purple-800">
           Contact
         </Link>
 
-        <Link to="/about" className="hover:underline">
+        <Link to="/about" className="hover:underline text-purple-800">
           About
         </Link>
 
-         <Link to="/orders" className="hover:underline">
+         <Link to="/orders" className="hover:underline text-purple-800">
           Order
         </Link>
 

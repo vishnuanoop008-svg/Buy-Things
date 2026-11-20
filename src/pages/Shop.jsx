@@ -46,7 +46,7 @@ const Shop = () => {
   };
 
   return (
-    <main className="mx-auto min-h-screen px-4 pb-12 pt-32 md:px-16 lg:px-24">
+    <main className="mx-auto min-h-screen px-4 pb-12 pt-6 md:px-16 lg:px-24">
       <div className="mb-6">
         <h2 className="mb-2 text-center text-2xl font-bold">Shop</h2>
 
