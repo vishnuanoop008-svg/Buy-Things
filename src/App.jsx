@@ -19,6 +19,7 @@ import {
   fetchWishlist,
   resetWishlist
 } from './redux/wishlistSlice';
+import Orders from './pages/Orders';
 
 function App() {
   const [order, setOrder] = useState(null);
@@ -54,6 +55,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
 
       <Footer />
