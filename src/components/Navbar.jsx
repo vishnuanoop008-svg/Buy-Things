@@ -219,7 +219,7 @@ const Navbar = () => {
           About
         </Link>
 
-         <Link to="/about" className="hover:underline">
+         <Link to="/orders" className="hover:underline">
           Order
         </Link>
 
