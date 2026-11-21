@@ -6,43 +6,59 @@ import { toast } from 'react-toastify';
 import { addToCart } from '../redux/cartSlice';
 import {
   addToWishlist,
-  removeFromWishlist
+  removeFromWishlist,
 } from '../redux/wishlistSlice';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.auth.user);
-  const wishlistItems = useSelector(
-    (state) => state.wishlist?.items ?? []
-  );
+  const user = useSelector(state => state.auth.user);
+  const wishlistItems = useSelector(state => state.wishlist?.items ?? []);
 
   const productId = product.productId ?? product.id;
 
   const wishlistProduct = wishlistItems.find(
-    (item) =>
-      String(item.productId ?? item.id) === String(productId)
+    item => String(item.productId ?? item.id) === String(productId)
   );
 
   const isWishlisted = Boolean(wishlistProduct);
   const rating = Math.max(0, Math.min(5, Number(product.rating) || 0));
-
-  // Older saved wishlist entries might not contain inStock.
   const inStock = product.inStock !== false;
 
   const openProduct = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleCardKeyDown = (event) => {
+  const handleCardKeyDown = event => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openProduct();
     }
   };
 
-  const handleAddToCart = async (event) => {
+  const handleWishlist = async event => {
+    event.stopPropagation();
+
+    if (!user?.id) {
+      toast.error('Please log in first.');
+      return;
+    }
+
+    try {
+      if (isWishlisted) {
+        await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
+        toast.success('Removed from wishlist.');
+      } else {
+        await dispatch(addToWishlist(product)).unwrap();
+        toast.success('Added to wishlist.');
+      }
+    } catch (error) {
+      toast.error(error || 'Wishlist operation failed.');
+    }
+  };
+
+  const handleAddToCart = async event => {
     event.stopPropagation();
 
     if (!user?.id) {
@@ -63,27 +79,6 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const handleWishlist = async (event) => {
-    event.stopPropagation();
-
-    if (!user?.id) {
-      toast.error('Please log in first.');
-      return;
-    }
-
-    try {
-      if (isWishlisted) {
-        await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
-        toast.success('Removed from wishlist.');
-      } else {
-        await dispatch(addToWishlist(product)).unwrap();
-        toast.success('Added to Wishlist Successfully!');
-      }
-    } catch (error) {
-      toast.error(error || 'Wishlist operation failed.');
-    }
-  };
-
   return (
     <article
       role="link"
@@ -91,62 +86,64 @@ const ProductCard = ({ product }) => {
       onClick={openProduct}
       onKeyDown={handleCardKeyDown}
       aria-label={`View ${product.name}`}
-      className="relative transform cursor-pointer rounded border bg-white p-4 shadow transition-transform duration-300 hover:scale-105"
+      className="group relative cursor-pointer overflow-hidden rounded-lg bg-white text-gray-700 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
     >
-      <button
-        type="button"
-        onClick={handleWishlist}
-        aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md"
-      >
-        {isWishlisted ? (
-          <FaHeart className="text-lg text-red-600" />
-        ) : (
-          <FaRegHeart className="text-lg text-gray-600" />
-        )}
-      </button>
+      <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+  <img
+    src={product.image}
+    alt={product.name}
+    className="absolute inset-0 h-full w-full object-cover object-center scale-110"
+  />
 
-      <img
-        src={product.image}
-        alt={product.name}
-        className="mb-4 h-48 w-full object-contain"
-      />
-
-      <h3 className="text-lg font-semibold">{product.name}</h3>
-      <p className="text-gray-500">₹{product.price}</p>
-
-      <div
-        className="mt-2 flex items-center"
-        aria-label={`Rating: ${rating} out of 5`}
-      >
-        {[1, 2, 3, 4, 5].map((star) => (
-          <FaStar
-            key={star}
-            className={
-              star <= rating ? 'text-yellow-500' : 'text-gray-300'
-            }
-          />
-        ))}
+        <button
+          type="button"
+          onClick={handleWishlist}
+          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-gray-600 shadow"
+        >
+          {isWishlisted ? (
+            <FaHeart className="text-sm text-red-600" />
+          ) : (
+            <FaRegHeart className="text-sm" />
+          )}
+        </button>
       </div>
 
-      <p
-        className={
-          inStock
-            ? 'mt-2 text-sm text-green-700'
-            : 'mt-2 text-sm text-red-600'
-        }
-      >
-        {inStock ? 'In stock' : 'Out of stock'}
-      </p>
+      <div className="p-2">
+        <h3 className="truncate text-xs font-semibold">{product.name}</h3>
+        <p className="mt-1 text-xs text-gray-600">₹{product.price}</p>
+
+        <div
+          className="mt-1 flex gap-0.5"
+          aria-label={`Rating: ${rating} out of 5`}
+        >
+          {[1, 2, 3, 4, 5].map(star => (
+            <FaStar
+              key={star}
+              className={`text-[10px] ${
+                star <= rating ? 'text-yellow-500' : 'text-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+
+        <p
+          className={`mt-1 text-[10px] ${
+            inStock ? 'text-green-700' : 'text-red-600'
+          }`}
+        >
+          {inStock ? 'In stock' : 'Out of stock'}
+        </p>
+      </div>
 
       <button
         type="button"
         onClick={handleAddToCart}
         disabled={!inStock}
-        className="group absolute bottom-4 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-violet-900 text-sm text-white transition-all duration-300 hover:w-32 hover:bg-violet-800 disabled:cursor-not-allowed disabled:bg-gray-400"
+        aria-label="Add to cart"
+        className="absolute bottom-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-violet-900 text-sm text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
       >
-        <span className="group-hover:hidden">+</span>
-        <span className="hidden group-hover:block">Add to cart</span>
+        +
       </button>
     </article>
   );
