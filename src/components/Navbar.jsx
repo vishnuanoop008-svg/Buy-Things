@@ -1,252 +1,171 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   FaHeart,
   FaSearch,
   FaShoppingCart,
   FaUser
 } from 'react-icons/fa';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import Login from './Login';
 import Register from './Register';
 import Modal from './Modal';
 
 import { setSearchTerm } from '../redux/productSlice';
-
 import {
   logout,
   openAuthModal,
   closeAuthModal
 } from '../redux/authSlice';
-
 import { clearCartState } from '../redux/cartSlice';
-import { clearWishlist } from '../redux/wishlistSlice';
+import { resetWishlist } from '../redux/wishlistSlice';
 
 const Navbar = () => {
-
   const [search, setSearch] = useState('');
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user, authModalOpen, authModalMode } = useSelector(
-    state => state.auth
+    (state) => state.auth
   );
 
   const cartCount = useSelector(
-    state => state.cart.products.length
+    (state) => state.cart.products.length
   );
 
   const wishlistCount = useSelector(
-    state => state.wishlist.items.length
+    (state) => state.wishlist.items.length
   );
 
-  // Search
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
     setSearch(value);
     dispatch(setSearchTerm(value));
     navigate('/filter-data');
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
     dispatch(setSearchTerm(search));
     navigate('/filter-data');
   };
 
-  // Open Login
   const openLogin = () => {
     dispatch(openAuthModal('login'));
   };
 
-  // Open Register
   const openSignUp = () => {
     dispatch(openAuthModal('register'));
   };
 
-  // Logout
-  const handleLogout = async () => {
-    try {
-
-      // 1. Clear wishlist from JSON Server
-      await dispatch(clearWishlist()).unwrap();
-
-      // 2. Clear cart from Redux
-      dispatch(clearCartState());
-
-      // 3. Logout user
-      dispatch(logout());
-
-      // 4. Close authentication modal
-      dispatch(closeAuthModal());
-
-      // 5. Redirect to home
-      navigate('/');
-
-      alert('Logged out successfully!');
-
-    } catch (error) {
-
-      alert('Unable to clear wishlist. Please try again.');
-
-    }
+  const handleLogout = () => {
+    dispatch(clearCartState());
+    dispatch(resetWishlist());
+    dispatch(logout());
+    dispatch(closeAuthModal());
+    navigate('/');
+    toast.success('Logged out successfully!');
   };
 
   return (
-
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white  ">
-
-      <div className="container mx-auto px-4 md:px-16 lg:px-24 py-4 flex justify-between items-center">
-
-        {/* Logo */}
+    <nav className="fixed left-0 right-0 top-0 z-50 bg-white">
+      <div className="container mx-auto flex items-center justify-between px-4 py-4 md:px-16 lg:px-24">
         <div className="text-lg font-bold">
           <Link to="/">BUY THINGS</Link>
         </div>
 
-        {/* Search */}
-        <div className="relative flex-1 mx-4">
-
+        <div className="relative mx-4 flex-1">
           <form onSubmit={handleSearchSubmit}>
-
             <input
               type="text"
               placeholder="Search products..."
               value={search}
               onChange={handleSearchChange}
-              className="w-full border py-2 px-4"
+              className="w-full border px-4 py-2"
             />
-
-            <button type="submit">
-              <FaSearch className="absolute top-3 right-3 text-violet-900" />
+            <button type="submit" aria-label="Search">
+              <FaSearch className="absolute right-3 top-3 text-violet-900" />
             </button>
-
           </form>
-
         </div>
 
-        {/* Cart, Wishlist and Login */}
         <div className="flex items-center space-x-5">
-
-          {/* Cart */}
-          <Link to="/cart" className="relative">
-
+          <Link to="/cart" aria-label="Cart" className="relative">
             <FaShoppingCart className="text-xl hover:text-violet-900" />
-
             {cartCount > 0 && (
-              <span className="absolute -top-3 -right-3 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute -right-3 -top-3 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white">
                 {cartCount}
               </span>
             )}
-
           </Link>
 
-          {/* Wishlist */}
-          <Link to="/wishlist" className="relative">
-
-            <FaHeart className="text-xl hover:text-red-600 transition" />
-
+          <Link to="/wishlist" aria-label="Wishlist" className="relative">
+            <FaHeart className="text-xl transition hover:text-red-600" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-3 -right-3 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute -right-3 -top-3 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white">
                 {wishlistCount}
               </span>
             )}
-
           </Link>
 
-          {/* Login / User */}
           {user ? (
-
             <div className="flex items-center gap-3">
-
               <span className="text-sm font-semibold">
                 Hi, {user.name}
               </span>
-
               <button
+                type="button"
                 onClick={handleLogout}
                 className="text-sm text-red-600 hover:underline"
               >
                 Logout
               </button>
-
             </div>
-
           ) : (
-
-            <button
-              className="hidden md:block hover:underline"
-              onClick={openLogin}
-            >
-              Login | Register
-            </button>
-
+            <>
+              <button
+                type="button"
+                className="hidden hover:underline md:block"
+                onClick={openLogin}
+              >
+                Login | Register
+              </button>
+              <button
+                type="button"
+                className="block md:hidden"
+                onClick={openLogin}
+                aria-label="Login or register"
+              >
+                <FaUser />
+              </button>
+            </>
           )}
-
-          {!user && (
-            <button
-              className="block md:hidden"
-              onClick={openLogin}
-            >
-              <FaUser />
-            </button>
-          )}
-
         </div>
-
       </div>
 
-      {/* Navigation Links */}
       <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">
-
-        <Link to="/" className="hover:underline text-purple-800">
-          Home
-        </Link>
-
-        <Link to="/shop" className="hover:underline text-purple-800">
-          Shop
-        </Link>
-
-        <Link to="/contact" className="hover:underline text-purple-800">
-          Contact
-        </Link>
-
-        <Link to="/about" className="hover:underline text-purple-800">
-          About
-        </Link>
-
-         <Link to="/orders" className="hover:underline text-purple-800">
-          Order
-        </Link>
-
+        <Link to="/" className="text-purple-800 hover:underline">Home</Link>
+        <Link to="/shop" className="text-purple-800 hover:underline">Shop</Link>
+        <Link to="/contact" className="text-purple-800 hover:underline">Contact</Link>
+        <Link to="/about" className="text-purple-800 hover:underline">About</Link>
+        <Link to="/orders" className="text-purple-800 hover:underline">Order</Link>
       </div>
 
-      {/* Login / Register Modal */}
       <Modal
         isModalOpen={authModalOpen}
-        setIsModalOpen={(value) => {
-          if (!value) dispatch(closeAuthModal());
+        setIsModalOpen={(isOpen) => {
+          if (!isOpen) dispatch(closeAuthModal());
         }}
       >
-
-        {authModalMode === 'login' ? (
-
-          <Login openSignUp={openSignUp} />
-
-        ) : (
-
+        {authModalMode === 'register' ? (
           <Register openLogin={openLogin} />
-
+        ) : (
+          <Login openSignUp={openSignUp} />
         )}
-
       </Modal>
-
     </nav>
-
   );
 };
 

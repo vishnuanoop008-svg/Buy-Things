@@ -17,6 +17,12 @@
       "email": "arshad@gmail.com",
       "password": "12345678",
       "id": "bbQ_T9COElI"
+    },
+    {
+      "name": "Vishnu Anoop",
+      "email": "vishnu2255@gmail.com",
+      "password": "12345678",
+      "id": "FhpUbkKIWbA"
     }
   ],
   "products": [
@@ -297,7 +303,7 @@
       "productId": "2",
       "name": "Robot Speaker",
       "price": 1299,
-      "quantity": 1,
+      "quantity": 2,
       "image": "/src/assets/images/robot.png",
       "id": "EH8Aae5DE64"
     },
