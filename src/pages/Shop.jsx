@@ -32,6 +32,11 @@ const Shop = () => {
     setCurrentPage(page => Math.min(page, Math.max(totalPages, 1)));
   }, [totalPages]);
 
+  const handleSortChange = event => {
+    setSortOrder(event.target.value);
+    setCurrentPage(1);
+  };
+
   const goToPreviousPage = () => {
     setCurrentPage(page => Math.max(page - 1, 1));
   };
@@ -40,23 +45,23 @@ const Shop = () => {
     setCurrentPage(page => Math.min(page + 1, totalPages));
   };
 
-  const handleSortChange = event => {
-    setSortOrder(event.target.value);
-    setCurrentPage(1);
-  };
-
   return (
-    <main className="mx-auto min-h-screen px-4 pb-12 pt-6 md:px-16 lg:px-24">
-      <div className="mb-6">
-        <h2 className="mb-2 text-center text-2xl font-bold">Shop</h2>
+    <main className="mx-auto min-h-screen bg-[#09090b] px-4 pb-12 pt-10 text-white md:px-10 lg:px-16">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+              Browse our collection
+            </p>
+            <h1 className="text-3xl font-bold text-white">Shop</h1>
+          </div>
 
-        <div className="flex justify-end">
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-3 text-sm text-gray-300">
             <span>Sort by:</span>
             <select
               value={sortOrder}
               onChange={handleSortChange}
-              className="rounded border border-gray-300 bg-white px-3 py-2"
+              className="rounded-lg border border-white/10 bg-[#17171b] px-3 py-2 text-white outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30"
             >
               <option value="">Featured</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -64,45 +69,48 @@ const Shop = () => {
             </select>
           </label>
         </div>
+
+        {products.length === 0 ? (
+          <p className="py-16 text-center text-gray-400">
+            No products found. Make sure your products have loaded.
+          </p>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-5">
+              {currentProducts.map(product => (
+                <ProductCard
+                  key={product.productId ?? product.id}
+                  product={product}
+                />
+              ))}
+            </div>
+
+            <div className="mt-10 flex items-center justify-center gap-4">
+              <button
+                type="button"
+                onClick={goToPreviousPage}
+                disabled={currentPage === 1}
+                className="rounded-lg bg-purple-700 px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+              >
+                Previous
+              </button>
+
+              <span className="text-sm text-gray-300">
+                Page {currentPage} of {Math.max(totalPages, 1)}
+              </span>
+
+              <button
+                type="button"
+                onClick={goToNextPage}
+                disabled={currentPage >= totalPages}
+                className="rounded-lg bg-purple-700 px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
       </div>
-
-      {products.length === 0 ? (
-        <p className="text-center text-gray-600">
-          No products found. Make sure your products have loaded.
-        </p>
-      ) : (
-        <>
-          <div className="grid cursor-pointer grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {currentProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-
-          <div className="mt-10 flex items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
-              className="rounded bg-violet-900 px-5 py-2 text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
-            >
-              Previous
-            </button>
-
-            <span className="text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <button
-              type="button"
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
-              className="rounded bg-violet-900 px-5 py-2 text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
-            >
-              Next
-            </button>
-          </div>
-        </>
-      )}
     </main>
   );
 };

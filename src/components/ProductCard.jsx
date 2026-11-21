@@ -86,50 +86,55 @@ const ProductCard = ({ product }) => {
       onClick={openProduct}
       onKeyDown={handleCardKeyDown}
       aria-label={`View ${product.name}`}
-      className="group relative cursor-pointer overflow-hidden rounded-lg bg-white text-gray-700 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-[#111114] text-white shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-purple-500/40 hover:shadow-purple-950/30"
     >
-      <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
-  <img
-    src={product.image}
-    alt={product.name}
-    className="absolute inset-0 h-full w-full object-cover object-center scale-110"
-  />
+      <div className="relative aspect-square w-full overflow-hidden bg-white">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
 
         <button
           type="button"
           onClick={handleWishlist}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-gray-600 shadow"
+          className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/75 text-white shadow transition hover:bg-purple-700"
         >
           {isWishlisted ? (
-            <FaHeart className="text-sm text-red-600" />
+            <FaHeart className="text-sm text-red-400" />
           ) : (
             <FaRegHeart className="text-sm" />
           )}
         </button>
       </div>
 
-      <div className="p-2">
-        <h3 className="truncate text-xs font-semibold">{product.name}</h3>
-        <p className="mt-1 text-xs text-gray-600">₹{product.price}</p>
+      <div className="p-3">
+        <h3 className="truncate text-sm font-semibold text-white">
+          {product.name}
+        </h3>
+
+        <p className="mt-1 text-sm text-gray-300">
+          ₹{product.price}
+        </p>
 
         <div
-          className="mt-1 flex gap-0.5"
+          className="mt-2 flex gap-0.5"
           aria-label={`Rating: ${rating} out of 5`}
         >
           {[1, 2, 3, 4, 5].map(star => (
             <FaStar
               key={star}
-              className={`text-[10px] ${
-                star <= rating ? 'text-yellow-500' : 'text-gray-300'
+              className={`text-xs ${
+                star <= rating ? 'text-yellow-400' : 'text-gray-600'
               }`}
             />
           ))}
         </div>
 
         <p
-          className={`mt-1 text-[10px] ${
-            inStock ? 'text-green-700' : 'text-red-600'
+          className={`mt-1 text-xs ${
+            inStock ? 'text-emerald-400' : 'text-red-400'
           }`}
         >
           {inStock ? 'In stock' : 'Out of stock'}
@@ -141,7 +146,7 @@ const ProductCard = ({ product }) => {
         onClick={handleAddToCart}
         disabled={!inStock}
         aria-label="Add to cart"
-        className="absolute bottom-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-violet-900 text-sm text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+        className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-purple-700 text-sm text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:bg-gray-600"
       >
         +
       </button>

@@ -31,8 +31,8 @@ const Navbar = () => {
     state => state.auth
   );
 
-  const cartCount = useSelector(state => state.cart.products.length);
-  const wishlistCount = useSelector(state => state.wishlist.items.length);
+  const cartCount = useSelector(state => state.cart?.products?.length ?? 0);
+  const wishlistCount = useSelector(state => state.wishlist?.items?.length ?? 0);
 
   const handleSearchSubmit = event => {
     event.preventDefault();
@@ -40,12 +40,15 @@ const Navbar = () => {
     navigate('/filter-data');
   };
 
-  const openLogin = () => {
-    dispatch(openAuthModal('login'));
-  };
+  const openLogin = () => dispatch(openAuthModal('login'));
+  const openSignUp = () => dispatch(openAuthModal('register'));
 
-  const openSignUp = () => {
-    dispatch(openAuthModal('register'));
+  const handleUserClick = () => {
+    if (user) {
+      navigate('/profile');
+    } else {
+      openLogin();
+    }
   };
 
   const handleLogout = () => {
@@ -57,6 +60,33 @@ const Navbar = () => {
     toast.success('Logged out successfully!');
   };
 
+  const SearchForm = ({ mobile = false }) => (
+    <form
+      onSubmit={handleSearchSubmit}
+      role="search"
+      className={mobile ? 'relative' : 'relative mx-auto hidden w-full max-w-2xl sm:block'}
+    >
+      <input
+        type="search"
+        placeholder="Search products..."
+        value={search}
+        onChange={event => setSearch(event.target.value)}
+        className={`w-full rounded-full border border-white/10 bg-white/10 text-sm text-white placeholder:text-gray-400 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 ${
+          mobile ? 'py-2.5 pl-4 pr-12' : 'py-3 pl-5 pr-14'
+        }`}
+      />
+      <button
+        type="submit"
+        aria-label="Search"
+        className={`absolute right-0 top-0 flex h-full items-center justify-center bg-purple-600 transition hover:bg-purple-500 ${
+          mobile ? 'w-11 rounded-r-full' : 'w-12 rounded-r-full'
+        }`}
+      >
+        <FaSearch />
+      </button>
+    </form>
+  );
+
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#09090b] text-white shadow-lg">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 md:px-8">
@@ -64,31 +94,12 @@ const Navbar = () => {
           BUY <span className="text-purple-500">THINGS</span>
         </Link>
 
-        <form
-          onSubmit={handleSearchSubmit}
-          role="search"
-          className="relative mx-auto hidden w-full max-w-2xl sm:block"
-        >
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={search}
-            onChange={event => setSearch(event.target.value)}
-            className="w-full rounded-full border border-white/10 bg-white/10 py-3 pl-5 pr-14 text-sm text-white placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
-          />
-          <button
-            type="submit"
-            aria-label="Search"
-            className="absolute right-0 top-0 flex h-full w-12 items-center justify-center rounded-r-full bg-purple-600 transition hover:bg-purple-500"
-          >
-            <FaSearch />
-          </button>
-        </form>
+        <SearchForm />
 
         <div className="ml-auto flex shrink-0 items-center gap-5 sm:ml-0">
           <Link
             to="/cart"
-            aria-label={`Cart${cartCount > 0 ? `, ${cartCount} items` : ''}`}
+            aria-label={`Cart${cartCount ? `, ${cartCount} items` : ''}`}
             className="relative transition hover:text-purple-400"
           >
             <FaShoppingCart className="text-xl" />
@@ -101,7 +112,7 @@ const Navbar = () => {
 
           <Link
             to="/wishlist"
-            aria-label={`Wishlist${wishlistCount > 0 ? `, ${wishlistCount} items` : ''}`}
+            aria-label={`Wishlist${wishlistCount ? `, ${wishlistCount} items` : ''}`}
             className="relative transition hover:text-purple-400"
           >
             <FaHeart className="text-xl" />
@@ -112,28 +123,24 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* User icon directly after wishlist */}
           <button
             type="button"
-            onClick={openLogin}
-            aria-label="Login or register"
-            title="Login or register"
+            onClick={handleUserClick}
+            aria-label={user ? 'Open profile' : 'Login or register'}
+            title={user ? 'Profile' : 'Login or register'}
             className="transition hover:text-purple-400"
           >
             <FaUser className="text-xl" />
           </button>
 
           {user ? (
-            <div className="hidden items-center gap-3 md:flex">
-              <span className="text-sm font-semibold">Hi, {user.name}</span>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="text-sm text-gray-300 transition hover:text-purple-400"
-              >
-                Logout
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-sm text-gray-300 transition hover:text-purple-400"
+            >
+              Logout
+            </button>
           ) : (
             <button
               type="button"
@@ -147,40 +154,15 @@ const Navbar = () => {
       </div>
 
       <div className="border-t border-white/5 px-4 py-3 sm:hidden">
-        <form onSubmit={handleSearchSubmit} role="search" className="relative">
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={search}
-            onChange={event => setSearch(event.target.value)}
-            className="w-full rounded-full border border-white/10 bg-white/10 py-2.5 pl-4 pr-12 text-sm text-white placeholder:text-gray-400 focus:border-purple-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            aria-label="Search"
-            className="absolute right-0 top-0 flex h-full w-11 items-center justify-center rounded-r-full bg-purple-600"
-          >
-            <FaSearch />
-          </button>
-        </form>
+        <SearchForm mobile />
       </div>
 
       <div className="flex items-center justify-center gap-6 overflow-x-auto border-t border-white/5 px-4 py-3 text-sm font-medium sm:gap-10">
-        <Link to="/" className="shrink-0 text-purple-400 hover:text-purple-300">
-          Home
-        </Link>
-        <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">
-          Shop
-        </Link>
-        <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">
-          Contact
-        </Link>
-        <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">
-          About
-        </Link>
-        <Link to="/orders" className="shrink-0 text-gray-200 hover:text-purple-400">
-          Order
-        </Link>
+        <Link to="/" className="shrink-0 text-gray-200 hover:text-purple-300">Home</Link>
+        <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">Shop</Link>
+        <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">Contact</Link>
+        <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">About</Link>
+        <Link to="/orders" className="shrink-0 text-gray-200 hover:text-purple-400">Order</Link>
       </div>
 
       <Modal

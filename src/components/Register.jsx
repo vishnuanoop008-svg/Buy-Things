@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { registerUser, closeAuthModal } from '../redux/authSlice';
 
-const Register = ({ openLogin }) => {
+const Register = ({ openLogin = () => {} }) => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector(state => state.auth);
 
@@ -18,16 +19,15 @@ const Register = ({ openLogin }) => {
     setEmailError('');
     setPasswordError('');
 
-    if (!name || !email || !password || !confirmPassword) {
-      alert('Please fill all fields!');
+    if (!name.trim() || !email.trim() || !password || !confirmPassword) {
+      setPasswordError('Please fill in all fields.');
       return;
     }
 
-    const validEmail =
-      email.includes('@') && email.toLowerCase().endsWith('.com');
+    const validEmail = /^[^\s@]+@[^\s@]+\.com$/i.test(email.trim());
 
     if (!validEmail) {
-      setEmailError('Invalid email address. Include "@" and end with ".com".');
+      setEmailError('Enter a valid email address ending in .com.');
       return;
     }
 
@@ -37,97 +37,140 @@ const Register = ({ openLogin }) => {
     }
 
     try {
-      await dispatch(registerUser({ name, email, password })).unwrap();
-      alert('Registration successful!');
+      await dispatch(
+        registerUser({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+        })
+      ).unwrap();
+
       dispatch(closeAuthModal());
     } catch (err) {
-      alert(err || 'Registration failed!');
+      // The Redux auth error is displayed below the form.
+      console.error('Registration failed:', err);
     }
   };
 
+  const inputClassName =
+    'w-full rounded-lg border border-white/10 bg-[#09090b] px-3 py-2.5 text-white placeholder:text-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20';
+
   return (
-    <div>
-      <h2 className="mb-4 text-2xl font-bold">Sign Up</h2>
+    <div className="rounded-xl border border-white/10 bg-[#111114] p-6 text-white shadow-2xl shadow-purple-950/30 sm:p-8">
+      <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+        Join us
+      </p>
+      <h2 className="mb-6 text-2xl font-bold">Create your account</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700">Name</label>
+          <label
+            htmlFor="register-name"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
+            Name
+          </label>
           <input
+            id="register-name"
             type="text"
             value={name}
             onChange={event => setName(event.target.value)}
-            className="w-full border px-3 py-2"
-            placeholder="Enter Name"
+            className={inputClassName}
+            placeholder="Enter your name"
+            autoComplete="name"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Email</label>
+          <label
+            htmlFor="register-email"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
+            Email
+          </label>
           <input
-            type="text"
+            id="register-email"
+            type="email"
             value={email}
             onChange={event => {
               setEmail(event.target.value);
               setEmailError('');
             }}
-            className="w-full border px-3 py-2"
-            placeholder="Enter Email"
+            className={inputClassName}
+            placeholder="Enter your email"
+            autoComplete="email"
             required
           />
           {emailError && (
-            <p className="mt-1 text-sm text-red-600">{emailError}</p>
+            <p className="mt-1 text-sm text-red-400">{emailError}</p>
           )}
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Password</label>
+          <label
+            htmlFor="register-password"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
+            Password
+          </label>
           <input
+            id="register-password"
             type="password"
             value={password}
             onChange={event => setPassword(event.target.value)}
-            className="w-full border px-3 py-2"
-            placeholder="Enter Password"
+            className={inputClassName}
+            placeholder="Enter your password"
+            autoComplete="new-password"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Confirm Password</label>
+          <label
+            htmlFor="register-confirm-password"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
+            Confirm Password
+          </label>
           <input
+            id="register-confirm-password"
             type="password"
             value={confirmPassword}
             onChange={event => {
               setConfirmPassword(event.target.value);
               setPasswordError('');
             }}
-            className="w-full border px-3 py-2"
-            placeholder="Confirm Password"
+            className={inputClassName}
+            placeholder="Confirm your password"
+            autoComplete="new-password"
             required
           />
           {passwordError && (
-            <p className="mt-1 text-sm text-red-600">{passwordError}</p>
+            <p className="mt-1 text-sm text-red-400">{passwordError}</p>
           )}
         </div>
 
-        {error && <p className="mb-3 text-red-600">{error}</p>}
+        {error && (
+          <p className="mb-4 text-sm text-red-400">
+            {typeof error === 'string' ? error : 'Registration failed.'}
+          </p>
+        )}
 
-        <div className="mb-4">
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-violet-900 py-2 text-white disabled:opacity-50"
-          >
-            {loading ? 'Creating Account...' : 'Sign Up'}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="mb-5 w-full rounded-lg bg-purple-700 py-2.5 font-semibold text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loading ? 'Creating account...' : 'Sign Up'}
+        </button>
       </form>
 
-      <div className="text-center">
-        <span className="text-gray-700">Already have an Account?</span>
+      <div className="text-center text-sm text-gray-400">
+        Already have an account?
         <button
           type="button"
-          className="ml-2 text-black"
+          className="ml-2 font-semibold text-purple-400 transition hover:text-purple-300"
           onClick={openLogin}
         >
           Login

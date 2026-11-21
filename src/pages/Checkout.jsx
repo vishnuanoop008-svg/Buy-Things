@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
+import RetailStage from '../assets/images/retail-stage.png';
 
 const Checkout = ({ setOrder }) => {
   const [billingToggle, setBillingToggle] = useState(true);
@@ -13,12 +15,17 @@ const Checkout = ({ setOrder }) => {
   const [shippingInfo, setShippingInfo] = useState({
     address: '',
     city: '',
-    zip: ''
+    zip: '',
   });
 
-  const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.auth.user);
+  const cart = useSelector(state => state.cart);
+  const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
+
+  const updateShippingInfo = event => {
+    const { name, value } = event.target;
+    setShippingInfo(previous => ({ ...previous, [name]: value }));
+  };
 
   const handleOrder = async () => {
     if (!user?.id) {
@@ -38,7 +45,7 @@ const Checkout = ({ setOrder }) => {
       paymentMethod,
       totalPrice: cart.totalPrice,
       userId: user.id,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     try {
@@ -57,258 +64,265 @@ const Checkout = ({ setOrder }) => {
     }
   };
 
+  const inputClass =
+    'w-full rounded-lg border border-white/10 bg-[#09090b]/80 px-3 py-2.5 text-white placeholder:text-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20';
+
   return (
-    <div className="container mx-auto px-4 pb-8 pt-36 md:px-16 lg:px-24">
-      <h3 className="mb-4 text-2xl font-semibold">CHECKOUT</h3>
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#09090b] px-4 pb-12 pt-32 text-white md:px-10 lg:px-16">
+      <img
+        src={RetailStage}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 h-full w-full object-cover"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 bg-black/65"
+      />
 
-      <div className="mt-8 flex flex-col justify-between gap-10 md:flex-row">
-        <div className="md:w-2/3">
-          <div className="mb-6 border p-2">
-            <div
-              className="flex items-center justify-between"
-              onClick={() => setBillingToggle(!billingToggle)}
-            >
-              <h3 className="mb-2 text-lg font-semibold">
-                Billing Information
-              </h3>
-              {billingToggle ? <FaAngleDown /> : <FaAngleUp />}
-            </div>
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-300">
+          Almost there
+        </p>
+        <h1 className="mb-8 text-3xl font-bold">Checkout</h1>
 
-            <div className={`space-y-4 ${billingToggle ? '' : 'hidden'}`}>
-              <div>
-                <label className="block text-gray-700">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Enter the name"
-                  className="w-full border px-3 py-2"
-                />
-              </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <section className="min-w-0 flex-1">
+            {/* Billing Information */}
+            <div className="mb-5 rounded-xl border border-white/10 bg-[#111114]/90 p-5 shadow-xl backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => setBillingToggle(open => !open)}
+                aria-expanded={billingToggle}
+                className="flex w-full items-center justify-between text-left"
+              >
+                <span className="text-lg font-semibold">
+                  Billing Information
+                </span>
+                {billingToggle ? <FaAngleUp /> : <FaAngleDown />}
+              </button>
 
-              <div>
-                <label className="block text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter Email"
-                  className="w-full border px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Enter phone #"
-                  className="w-full border px-3 py-2"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Shipping */}
-          <div className="mb-6 border p-2">
-            <div
-              className="flex items-center justify-between"
-              onClick={() => setShippingToggle(!shippingToggle)}
-            >
-              <h3 className="mb-2 text-lg font-semibold">
-                Shipping Information
-              </h3>
-              {shippingToggle ? <FaAngleDown /> : <FaAngleUp />}
-            </div>
-
-            <div className={`space-y-4 ${shippingToggle ? '' : 'hidden'}`}>
-              <div>
-                <label className="block text-gray-700">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Enter Address"
-                  className="w-full border px-3 py-2"
-                  value={shippingInfo.address}
-                  onChange={(event) =>
-                    setShippingInfo({
-                      ...shippingInfo,
-                      address: event.target.value
-                    })
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="Enter City Name"
-                  className="w-full border px-3 py-2"
-                  value={shippingInfo.city}
-                  onChange={(event) =>
-                    setShippingInfo({
-                      ...shippingInfo,
-                      city: event.target.value
-                    })
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700">Zip Code</label>
-                <input
-                  type="text"
-                  name="zip"
-                  placeholder="Enter Zip Code"
-                  className="w-full border px-3 py-2"
-                  value={shippingInfo.zip}
-                  onChange={(event) =>
-                    setShippingInfo({
-                      ...shippingInfo,
-                      zip: event.target.value
-                    })
-                  }
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Payment methods */}
-          <div className="mb-6 border p-2">
-            <div
-              className="flex items-center justify-between"
-              onClick={() => setPaymentToggle(!paymentToggle)}
-            >
-              <h3 className="mb-2 text-lg font-semibold">Payment Methods</h3>
-              {paymentToggle ? <FaAngleDown /> : <FaAngleUp />}
-            </div>
-
-            <div className={`space-y-4 ${paymentToggle ? '' : 'hidden'}`}>
-              <div className="mb-2 flex items-center">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === 'cod'}
-                  onChange={() => setPaymentMethod('cod')}
-                />
-                <label className="ml-2 block text-gray-700">
-                  Cash on Delivery
-                </label>
-              </div>
-
-              <div className="mb-2 flex items-center">
-                <input
-                  type="radio"
-                  name="payment"
-                  checked={paymentMethod === 'dc'}
-                  onChange={() => setPaymentMethod('dc')}
-                />
-                <label className="ml-2 block text-gray-700">Debit Card</label>
-              </div>
-
-              {paymentMethod === 'dc' && (
-                <div className="mb-4 rounded-lg bg-gray-100 p-4">
-                  <h3 className="mb-4 text-xl font-semibold">
-                    Debit Card Information
-                  </h3>
-
-                  <div className="mb-4">
-                    <label className="mb-2 block font-semibold text-gray-700">
-                      Card Number
-                    </label>
+              {billingToggle && (
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <label className="text-sm text-gray-300">
+                    Name
                     <input
                       type="text"
-                      placeholder="Enter Card number"
-                      className="w-full rounded border p-2"
-                      required
+                      name="name"
+                      placeholder="Enter your name"
+                      className={`${inputClass} mt-2`}
                     />
-                  </div>
+                  </label>
 
-                  <div className="mb-4">
-                    <label className="mb-2 block font-semibold text-gray-700">
-                      Card Holder Name
-                    </label>
+                  <label className="text-sm text-gray-300">
+                    Email
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      className={`${inputClass} mt-2`}
+                    />
+                  </label>
+
+                  <label className="text-sm text-gray-300 sm:col-span-2">
+                    Phone
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Enter your phone number"
+                      className={`${inputClass} mt-2`}
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+
+            {/* Shipping Information */}
+            <div className="mb-5 rounded-xl border border-white/10 bg-[#111114]/90 p-5 shadow-xl backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => setShippingToggle(open => !open)}
+                aria-expanded={shippingToggle}
+                className="flex w-full items-center justify-between text-left"
+              >
+                <span className="text-lg font-semibold">
+                  Shipping Information
+                </span>
+                {shippingToggle ? <FaAngleUp /> : <FaAngleDown />}
+              </button>
+
+              {shippingToggle && (
+                <div className="mt-5 space-y-4">
+                  <label className="block text-sm text-gray-300">
+                    Address
                     <input
                       type="text"
-                      placeholder="Enter card holder name"
-                      className="w-full rounded border p-2"
-                      required
+                      name="address"
+                      placeholder="Enter your address"
+                      className={`${inputClass} mt-2`}
+                      value={shippingInfo.address}
+                      onChange={updateShippingInfo}
                     />
-                  </div>
+                  </label>
 
-                  <div className="mb-4 flex justify-between">
-                    <div className="mr-2 w-1/2">
-                      <label className="mb-2 block font-semibold text-gray-700">
-                        Expire Date
-                      </label>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="text-sm text-gray-300">
+                      City
                       <input
                         type="text"
-                        placeholder="MM/YY"
-                        className="w-full rounded border p-2"
-                        required
+                        name="city"
+                        placeholder="Enter your city"
+                        className={`${inputClass} mt-2`}
+                        value={shippingInfo.city}
+                        onChange={updateShippingInfo}
                       />
-                    </div>
+                    </label>
 
-                    <div className="ml-2 w-1/2">
-                      <label className="mb-2 block font-semibold text-gray-700">
-                        CVV
-                      </label>
+                    <label className="text-sm text-gray-300">
+                      ZIP Code
                       <input
                         type="text"
-                        placeholder="CVV"
-                        className="w-full rounded border p-2"
-                        required
+                        name="zip"
+                        placeholder="Enter ZIP code"
+                        className={`${inputClass} mt-2`}
+                        value={shippingInfo.zip}
+                        onChange={updateShippingInfo}
                       />
-                    </div>
+                    </label>
                   </div>
                 </div>
               )}
             </div>
-          </div>
-        </div>
 
-        <div className="border bg-white p-6 shadow-md md:w-1/3">
-          <h3 className="mb-4 text-lg font-semibold">Order Summary</h3>
+            {/* Payment Methods */}
+            <div className="mb-5 rounded-xl border border-white/10 bg-[#111114]/90 p-5 shadow-xl backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => setPaymentToggle(open => !open)}
+                aria-expanded={paymentToggle}
+                className="flex w-full items-center justify-between text-left"
+              >
+                <span className="text-lg font-semibold">Payment Methods</span>
+                {paymentToggle ? <FaAngleUp /> : <FaAngleDown />}
+              </button>
 
-          <div className="space-y-4">
-            {cart.products?.map((product) => (
-              <div key={product.id} className="flex justify-between">
-                <div className="flex items-center">
+              {paymentToggle && (
+                <div className="mt-5 space-y-4">
+                  <label className="flex items-center gap-3 text-gray-300">
+                    <input
+                      type="radio"
+                      name="payment"
+                      checked={paymentMethod === 'cod'}
+                      onChange={() => setPaymentMethod('cod')}
+                      className="accent-purple-600"
+                    />
+                    Cash on Delivery
+                  </label>
+
+                  <label className="flex items-center gap-3 text-gray-300">
+                    <input
+                      type="radio"
+                      name="payment"
+                      checked={paymentMethod === 'dc'}
+                      onChange={() => setPaymentMethod('dc')}
+                      className="accent-purple-600"
+                    />
+                    Debit Card
+                  </label>
+
+                  {paymentMethod === 'dc' && (
+                    <div className="rounded-lg border border-white/10 bg-black/30 p-4">
+                      <h3 className="mb-4 font-semibold">
+                        Debit Card Information
+                      </h3>
+
+                      <label className="mb-4 block text-sm text-gray-300">
+                        Card Number
+                        <input
+                          type="text"
+                          placeholder="Enter card number"
+                          className={`${inputClass} mt-2`}
+                        />
+                      </label>
+
+                      <label className="mb-4 block text-sm text-gray-300">
+                        Card Holder Name
+                        <input
+                          type="text"
+                          placeholder="Enter card holder name"
+                          className={`${inputClass} mt-2`}
+                        />
+                      </label>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <label className="text-sm text-gray-300">
+                          Expiry Date
+                          <input
+                            type="text"
+                            placeholder="MM/YY"
+                            className={`${inputClass} mt-2`}
+                          />
+                        </label>
+
+                        <label className="text-sm text-gray-300">
+                          CVV
+                          <input
+                            type="password"
+                            placeholder="CVV"
+                            className={`${inputClass} mt-2`}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Order Summary */}
+          <aside className="h-fit w-full rounded-xl border border-white/10 bg-[#111114]/95 p-6 shadow-xl backdrop-blur-sm lg:w-96">
+            <h2 className="mb-5 text-xl font-bold">Order Summary</h2>
+
+            <div className="max-h-72 space-y-4 overflow-y-auto">
+              {cart.products?.map(product => (
+                <div
+                  key={product.productId ?? product.id}
+                  className="flex items-center gap-3"
+                >
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="h-16 w-16 rounded object-contain"
+                    className="h-14 w-14 rounded-lg bg-white object-contain p-1"
                   />
-                  <div className="ml-4">
-                    <h4 className="text-md font-semibold">{product.name}</h4>
-                    <p className="text-gray-600">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate text-sm font-semibold">
+                      {product.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-gray-400">
                       ₹{product.price} × {product.quantity}
                     </p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 border-t pt-4">
-            <div className="flex justify-between">
-              <span>Total Price:</span>
-              <span className="font-semibold">
-                ₹{Number(cart.totalPrice || 0).toFixed(2)}
-              </span>
+              ))}
             </div>
-          </div>
 
-          <button
-            type="button"
-            className="mt-6 w-full bg-violet-900 py-2 text-white hover:bg-red-800"
-            onClick={handleOrder}
-          >
-            Place Order
-          </button>
+            <div className="mt-5 flex justify-between border-t border-white/10 pt-4 font-semibold">
+              <span>Total Price</span>
+              <span>₹{Number(cart.totalPrice || 0).toFixed(2)}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleOrder}
+              className="mt-6 w-full rounded-lg bg-purple-700 py-3 font-semibold text-white transition hover:bg-purple-600"
+            >
+              Place Order
+            </button>
+          </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
