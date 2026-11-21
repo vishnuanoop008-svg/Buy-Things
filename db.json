@@ -11,6 +11,12 @@
       "email": "vishnuanoop2345@gmail.com",
       "password": "12345678",
       "id": "5QDrVXqZyWc"
+    },
+    {
+      "name": "Arshad",
+      "email": "arshad@gmail.com",
+      "password": "12345678",
+      "id": "bbQ_T9COElI"
     }
   ],
   "products": [
@@ -294,35 +300,27 @@
       "quantity": 1,
       "image": "/src/assets/images/robot.png",
       "id": "EH8Aae5DE64"
+    },
+    {
+      "userId": "5QDrVXqZyWc",
+      "productId": "3",
+      "name": "Polo T-shirt",
+      "price": 550,
+      "quantity": 1,
+      "image": "/src/assets/images/shirt.png",
+      "id": "OeMfiQiGXVk"
+    },
+    {
+      "userId": "5QDrVXqZyWc",
+      "productId": "4",
+      "name": "Apple airpod-max",
+      "price": 5999,
+      "quantity": 1,
+      "image": "/src/assets/images/headphone.png",
+      "id": "IOjYiKOEQBk"
     }
   ],
   "wishlist": [],
-  "orders": [
-    {
-      "products": [
-        {
-          "userId": "5QDrVXqZyWc",
-          "productId": "4",
-          "name": "Apple airpod-max",
-          "price": 5999,
-          "quantity": 1,
-          "image": "/src/assets/images/headphone.png",
-          "id": "ENqpn-ylgDE"
-        }
-      ],
-      "orderNumber": "ORD-1795185977207",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 5999,
-      "userId": "5QDrVXqZyWc",
-      "createdAt": "2026-11-20T14:46:17.207Z",
-      "id": "xOsTFN9PfyY",
-      "status": "cancelled"
-    }
-  ],
+  "orders": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

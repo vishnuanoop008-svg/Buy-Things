@@ -2,20 +2,23 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { productImages } from '../assets/mockData';
 import { addToCart } from '../redux/cartSlice';
 import {
   addToWishlist,
-  removeFromWishlist,
+  removeFromWishlist
 } from '../redux/wishlistSlice';
 
 function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const user = useSelector(state => state.auth.user);
-  const wishlistItems = useSelector(state => state.wishlist?.items ?? []);
+  const user = useSelector((state) => state.auth.user);
+  const wishlistItems = useSelector(
+    (state) => state.wishlist?.items ?? []
+  );
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,12 +39,14 @@ function ProductDetails() {
 
         setProduct({
           ...data,
-          image: productImages[data.image] ?? data.image,
+          image: productImages[data.image] ?? data.image
         });
       } catch (err) {
         if (!controller.signal.aborted) {
           console.error('Failed to fetch product:', err);
-          setError('Could not load this product. Check that JSON Server is running on port 5000.');
+          setError(
+            'Could not load this product. Check that JSON Server is running on port 5000.'
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -51,46 +56,48 @@ function ProductDetails() {
     };
 
     fetchProduct();
+
     return () => controller.abort();
   }, [id]);
 
   const wishlistProduct = wishlistItems.find(
-    item => String(item.productId) === String(product?.id)
+    (item) => String(item.productId) === String(product?.id)
   );
+
   const isWishlisted = Boolean(wishlistProduct);
 
   const handleAddToCart = async () => {
     if (!user?.id) {
-      alert('Please login first!');
+      toast.error('Please log in first.');
       return;
     }
 
     try {
       await dispatch(addToCart(product)).unwrap();
-      alert('Product added to cart successfully!');
+      toast.success('Product added to cart successfully!');
     } catch (err) {
       console.error('Add to cart error:', err);
-      alert(err || 'Unable to add product to cart!');
+      toast.error(err || 'Unable to add product to cart.');
     }
   };
 
   const handleWishlist = async () => {
     if (!user?.id) {
-      alert('Please login first!');
+      toast.error('Please log in first.');
       return;
     }
 
     try {
       if (isWishlisted) {
         await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
-        alert('Removed from wishlist.');
+        toast.success('Removed from wishlist.');
       } else {
         await dispatch(addToWishlist(product)).unwrap();
-        alert('Added to wishlist successfully!');
+        toast.success('Added to wishlist successfully!');
       }
     } catch (err) {
       console.error('Wishlist error:', err);
-      alert(err || 'Wishlist operation failed!');
+      toast.error(err || 'Wishlist operation failed.');
     }
   };
 
@@ -128,7 +135,11 @@ function ProductDetails() {
           <span className="ml-2 text-sm text-gray-600">{rating}/5</span>
         </div>
 
-        <p className={`mt-3 font-medium ${product.inStock ? 'text-green-700' : 'text-red-600'}`}>
+        <p
+          className={`mt-3 font-medium ${
+            product.inStock ? 'text-green-700' : 'text-red-600'
+          }`}
+        >
           {product.inStock ? 'In stock' : 'Out of stock'}
         </p>
 
@@ -156,7 +167,10 @@ function ProductDetails() {
           </button>
         </div>
 
-        <Link to="/shop" className="mt-6 inline-block text-violet-700 underline">
+        <Link
+          to="/shop"
+          className="mt-6 inline-block text-violet-700 underline"
+        >
           Back to shop
         </Link>
       </section>

@@ -7,9 +7,11 @@ const ORDERS_URL = 'http://localhost:5000/orders';
 
 const Orders = () => {
   const user = useSelector((state) => state.auth.user);
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState(null);
+  const [clearingOrders, setClearingOrders] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -70,6 +72,38 @@ const Orders = () => {
     }
   };
 
+  const handleClearOrders = async () => {
+    if (!user?.id || orders.length === 0) return;
+
+    setClearingOrders(true);
+
+    try {
+      const userOrders = orders.filter(
+        (order) => String(order.userId) === String(user.id)
+      );
+
+      await Promise.all(
+        userOrders.map((order) =>
+          axios.delete(`${ORDERS_URL}/${order.id}`)
+        )
+      );
+
+      setOrders((currentOrders) =>
+        currentOrders.filter(
+          (order) => String(order.userId) !== String(user.id)
+        )
+      );
+
+      toast.success('Orders cleared successfully');
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || 'Could not clear your orders.'
+      );
+    } finally {
+      setClearingOrders(false);
+    }
+  };
+
   if (!user?.id) {
     return (
       <p className="px-6 pt-36 text-center">
@@ -80,7 +114,20 @@ const Orders = () => {
 
   return (
     <main className="container mx-auto min-h-screen px-4 pb-12 pt-36 md:px-16 lg:px-24">
-      <h1 className="mb-8 text-2xl font-bold">My Orders</h1>
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold">My Orders</h1>
+
+        {orders.length > 0 && (
+          <button
+            type="button"
+            onClick={handleClearOrders}
+            disabled={clearingOrders || loading}
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {clearingOrders ? 'Clearing...' : 'Clear Orders'}
+          </button>
+        )}
+      </div>
 
       {loading && <p>Loading orders...</p>}
       {error && <p className="text-red-600">{error}</p>}
