@@ -309,6 +309,15 @@
       "quantity": 1,
       "image": "/src/assets/images/shirt.png",
       "id": "GyDdB-XD2kI"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "5",
+      "name": "Zara Boot",
+      "price": 2299,
+      "quantity": 1,
+      "image": "/src/assets/images/boot1.png",
+      "id": "9oAR_urQqoU"
     }
   ],
   "wishlist": [
@@ -333,6 +342,17 @@
       "rating": 5,
       "inStock": true,
       "id": "3_Zgz6KGLtg"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "8",
+      "name": "Old money watch",
+      "image": "/src/assets/images/watch.png",
+      "price": 750,
+      "description": "Classic wristwatch with a simple, versatile design.",
+      "rating": 4.2,
+      "inStock": true,
+      "id": "8THCEu5VeZg"
     }
   ],
   "orders": [
@@ -360,54 +380,6 @@
       "createdAt": "2026-11-21T09:42:31.425Z",
       "id": "r5CW22snjxw",
       "status": "cancelled"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "3",
-          "name": "Polo T-shirt",
-          "price": 550,
-          "quantity": 1,
-          "image": "/src/assets/images/shirt.png",
-          "id": "GyDdB-XD2kI"
-        }
-      ],
-      "orderNumber": "ORD-1795284163937",
-      "shippingInformation": {
-        "address": "",
-        "city": "",
-        "zip": ""
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 550,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-21T18:02:43.937Z",
-      "id": "8BfDEw9sNjQ"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "3",
-          "name": "Polo T-shirt",
-          "price": 550,
-          "quantity": 1,
-          "image": "/src/assets/images/shirt.png",
-          "id": "GyDdB-XD2kI"
-        }
-      ],
-      "orderNumber": "ORD-1795284501947",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 550,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-21T18:08:21.947Z",
-      "id": "gX27rGjPz7k"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

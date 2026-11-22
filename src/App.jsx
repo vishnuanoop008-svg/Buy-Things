@@ -4,7 +4,7 @@ import {
   Navigate,
   Route,
   Routes,
-  useLocation
+  useLocation,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -25,10 +25,12 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import ProductDetails from './pages/productDetails';
 import FilterData from './pages/FilterData';
+import Profile from './pages/Profile';
+import ProfileLayout from './pages/ProfileLayout';
 
 function LoginModalRoute() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector(state => state.auth.user);
   const location = useLocation();
 
   useEffect(() => {
@@ -70,7 +72,18 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/orders" element={<Orders />} />
+
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<Profile />} />
+            <Route path="orders" element={<Orders />} />
+          </Route>
+
+          {/* Redirect the old orders URL to the profile orders tab */}
+          <Route
+            path="/orders"
+            element={<Navigate to="/profile/orders" replace />}
+          />
+
           <Route
             path="/checkout"
             element={<Checkout setOrder={setOrder} />}

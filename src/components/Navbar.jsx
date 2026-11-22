@@ -162,7 +162,9 @@ const Navbar = () => {
         <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">Shop</Link>
         <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">Contact</Link>
         <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">About</Link>
-        <Link to="/orders" className="shrink-0 text-gray-200 hover:text-purple-400">Order</Link>
+        <Link to="/profile/orders" className="shrink-0 text-gray-200 hover:text-purple-400">
+        Order
+        </Link>
       </div>
 
       <Modal
