@@ -22,6 +22,38 @@ import {
 import { clearCartState } from '../redux/cartSlice';
 import { resetWishlist } from '../redux/wishlistSlice';
 
+const SearchForm = ({ mobile = false, search, onSearchChange, onSubmit }) => (
+  <form
+    onSubmit={onSubmit}
+    role="search"
+  className={
+    mobile
+    ? 'relative'
+    : 'relative ml-auto hidden w-48 shrink-0 transition-[width] duration-300 focus-within:w-100 sm:block'
+   }
+  >
+    <input
+      type="search"
+      placeholder="Search products..."
+      value={search}
+      onChange={onSearchChange}
+      className={`w-full rounded-full border border-white/10 bg-white/10 text-sm text-white placeholder:text-gray-400 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 ${
+        mobile ? 'py-2.5 pl-4 pr-12' : 'py-3 pl-5 pr-14'
+      }`}
+    />
+
+    <button
+      type="submit"
+      aria-label="Search"
+      className={`absolute right-0 top-0 flex h-full items-center justify-center rounded-r-full bg-purple-600 transition hover:bg-purple-500 ${
+        mobile ? 'w-11' : 'w-12'
+      }`}
+    >
+      <FaSearch />
+    </button>
+  </form>
+);
+
 const Navbar = () => {
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
@@ -33,6 +65,17 @@ const Navbar = () => {
 
   const cartCount = useSelector(state => state.cart?.products?.length ?? 0);
   const wishlistCount = useSelector(state => state.wishlist?.items?.length ?? 0);
+
+  const handleSearchChange = event => {
+    const value = event.target.value;
+
+    setSearch(value);
+    dispatch(setSearchTerm(value));
+
+    if (value.trim()) {
+      navigate('/filter-data');
+    }
+  };
 
   const handleSearchSubmit = event => {
     event.preventDefault();
@@ -60,33 +103,6 @@ const Navbar = () => {
     toast.success('Logged out successfully!');
   };
 
-  const SearchForm = ({ mobile = false }) => (
-    <form
-      onSubmit={handleSearchSubmit}
-      role="search"
-      className={mobile ? 'relative' : 'relative mx-auto hidden w-full max-w-2xl sm:block'}
-    >
-      <input
-        type="search"
-        placeholder="Search products..."
-        value={search}
-        onChange={event => setSearch(event.target.value)}
-        className={`w-full rounded-full border border-white/10 bg-white/10 text-sm text-white placeholder:text-gray-400 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 ${
-          mobile ? 'py-2.5 pl-4 pr-12' : 'py-3 pl-5 pr-14'
-        }`}
-      />
-      <button
-        type="submit"
-        aria-label="Search"
-        className={`absolute right-0 top-0 flex h-full items-center justify-center bg-purple-600 transition hover:bg-purple-500 ${
-          mobile ? 'w-11 rounded-r-full' : 'w-12 rounded-r-full'
-        }`}
-      >
-        <FaSearch />
-      </button>
-    </form>
-  );
-
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#09090b] text-white shadow-lg">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 md:px-8">
@@ -94,9 +110,13 @@ const Navbar = () => {
           BUY <span className="text-purple-500">THINGS</span>
         </Link>
 
-        <SearchForm />
+        <SearchForm
+          search={search}
+          onSearchChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
+        />
 
-        <div className="ml-auto flex shrink-0 items-center gap-5 sm:ml-0">
+        <div className="ml-4 flex shrink-0 items-center gap-5">
           <Link
             to="/cart"
             aria-label={`Cart${cartCount ? `, ${cartCount} items` : ''}`}
@@ -154,16 +174,26 @@ const Navbar = () => {
       </div>
 
       <div className="border-t border-white/5 px-4 py-3 sm:hidden">
-        <SearchForm mobile />
+        <SearchForm
+          mobile
+          search={search}
+          onSearchChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
+        />
       </div>
 
       <div className="flex items-center justify-center gap-6 overflow-x-auto border-t border-white/5 px-4 py-3 text-sm font-medium sm:gap-10">
-        <Link to="/" className="shrink-0 text-gray-200 hover:text-purple-300">Home</Link>
-        <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">Shop</Link>
-        <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">Contact</Link>
-        <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">About</Link>
-        <Link to="/profile/orders" className="shrink-0 text-gray-200 hover:text-purple-400">
-        Order
+        <Link to="/" className="shrink-0 text-gray-200 hover:text-purple-300">
+          Home
+        </Link>
+        <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">
+          Shop
+        </Link>
+        <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">
+          Contact
+        </Link>
+        <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">
+          About
         </Link>
       </div>
 

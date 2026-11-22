@@ -1,40 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const getFilteredProducts = (products, searchTerm) => {
+  const query = String(searchTerm ?? '').trim().toLowerCase();
+
+  if (!query) return products;
+
+  return products.filter(product =>
+    String(product.name ?? '').toLowerCase().includes(query)
+  );
+};
+
 const productSlice = createSlice({
   name: 'product',
 
   initialState: {
     products: [],
     searchTerm: '',
-    filteredData: []
+    filteredData: [],
   },
 
   reducers: {
     setProducts: (state, action) => {
-      state.products = action.payload;
-      state.filteredData = action.payload;
+      state.products = action.payload ?? [];
+      state.filteredData = getFilteredProducts(
+        state.products,
+        state.searchTerm
+      );
     },
 
     setSearchTerm: (state, action) => {
-      state.searchTerm = action.payload;
-
-      const searchValue = action.payload.trim().toLowerCase();
-
-      if (searchValue === '') {
-        state.filteredData = state.products;
-      } else {
-        const exactMatches = state.products.filter(product =>
-          product.name.toLowerCase() === searchValue
-        );
-
-        state.filteredData = exactMatches.length > 0
-          ? exactMatches
-          : state.products.filter(product =>
-              product.name.toLowerCase().includes(searchValue)
-            );
-      }
-    }
-  }
+      state.searchTerm = String(action.payload ?? '');
+      state.filteredData = getFilteredProducts(
+        state.products,
+        state.searchTerm
+      );
+    },
+  },
 });
 
 export const { setProducts, setSearchTerm } = productSlice.actions;

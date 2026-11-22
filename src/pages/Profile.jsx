@@ -29,7 +29,7 @@ const Profile = () => {
   }
 
   return (
-    <main className="min-h-screen bg-[#09090b] px-4 pb-12 pt-36 text-white">
+    <main className="min-h-screen bg-[#09090b] px-4 pb-12 pt-10 text-white">
       <section className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-[#111114] p-8 shadow-xl">
         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
           Account
