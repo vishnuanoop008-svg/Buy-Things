@@ -22,15 +22,20 @@ import {
 import { clearCartState } from '../redux/cartSlice';
 import { resetWishlist } from '../redux/wishlistSlice';
 
-const SearchForm = ({ mobile = false, search, onSearchChange, onSubmit }) => (
+const SearchForm = ({
+  mobile = false,
+  search,
+  onSearchChange,
+  onSubmit,
+}) => (
   <form
     onSubmit={onSubmit}
     role="search"
-  className={
-    mobile
-    ? 'relative'
-    : 'relative ml-auto hidden w-48 shrink-0 transition-[width] duration-300 focus-within:w-100 sm:block'
-   }
+    className={
+      mobile
+        ? 'relative'
+        : 'relative ml-auto hidden w-48 shrink-0 transition-[width] duration-300 focus-within:w-80 sm:block'
+    }
   >
     <input
       type="search"
@@ -68,7 +73,6 @@ const Navbar = () => {
 
   const handleSearchChange = event => {
     const value = event.target.value;
-
     setSearch(value);
     dispatch(setSearchTerm(value));
 
@@ -87,10 +91,12 @@ const Navbar = () => {
   const openSignUp = () => dispatch(openAuthModal('register'));
 
   const handleUserClick = () => {
-    if (user) {
-      navigate('/profile');
-    } else {
+    if (!user) {
       openLogin();
+    } else if (user.role === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/profile');
     }
   };
 
@@ -146,8 +152,20 @@ const Navbar = () => {
           <button
             type="button"
             onClick={handleUserClick}
-            aria-label={user ? 'Open profile' : 'Login or register'}
-            title={user ? 'Profile' : 'Login or register'}
+            aria-label={
+              user?.role === 'admin'
+                ? 'Open admin dashboard'
+                : user
+                  ? 'Open profile'
+                  : 'Login or register'
+            }
+            title={
+              user?.role === 'admin'
+                ? 'Admin dashboard'
+                : user
+                  ? 'Profile'
+                  : 'Login or register'
+            }
             className="transition hover:text-purple-400"
           >
             <FaUser className="text-xl" />

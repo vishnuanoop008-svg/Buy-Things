@@ -4,6 +4,7 @@ import productSlice from './productSlice';
 import cartSlice from './cartSlice';
 import wishlistSlice from './wishlistSlice';
 import authSlice from './authSlice';
+import adminReducer from '../admin/redux/adminSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     product: productSlice,
     wishlist: wishlistSlice,
     auth: authSlice,
+    admin: adminReducer,
   },
 });
 

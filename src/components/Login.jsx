@@ -23,13 +23,16 @@ const Login = ({ openSignUp = () => {} }) => {
     }
 
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
+      const loggedInUser = await dispatch(
+        loginUser({ email, password })
+      ).unwrap();
 
       dispatch(closeAuthModal());
       toast.success('Login successful!');
 
-      // Return to the protected page if login was opened by ProtectedRoute.
-      if (location.pathname === '/login') {
+      if (loggedInUser.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else if (location.pathname === '/login') {
         const destination = location.state?.from?.pathname || '/';
         navigate(destination, { replace: true });
       }
@@ -95,7 +98,9 @@ const Login = ({ openSignUp = () => {} }) => {
 
           <button
             type="button"
-            onClick={() => toast.info('Password recovery is not set up yet.')}
+            onClick={() =>
+              toast.info('Password recovery is not set up yet.')
+            }
             className="text-purple-400 transition hover:text-purple-300"
           >
             Forgot password?

@@ -1,22 +1,17 @@
 {
   "users": [
     {
-      "name": "Vishnu Anoop",
-      "email": "vishnu@gmail.com",
-      "password": "12345678",
-      "id": "4DpQaeQmRJA"
-    },
-    {
-      "name": "Vishnu ",
-      "email": "vishnu1214@gmail.com",
-      "password": "12345678",
-      "id": "NeCqWaLxcAY"
-    },
-    {
       "name": "Vishnu p",
       "email": "vishnuanoop008@gmail.com",
       "password": "12345678",
       "id": "7DTE_Dy6FoE"
+    },
+    {
+      "id": "store-admin",
+      "name": "Store Admin",
+      "email": "admin@buythings.com",
+      "password": "123456789",
+      "role": "admin"
     }
   ],
   "products": [
@@ -27,7 +22,8 @@
       "price": 1999,
       "description": "Stylish smartwatch with a bright display for everyday use.",
       "rating": 5,
-      "inStock": true
+      "inStock": true,
+      "category": "watches"
     },
     {
       "id": "2",
@@ -36,7 +32,8 @@
       "price": 1299,
       "description": "Interactive robot toy for imaginative play.",
       "rating": 5,
-      "inStock": true
+      "inStock": true,
+      "category": "Gadgets"
     },
     {
       "id": "3",
@@ -45,7 +42,8 @@
       "price": 550,
       "description": "Comfortable shirt with a versatile everyday design.",
       "rating": 5,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "4",
@@ -54,7 +52,8 @@
       "price": 5999,
       "description": "Wireless headphones with cushioned ear cups and clear sound.",
       "rating": 5,
-      "inStock": true
+      "inStock": true,
+      "category": "Gadgets"
     },
     {
       "id": "5",
@@ -63,7 +62,8 @@
       "price": 2299,
       "description": "Durable boots with a classic look and comfortable fit.",
       "rating": 5,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "6",
@@ -72,7 +72,8 @@
       "price": 80,
       "description": "Dove personal care product for a gentle everyday routine.",
       "rating": 4.1,
-      "inStock": true
+      "inStock": true,
+      "category": "Others"
     },
     {
       "id": "7",
@@ -81,7 +82,8 @@
       "price": 400,
       "description": "Casual cap with a comfortable fit for daily use.",
       "rating": 4,
-      "inStock": false
+      "inStock": false,
+      "category": "Fashion"
     },
     {
       "id": "8",
@@ -90,7 +92,8 @@
       "price": 750,
       "description": "Classic wristwatch with a simple, versatile design.",
       "rating": 4.2,
-      "inStock": true
+      "inStock": true,
+      "category": "watches"
     },
     {
       "id": "9",
@@ -99,7 +102,8 @@
       "price": 799,
       "description": "Comfortable sandals for everyday outings.",
       "rating": 4.1,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "10",
@@ -108,7 +112,8 @@
       "price": 2000,
       "description": "Everyday bag with a practical design and useful storage.",
       "rating": 4.4,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "11",
@@ -117,7 +122,8 @@
       "price": 400,
       "description": "Bike designed for fun rides and everyday adventures.",
       "rating": 4.3,
-      "inStock": false
+      "inStock": false,
+      "category": "Gadgets"
     },
     {
       "id": "12",
@@ -126,7 +132,8 @@
       "price": 1650,
       "description": "Grooming product from Bombay Shaving Company.",
       "rating": 4.2,
-      "inStock": true
+      "inStock": true,
+      "category": "Gadgets"
     },
     {
       "id": "13",
@@ -135,7 +142,8 @@
       "price": 3000,
       "description": "Versatile boots with a sturdy build and classic style.",
       "rating": 4.3,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "14",
@@ -144,7 +152,8 @@
       "price": 999,
       "description": "Brown casual shirt with a relaxed, easy-to-style look.",
       "rating": 4,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "15",
@@ -153,7 +162,8 @@
       "price": 2899,
       "description": "Chelsea boots for women with a timeless silhouette.",
       "rating": 4.5,
-      "inStock": false
+      "inStock": false,
+      "category": "Fashion"
     },
     {
       "id": "16",
@@ -162,7 +172,8 @@
       "price": 3300,
       "description": "Children's boots designed for comfortable everyday wear.",
       "rating": 4.1,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "17",
@@ -171,7 +182,8 @@
       "price": 1999,
       "description": "Toy car for imaginative play and collecting.",
       "rating": 4.4,
-      "inStock": true
+      "inStock": true,
+      "category": "Gadgets"
     },
     {
       "id": "18",
@@ -180,7 +192,8 @@
       "price": 899,
       "description": "Classic jeans with a comfortable fit for daily wear.",
       "rating": 4.2,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "19",
@@ -189,7 +202,8 @@
       "price": 1000,
       "description": "Kids' outfit designed for comfort and everyday style.",
       "rating": 4.3,
-      "inStock": false
+      "inStock": false,
+      "category": "Fashion"
     },
     {
       "id": "20",
@@ -198,7 +212,8 @@
       "price": 850,
       "description": "Ladies' bag with a stylish look and room for essentials.",
       "rating": 4.4,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "21",
@@ -207,7 +222,8 @@
       "price": 2500,
       "description": "Ladies' wristwatch with an elegant everyday design.",
       "rating": 4.2,
-      "inStock": true
+      "inStock": true,
+      "category": "watches"
     },
     {
       "id": "22",
@@ -216,7 +232,8 @@
       "price": 1100,
       "description": "Ladies' wristwatch that adds a polished touch to outfits.",
       "rating": 4.3,
-      "inStock": true
+      "inStock": true,
+      "category": "watches"
     },
     {
       "id": "23",
@@ -225,7 +242,8 @@
       "price": 4000,
       "description": "Men's wristwatch with a classic, versatile design.",
       "rating": 4.2,
-      "inStock": false
+      "inStock": false,
+      "category": "watches"
     },
     {
       "id": "24",
@@ -234,7 +252,8 @@
       "price": 5500,
       "description": "Men's wristwatch suited to everyday wear.",
       "rating": 4.1,
-      "inStock": true
+      "inStock": true,
+      "category": "watches"
     },
     {
       "id": "25",
@@ -243,7 +262,8 @@
       "price": 599,
       "description": "Men's glasses with a versatile frame for daily use.",
       "rating": 4,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     },
     {
       "id": "26",
@@ -252,7 +272,8 @@
       "price": 1999,
       "description": "Toy car made for play and display.",
       "rating": 4.3,
-      "inStock": true
+      "inStock": true,
+      "category": "Gadgets"
     },
     {
       "id": "27",
@@ -261,7 +282,8 @@
       "price": 1300,
       "description": "Electric trimmer designed for convenient grooming.",
       "rating": 4.2,
-      "inStock": false
+      "inStock": false,
+      "category": "Gadgets"
     },
     {
       "id": "28",
@@ -270,7 +292,8 @@
       "price": 2100,
       "description": "Reusable water bottle for carrying drinks on the go.",
       "rating": 4.1,
-      "inStock": true
+      "inStock": true,
+      "category": "Accessories"
     },
     {
       "id": "29",
@@ -279,7 +302,8 @@
       "price": 499,
       "description": "Water bottle with a practical design for everyday use.",
       "rating": 4,
-      "inStock": true
+      "inStock": true,
+      "category": "Accessories"
     },
     {
       "id": "30",
@@ -288,7 +312,8 @@
       "price": 399,
       "description": "Classic wallet with space for cards and cash.",
       "rating": 4.3,
-      "inStock": true
+      "inStock": true,
+      "category": "Fashion"
     }
   ],
   "cart": [
@@ -318,68 +343,61 @@
       "quantity": 1,
       "image": "/src/assets/images/boot1.png",
       "id": "9oAR_urQqoU"
-    }
-  ],
-  "wishlist": [
-    {
-      "userId": "NeCqWaLxcAY",
-      "productId": "2",
-      "name": "Robot Speaker",
-      "image": "/src/assets/images/robot.png",
-      "price": 1299,
-      "description": "Interactive robot toy for imaginative play.",
-      "rating": 5,
-      "inStock": true,
-      "id": "ckuou4t1vFM"
     },
     {
       "userId": "7DTE_Dy6FoE",
-      "productId": "2",
-      "name": "Robot Speaker",
-      "image": "/src/assets/images/robot.png",
-      "price": 1299,
-      "description": "Interactive robot toy for imaginative play.",
-      "rating": 5,
-      "inStock": true,
-      "id": "3_Zgz6KGLtg"
-    },
-    {
-      "userId": "7DTE_Dy6FoE",
-      "productId": "8",
-      "name": "Old money watch",
-      "image": "/src/assets/images/watch.png",
-      "price": 750,
-      "description": "Classic wristwatch with a simple, versatile design.",
-      "rating": 4.2,
-      "inStock": true,
-      "id": "8THCEu5VeZg"
+      "productId": "4",
+      "name": "Apple airpod-max",
+      "price": 5999,
+      "quantity": 2,
+      "image": "/src/assets/images/headphone.png",
+      "id": "6ljR525xHas"
     }
   ],
+  "wishlist": [],
   "orders": [
     {
       "products": [
         {
-          "userId": "NeCqWaLxcAY",
-          "productId": "3",
-          "name": "Polo T-shirt",
-          "price": 550,
-          "quantity": 1,
-          "image": "/src/assets/images/shirt.png",
-          "id": "kkM49LiJaGM"
+          "userId": "7DTE_Dy6FoE",
+          "productId": "4",
+          "name": "Apple airpod-max",
+          "price": 5999,
+          "quantity": 2,
+          "image": "/src/assets/images/headphone.png",
+          "id": "6ljR525xHas"
         }
       ],
-      "orderNumber": "ORD-1795254151425",
+      "orderNumber": "ORD-1795410658158",
       "shippingInformation": {
         "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
         "city": "ramanattukara",
         "zip": "673631"
       },
       "paymentMethod": "cod",
-      "totalPrice": 550,
-      "userId": "NeCqWaLxcAY",
-      "createdAt": "2026-11-21T09:42:31.425Z",
-      "id": "r5CW22snjxw",
-      "status": "cancelled"
+      "totalPrice": 11998,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-23T05:10:58.158Z",
+      "id": "4zEmWVeY12Y",
+      "status": "processing"
+    }
+  ],
+  "categories": [
+    {
+      "name": "watches",
+      "id": "satQt4DlIEs"
+    },
+    {
+      "name": "Gadgets",
+      "id": "3g3xfqt9Uts"
+    },
+    {
+      "name": "Others",
+      "id": "ARXtMTeXs8A"
+    },
+    {
+      "name": "fashion",
+      "id": "DmSEbYla4dg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

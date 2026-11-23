@@ -1,143 +1,131 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/users';
 
-// Register user
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const check = await axios.get(
-        `${API_URL}?email=${encodeURIComponent(userData.email)}`
-      );
+      const email = userData.email.trim().toLowerCase();
 
-      if (check.data.length > 0) {
-        return rejectWithValue('Email already registered!');
+      const existingUsers = await axios.get(API_URL, {
+        params: { email },
+      });
+
+      if (existingUsers.data.length > 0) {
+        return rejectWithValue('Email already registered.');
       }
 
-      const response = await axios.post(API_URL, userData);
+      const response = await axios.post(API_URL, {
+        ...userData,
+        email,
+      });
 
       const { password, ...safeUser } = response.data;
       return safeUser;
-
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data?.message || 'Registration failed.'
+      );
     }
   }
 );
 
-// Login user
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `${API_URL}?email=${encodeURIComponent(email)}`
-      );
+      const response = await axios.get(API_URL, {
+        params: { email: email.trim().toLowerCase() },
+      });
 
-      const user = response.data.find(
-        item => item.password === password
-      );
+      const user = response.data.find(item => item.password === password);
 
       if (!user) {
-        return rejectWithValue('Invalid email or password!');
+        return rejectWithValue('Invalid email or password.');
       }
 
       const { password: savedPassword, ...safeUser } = user;
       return safeUser;
-
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data?.message || 'Login failed.'
+      );
     }
   }
 );
 
-// Get saved user
-const savedUser = localStorage.getItem('user');
+const getSavedUser = () => {
+  try {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  } catch {
+    localStorage.removeItem('user');
+    return null;
+  }
+};
 
 const authSlice = createSlice({
   name: 'auth',
-
   initialState: {
-    user: savedUser ? JSON.parse(savedUser) : null,
+    user: getSavedUser(),
     loading: false,
     error: null,
-
     authModalOpen: false,
-    authModalMode: 'login'
+    authModalMode: 'login',
   },
-
   reducers: {
-
-    // Logout
-    logout: (state) => {
+    logout: state => {
       state.user = null;
+      state.error = null;
       localStorage.removeItem('user');
     },
-
-    // Open login/register modal
     openAuthModal: (state, action) => {
       state.authModalOpen = true;
       state.authModalMode = action.payload || 'login';
+      state.error = null;
     },
-
-    // Close modal
-    closeAuthModal: (state) => {
+    closeAuthModal: state => {
       state.authModalOpen = false;
-    }
-
+      state.error = null;
+    },
   },
-
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-
-      // Register pending
-      .addCase(registerUser.pending, (state) => {
+      .addCase(registerUser.pending, state => {
         state.loading = true;
         state.error = null;
       })
-
-      // Register successful
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         localStorage.setItem('user', JSON.stringify(action.payload));
       })
-
-      // Register failed
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || 'Registration failed.';
       })
-
-      // Login pending
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginUser.pending, state => {
         state.loading = true;
         state.error = null;
       })
-
-      // Login successful
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         localStorage.setItem('user', JSON.stringify(action.payload));
       })
-
-      // Login failed
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || 'Login failed.';
       });
-  }
+  },
 });
 
-// Export actions
 export const {
   logout,
   openAuthModal,
-  closeAuthModal
+  closeAuthModal,
 } = authSlice.actions;
 
 export default authSlice.reducer;
