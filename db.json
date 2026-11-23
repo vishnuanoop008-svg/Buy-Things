@@ -23,7 +23,8 @@
       "description": "Stylish smartwatch with a bright display for everyday use.",
       "rating": 5,
       "inStock": true,
-      "category": "watches"
+      "category": "watches",
+      "active": true
     },
     {
       "id": "2",
@@ -33,7 +34,8 @@
       "description": "Interactive robot toy for imaginative play.",
       "rating": 5,
       "inStock": true,
-      "category": "Gadgets"
+      "category": "Gadgets",
+      "active": true
     },
     {
       "id": "3",
@@ -83,7 +85,8 @@
       "description": "Casual cap with a comfortable fit for daily use.",
       "rating": 4,
       "inStock": false,
-      "category": "Fashion"
+      "category": "Fashion",
+      "active": false
     },
     {
       "id": "8",
@@ -203,7 +206,8 @@
       "description": "Kids' outfit designed for comfort and everyday style.",
       "rating": 4.3,
       "inStock": false,
-      "category": "Fashion"
+      "category": "Fashion",
+      "active": false
     },
     {
       "id": "20",
@@ -243,7 +247,8 @@
       "description": "Men's wristwatch with a classic, versatile design.",
       "rating": 4.2,
       "inStock": false,
-      "category": "watches"
+      "category": "watches",
+      "active": false
     },
     {
       "id": "24",
@@ -302,7 +307,7 @@
       "price": 499,
       "description": "Water bottle with a practical design for everyday use.",
       "rating": 4,
-      "inStock": true,
+      "inStock": false,
       "category": "Accessories"
     },
     {
@@ -317,25 +322,8 @@
     }
   ],
   "cart": [
-    {
-      "userId": "NeCqWaLxcAY",
-      "productId": "3",
-      "name": "Polo T-shirt",
-      "price": 550,
-      "quantity": 1,
-      "image": "/src/assets/images/shirt.png",
-      "id": "kkM49LiJaGM"
-    },
-    {
-      "userId": "7DTE_Dy6FoE",
-      "productId": "3",
-      "name": "Polo T-shirt",
-      "price": 550,
-      "quantity": 1,
-      "image": "/src/assets/images/shirt.png",
-      "id": "GyDdB-XD2kI"
-    },
-    {
+   
+   {
       "userId": "7DTE_Dy6FoE",
       "productId": "5",
       "name": "Zara Boot",
@@ -379,7 +367,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-23T05:10:58.158Z",
       "id": "4zEmWVeY12Y",
-      "status": "processing"
+      "status": "delivered"
     }
   ],
   "categories": [

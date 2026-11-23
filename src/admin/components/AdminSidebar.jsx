@@ -9,7 +9,7 @@ const links = [
 ];
 
 const AdminSidebar = () => (
-  <aside className="w-full shrink-0 border-b border-white/10 bg-[#111114] p-4 lg:min-h-screen lg:w-60 lg:border-b-0 lg:border-r">
+  <aside className="border-b border-white/10 bg-[#111114] p-4 lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-60 lg:overflow-y-auto lg:border-b-0 lg:border-r">
     <h2 className="mb-5 px-3 text-lg font-extrabold">
       BUY <span className="text-purple-400">THINGS</span>
       <span className="mt-1 block text-xs font-medium uppercase tracking-widest text-gray-500">
@@ -18,7 +18,7 @@ const AdminSidebar = () => (
     </h2>
 
     <nav className="flex gap-2 overflow-x-auto lg:flex-col">
-      {links.map(link => (
+      {links.map((link) => (
         <NavLink
           key={link.to}
           to={link.to}
