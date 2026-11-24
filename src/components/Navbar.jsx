@@ -33,8 +33,8 @@ const SearchForm = ({
     role="search"
     className={
       mobile
-        ? 'relative'
-        : 'relative ml-auto hidden w-48 shrink-0 transition-[width] duration-300 focus-within:w-80 sm:block'
+        ? 'relative w-full'
+        : 'relative hidden w-48 shrink-0 transition-[width] duration-300 ease-out focus-within:w-72 lg:focus-within:w-[28rem] md:block'
     }
   >
     <input
@@ -42,15 +42,15 @@ const SearchForm = ({
       placeholder="Search products..."
       value={search}
       onChange={onSearchChange}
-      className={`w-full rounded-full border border-white/10 bg-white/10 text-sm text-white placeholder:text-gray-400 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 ${
-        mobile ? 'py-2.5 pl-4 pr-12' : 'py-3 pl-5 pr-14'
+      className={`w-full rounded-lg border border-gray-200 bg-[#f5f8f6] text-sm text-[#173b32] outline-none placeholder:text-gray-500 transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15 ${
+        mobile ? 'py-2.5 pl-4 pr-12' : 'py-3 pl-4 pr-14'
       }`}
     />
 
     <button
       type="submit"
       aria-label="Search"
-      className={`absolute right-0 top-0 flex h-full items-center justify-center rounded-r-full bg-purple-600 transition hover:bg-purple-500 ${
+      className={`absolute right-0 top-0 flex h-full items-center justify-center rounded-r-lg bg-emerald-800 text-white transition hover:bg-emerald-700 ${
         mobile ? 'w-11' : 'w-12'
       }`}
     >
@@ -65,13 +65,17 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { user, authModalOpen, authModalMode } = useSelector(
-    state => state.auth
+    (state) => state.auth
   );
 
-  const cartCount = useSelector(state => state.cart?.products?.length ?? 0);
-  const wishlistCount = useSelector(state => state.wishlist?.items?.length ?? 0);
+  const cartCount = useSelector(
+    (state) => state.cart?.products?.length ?? 0
+  );
+  const wishlistCount = useSelector(
+    (state) => state.wishlist?.items?.length ?? 0
+  );
 
-  const handleSearchChange = event => {
+  const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearch(value);
     dispatch(setSearchTerm(value));
@@ -81,7 +85,7 @@ const Navbar = () => {
     }
   };
 
-  const handleSearchSubmit = event => {
+  const handleSearchSubmit = (event) => {
     event.preventDefault();
     dispatch(setSearchTerm(search.trim()));
     navigate('/filter-data');
@@ -109,28 +113,38 @@ const Navbar = () => {
     toast.success('Logged out successfully!');
   };
 
+  const navLinkClass =
+    'shrink-0 text-sm font-medium text-[#31574c] transition hover:text-emerald-800';
+
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#09090b] text-white shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 md:px-8">
-        <Link to="/" className="shrink-0 text-lg font-extrabold tracking-wide">
-          BUY <span className="text-purple-500">THINGS</span>
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-white text-[#173b32] shadow-sm">
+      {/* Main header row */}
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 md:gap-5 md:px-8">
+        <Link
+          to="/"
+          className="shrink-0 text-lg font-extrabold tracking-tight text-[#173b32]"
+        >
+          BUY THINGS<span className="text-emerald-700">.</span>
         </Link>
 
-        <SearchForm
-          search={search}
-          onSearchChange={handleSearchChange}
-          onSubmit={handleSearchSubmit}
-        />
+        {/* Desktop search, aligned to the right before the icons */}
+        <div className="hidden min-w-0 flex-1 justify-end md:flex">
+          <SearchForm
+            search={search}
+            onSearchChange={handleSearchChange}
+            onSubmit={handleSearchSubmit}
+          />
+        </div>
 
-        <div className="ml-4 flex shrink-0 items-center gap-5">
+        <div className="ml-auto flex shrink-0 items-center gap-4 sm:gap-5">
           <Link
             to="/cart"
             aria-label={`Cart${cartCount ? `, ${cartCount} items` : ''}`}
-            className="relative transition hover:text-purple-400"
+            className="relative text-[#31574c] transition hover:text-emerald-800"
           >
-            <FaShoppingCart className="text-xl" />
+            <FaShoppingCart className="text-lg" />
             {cartCount > 0 && (
-              <span className="absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-600 px-1 text-xs text-white">
+              <span className="absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-800 px-1 text-xs text-white">
                 {cartCount}
               </span>
             )}
@@ -139,11 +153,11 @@ const Navbar = () => {
           <Link
             to="/wishlist"
             aria-label={`Wishlist${wishlistCount ? `, ${wishlistCount} items` : ''}`}
-            className="relative transition hover:text-purple-400"
+            className="relative text-[#31574c] transition hover:text-emerald-800"
           >
-            <FaHeart className="text-xl" />
+            <FaHeart className="text-lg" />
             {wishlistCount > 0 && (
-              <span className="absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-600 px-1 text-xs text-white">
+              <span className="absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-800 px-1 text-xs text-white">
                 {wishlistCount}
               </span>
             )}
@@ -166,16 +180,16 @@ const Navbar = () => {
                   ? 'Profile'
                   : 'Login or register'
             }
-            className="transition hover:text-purple-400"
+            className="text-[#31574c] transition hover:text-emerald-800"
           >
-            <FaUser className="text-xl" />
+            <FaUser className="text-lg" />
           </button>
 
           {user ? (
             <button
               type="button"
               onClick={handleLogout}
-              className="text-sm text-gray-300 transition hover:text-purple-400"
+              className="text-sm font-medium text-[#31574c] transition hover:text-emerald-800"
             >
               Logout
             </button>
@@ -183,15 +197,16 @@ const Navbar = () => {
             <button
               type="button"
               onClick={openLogin}
-              className="hidden border-l border-white/20 pl-5 text-sm transition hover:text-purple-400 md:block"
+              className="hidden border-l border-gray-200 pl-4 text-sm font-medium text-[#31574c] transition hover:text-emerald-800 sm:block"
             >
-              Login <span className="text-gray-500">|</span> Register
+              Login / Register
             </button>
           )}
         </div>
       </div>
 
-      <div className="border-t border-white/5 px-4 py-3 sm:hidden">
+      {/* Mobile search */}
+      <div className="border-t border-gray-100 px-4 py-3 md:hidden">
         <SearchForm
           mobile
           search={search}
@@ -200,24 +215,17 @@ const Navbar = () => {
         />
       </div>
 
-      <div className="flex items-center justify-center gap-6 overflow-x-auto border-t border-white/5 px-4 py-3 text-sm font-medium sm:gap-10">
-        <Link to="/" className="shrink-0 text-gray-200 hover:text-purple-300">
-          Home
-        </Link>
-        <Link to="/shop" className="shrink-0 text-gray-200 hover:text-purple-400">
-          Shop
-        </Link>
-        <Link to="/contact" className="shrink-0 text-gray-200 hover:text-purple-400">
-          Contact
-        </Link>
-        <Link to="/about" className="shrink-0 text-gray-200 hover:text-purple-400">
-          About
-        </Link>
+      {/* Navigation links */}
+      <div className="flex items-center justify-center gap-6 overflow-x-auto border-t border-gray-100 px-4 py-3 sm:gap-10">
+        <Link to="/" className={navLinkClass}>Home</Link>
+        <Link to="/shop" className={navLinkClass}>Shop</Link>
+        <Link to="/contact" className={navLinkClass}>Contact</Link>
+        <Link to="/about" className={navLinkClass}>About</Link>
       </div>
 
       <Modal
         isModalOpen={authModalOpen}
-        setIsModalOpen={isOpen => {
+        setIsModalOpen={(isOpen) => {
           if (!isOpen) dispatch(closeAuthModal());
         }}
       >

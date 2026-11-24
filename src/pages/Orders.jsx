@@ -6,8 +6,16 @@ import { toast } from 'react-toastify';
 
 const ORDERS_URL = 'http://localhost:5000/orders';
 
+const statusStyles = {
+  placed: 'bg-sky-100 text-sky-800',
+  processing: 'bg-amber-100 text-amber-800',
+  shipped: 'bg-indigo-100 text-indigo-800',
+  delivered: 'bg-emerald-100 text-emerald-800',
+  cancelled: 'bg-red-100 text-red-700',
+};
+
 const Orders = () => {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +50,7 @@ const Orders = () => {
     fetchOrders();
   }, [user?.id]);
 
-  const handleCancelOrder = async order => {
+  const handleCancelOrder = async (order) => {
     if (String(order.userId) !== String(user?.id)) {
       toast.error('You cannot cancel this order.');
       return;
@@ -55,8 +63,8 @@ const Orders = () => {
         status: 'cancelled',
       });
 
-      setOrders(currentOrders =>
-        currentOrders.map(item =>
+      setOrders((currentOrders) =>
+        currentOrders.map((item) =>
           String(item.id) === String(order.id) ? response.data : item
         )
       );
@@ -76,16 +84,18 @@ const Orders = () => {
 
     try {
       const userOrders = orders.filter(
-        order => String(order.userId) === String(user.id)
+        (order) => String(order.userId) === String(user.id)
       );
 
       await Promise.all(
-        userOrders.map(order => axios.delete(`${ORDERS_URL}/${order.id}`))
+        userOrders.map((order) =>
+          axios.delete(`${ORDERS_URL}/${order.id}`)
+        )
       );
 
-      setOrders(currentOrders =>
+      setOrders((currentOrders) =>
         currentOrders.filter(
-          order => String(order.userId) !== String(user.id)
+          (order) => String(order.userId) !== String(user.id)
         )
       );
 
@@ -99,20 +109,20 @@ const Orders = () => {
 
   if (!user?.id) {
     return (
-      <p className="rounded-xl border border-white/10 bg-[#111114] p-6 text-center text-gray-300">
+      <p className="rounded-xl border border-gray-200 bg-white p-6 text-center text-gray-600">
         Please log in to view your orders.
       </p>
     );
   }
 
   return (
-    <section className="text-white">
+    <section className="text-[#173b32]">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="mb-1 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+          <p className="mb-1 text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
             Purchase history
           </p>
-          <h2 className="text-2xl font-bold">My Orders</h2>
+          <h2 className="text-2xl font-extrabold">My orders</h2>
         </div>
 
         {orders.length > 0 && (
@@ -120,34 +130,34 @@ const Orders = () => {
             type="button"
             onClick={handleClearOrders}
             disabled={clearingOrders || loading}
-            className="rounded-full border border-red-500/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {clearingOrders ? 'Clearing...' : 'Clear Orders'}
+            {clearingOrders ? 'Clearing…' : 'Clear orders'}
           </button>
         )}
       </div>
 
       {loading && (
-        <p className="rounded-xl border border-white/10 bg-[#111114] p-6 text-gray-300">
-          Loading orders...
+        <p className="rounded-xl border border-gray-200 bg-white p-6 text-gray-600">
+          Loading orders…
         </p>
       )}
 
       {error && (
-        <p className="rounded-xl border border-red-500/20 bg-red-950/30 p-6 text-red-300">
+        <p className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700">
           {error}
         </p>
       )}
 
       {!loading && !error && orders.length === 0 && (
-        <div className="rounded-xl border border-white/10 bg-[#111114] px-6 py-12 text-center">
-          <h3 className="text-xl font-semibold">No orders yet</h3>
-          <p className="mt-2 text-gray-400">
+        <div className="rounded-xl border border-gray-200 bg-white px-6 py-12 text-center shadow-sm">
+          <h3 className="text-xl font-bold">No orders yet</h3>
+          <p className="mt-2 text-gray-600">
             Orders you place will appear here.
           </p>
           <Link
             to="/shop"
-            className="mt-6 inline-block rounded-full bg-purple-700 px-6 py-3 font-semibold text-white transition hover:bg-purple-600"
+            className="mt-6 inline-flex rounded-lg bg-emerald-800 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700"
           >
             Explore products
           </Link>
@@ -157,20 +167,22 @@ const Orders = () => {
       <div className="space-y-5">
         {!loading &&
           !error &&
-          orders.map(order => {
-            const isCancelled = order.status === 'cancelled';
+          orders.map((order) => {
+            const status = (order.status || 'placed').toLowerCase();
+            const statusClass =
+              statusStyles[status] || 'bg-gray-100 text-gray-700';
 
             return (
               <article
                 key={order.id}
-                className="rounded-xl border border-white/10 bg-[#111114]/95 p-5 shadow-lg sm:p-6"
+                className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
               >
-                <div className="mb-5 flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-4">
+                <div className="mb-5 flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 pb-4">
                   <div>
-                    <h3 className="font-semibold">
+                    <h3 className="font-bold">
                       Order #{order.orderNumber || order.id}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-500">
                       {order.createdAt
                         ? new Date(order.createdAt).toLocaleDateString()
                         : ''}
@@ -179,35 +191,32 @@ const Orders = () => {
 
                   <div className="flex flex-wrap items-center gap-3">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        isCancelled
-                          ? 'bg-red-500/10 text-red-300'
-                          : 'bg-emerald-500/10 text-emerald-300'
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-bold capitalize ${statusClass}`}
                     >
-                      {isCancelled ? 'Cancelled' : order.status || 'Placed'}
+                      {status}
                     </span>
 
-                    {!isCancelled && (
-                      <button
-                        type="button"
-                        onClick={() => handleCancelOrder(order)}
-                        disabled={cancellingId === order.id}
-                        className="rounded-full border border-red-500/30 px-3 py-1.5 text-sm text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {cancellingId === order.id
-                          ? 'Cancelling...'
-                          : 'Cancel order'}
-                      </button>
-                    )}
+                    {status !== 'cancelled' &&
+                      status !== 'delivered' && (
+                        <button
+                          type="button"
+                          onClick={() => handleCancelOrder(order)}
+                          disabled={cancellingId === order.id}
+                          className="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {cancellingId === order.id
+                            ? 'Cancelling…'
+                            : 'Cancel order'}
+                        </button>
+                      )}
                   </div>
                 </div>
 
-                <h4 className="mb-3 text-sm font-semibold text-gray-200">
+                <h4 className="mb-3 text-sm font-bold text-gray-700">
                   Products
                 </h4>
 
-                <div className="divide-y divide-white/10">
+                <div className="divide-y divide-gray-100">
                   {(order.products || []).map((product, index) => {
                     const quantity = Number(product.quantity) || 0;
                     const price = Number(product.price) || 0;
@@ -222,19 +231,21 @@ const Orders = () => {
                             <img
                               src={product.image}
                               alt={product.name || 'Ordered product'}
-                              className="h-14 w-14 shrink-0 rounded-lg bg-white object-contain p-1"
+                              className="h-14 w-14 shrink-0 rounded-lg bg-[#f3f5f3] object-contain p-1"
                             />
                           )}
+
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-medium">
+                            <p className="truncate text-sm font-semibold">
                               {product.name}
                             </p>
-                            <p className="mt-1 text-xs text-gray-400">
+                            <p className="mt-1 text-xs text-gray-500">
                               ₹{price.toFixed(2)} × {quantity}
                             </p>
                           </div>
                         </div>
-                        <p className="shrink-0 text-sm text-gray-200">
+
+                        <p className="shrink-0 text-sm font-medium text-gray-700">
                           ₹{(price * quantity).toFixed(2)}
                         </p>
                       </div>
@@ -243,7 +254,7 @@ const Orders = () => {
                 </div>
 
                 {order.shippingInformation?.address && (
-                  <p className="mt-4 text-sm text-gray-400">
+                  <p className="mt-4 text-sm text-gray-500">
                     Shipping to: {order.shippingInformation.address}
                     {order.shippingInformation.city
                       ? `, ${order.shippingInformation.city}`
@@ -254,7 +265,7 @@ const Orders = () => {
                   </p>
                 )}
 
-                <p className="mt-4 border-t border-white/10 pt-4 text-right font-bold">
+                <p className="mt-4 border-t border-gray-100 pt-4 text-right font-bold">
                   Total: ₹{Number(order.totalPrice || 0).toFixed(2)}
                 </p>
               </article>

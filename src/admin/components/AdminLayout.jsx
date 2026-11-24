@@ -3,17 +3,17 @@ import AdminHeader from './AdminHeader';
 import AdminSidebar from './AdminSidebar';
 
 const AdminLayout = () => (
-  <div className="min-h-screen bg-[#09090b] text-white">
-  <AdminSidebar />
+  <div className="min-h-screen bg-[#f5f7f5] text-[#173b32] lg:h-screen lg:overflow-hidden">
+    <AdminSidebar />
 
-  <div className="min-h-screen md:ml-60">
-    <AdminHeader />
+    <div className="min-h-screen lg:ml-60 lg:flex lg:h-screen lg:flex-col">
+      <AdminHeader />
 
-    <main className="h-[calc(100vh-4rem)] overflow-y-auto px-4 py-6 md:px-8">
-      <Outlet />
-    </main>
+      <main className="px-4 py-6 md:px-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+        <Outlet />
+      </main>
+    </div>
   </div>
-</div>
 );
 
 export default AdminLayout;

@@ -1,21 +1,28 @@
-const AdminTable = ({ columns, rows, emptyMessage = 'No records found.' }) => (
-  <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#111114]">
+const AdminTable = ({
+  columns,
+  rows,
+  emptyMessage = 'No records found.',
+}) => (
+  <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
     <table className="w-full min-w-[650px] text-left text-sm">
-      <thead className="border-b border-white/10 bg-white/[0.03] text-xs uppercase tracking-wide text-gray-400">
+      <thead className="border-b border-gray-200 bg-[#f5f8f6] text-xs uppercase tracking-wide text-gray-500">
         <tr>
-          {columns.map(column => (
-            <th key={column.key} className="px-4 py-3">
+          {columns.map((column) => (
+            <th key={column.key} scope="col" className="px-4 py-3 font-semibold">
               {column.label}
             </th>
           ))}
         </tr>
       </thead>
 
-      <tbody className="divide-y divide-white/10">
-        {rows.length ? (
+      <tbody className="divide-y divide-gray-100">
+        {rows.length > 0 ? (
           rows.map((row, index) => (
-            <tr key={row.id ?? index} className="text-gray-200">
-              {columns.map(column => (
+            <tr
+              key={row.id ?? index}
+              className="text-[#173b32] transition hover:bg-[#f8faf8]"
+            >
+              {columns.map((column) => (
                 <td key={column.key} className="px-4 py-3">
                   {column.render
                     ? column.render(row)
@@ -28,7 +35,7 @@ const AdminTable = ({ columns, rows, emptyMessage = 'No records found.' }) => (
           <tr>
             <td
               colSpan={columns.length}
-              className="px-4 py-10 text-center text-gray-400"
+              className="px-4 py-10 text-center text-gray-500"
             >
               {emptyMessage}
             </td>

@@ -12,6 +12,12 @@
       "email": "admin@buythings.com",
       "password": "123456789",
       "role": "admin"
+    },
+    {
+      "name": "Anshid",
+      "email": "anshid@gmail.com",
+      "password": "12345678",
+      "id": "-m0FETpo9XQ"
     }
   ],
   "products": [
@@ -319,11 +325,21 @@
       "rating": 4.3,
       "inStock": true,
       "category": "Fashion"
+    },
+    {
+      "name": "Kreo gaming controller3",
+      "price": 3099,
+      "description": "wireless gaming controllers featuring Hall Effect joysticks and triggers to prevent stick drift and ensure precise, frictionless control. ",
+      "category": "Gadgets",
+      "image": "image31",
+      "rating": 5,
+      "inStock": true,
+      "id": "enANUlyhmzk",
+      "active": true
     }
   ],
   "cart": [
-   
-   {
+    {
       "userId": "7DTE_Dy6FoE",
       "productId": "5",
       "name": "Zara Boot",
@@ -334,16 +350,141 @@
     },
     {
       "userId": "7DTE_Dy6FoE",
+      "productId": "2",
+      "name": "Robot Speaker",
+      "price": 1299,
+      "quantity": 1,
+      "image": "/src/assets/images/robot.png",
+      "id": "MZM2Mk6z9Og"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "24",
+      "name": "Fossil watch",
+      "price": 5500,
+      "quantity": 2,
+      "image": "/src/assets/images/men%20watch2.png",
+      "id": "ZJCSXn6i_4E"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "1",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "quantity": 3,
+      "image": "/src/assets/images/wwatch.png",
+      "id": "f-2MR-MGhZ8"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "8",
+      "name": "Old money watch",
+      "price": 750,
+      "quantity": 2,
+      "image": "/src/assets/images/watch.png",
+      "id": "blexNPSddOw"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
       "productId": "4",
       "name": "Apple airpod-max",
       "price": 5999,
-      "quantity": 2,
+      "quantity": 1,
       "image": "/src/assets/images/headphone.png",
-      "id": "6ljR525xHas"
+      "id": "AFEXUh55X9M"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "enANUlyhmzk",
+      "name": "Kreo gaming controller3",
+      "price": 3099,
+      "quantity": 1,
+      "image": "/src/assets/images/Kreo.png",
+      "id": "RWg7QCVuuVs"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "12",
+      "name": "Trimmer",
+      "price": 1650,
+      "quantity": 1,
+      "image": "/src/assets/images/Bombay%20Shaving%20Company.png",
+      "id": "n5YFSEMHK28"
+    },
+    {
+      "userId": "-m0FETpo9XQ",
+      "productId": "2",
+      "name": "Robot Speaker",
+      "price": 1299,
+      "quantity": 1,
+      "image": "/src/assets/images/robot.png",
+      "id": "XCF8iMIXgs0"
     }
   ],
-  "wishlist": [],
+  "wishlist": [
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "enANUlyhmzk",
+      "name": "Kreo gaming controller3",
+      "image": "/src/assets/images/Kreo.png",
+      "price": 3099,
+      "description": "wireless gaming controllers featuring Hall Effect joysticks and triggers to prevent stick drift and ensure precise, frictionless control. ",
+      "rating": 5,
+      "inStock": true,
+      "id": "iDAHLRen2bc"
+    }
+  ],
   "orders": [
+    {
+      "products": [
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "enANUlyhmzk",
+          "name": "Kreo gaming controller3",
+          "price": 3099,
+          "quantity": 1,
+          "image": "/src/assets/images/Kreo.png",
+          "id": "JlpVKVogKTc"
+        }
+      ],
+      "orderNumber": "ORD-1795499542542",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "cod",
+      "totalPrice": 3099,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-24T05:52:22.542Z",
+      "id": "2bODWyq9ZQw",
+      "status": "processing"
+    },
+    {
+      "products": [
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "10",
+          "name": "Leather Bag",
+          "price": 2000,
+          "quantity": 1,
+          "image": "/src/assets/images/bag.png",
+          "id": "Pntmq-1SDoE"
+        }
+      ],
+      "orderNumber": "ORD-1795499571605",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "cod",
+      "totalPrice": 2000,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-24T05:52:51.605Z",
+      "id": "FPEw74ZvQ6w",
+      "status": "delivered"
+    },
     {
       "products": [
         {
@@ -356,18 +497,97 @@
           "id": "6ljR525xHas"
         }
       ],
-      "orderNumber": "ORD-1795410658158",
+      "orderNumber": "ORD-1795499623759",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "dc",
+      "totalPrice": 11998,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-24T05:53:43.759Z",
+      "id": "jWN3KmgaFhk",
+      "status": "cancelled"
+    },
+    {
+      "products": [
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "24",
+          "name": "Fossil watch",
+          "price": 5500,
+          "quantity": 2,
+          "image": "/src/assets/images/men%20watch2.png",
+          "id": "ZJCSXn6i_4E"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "1",
+          "name": "Ultra 8 series",
+          "price": 1999,
+          "quantity": 3,
+          "image": "/src/assets/images/wwatch.png",
+          "id": "f-2MR-MGhZ8"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "8",
+          "name": "Old money watch",
+          "price": 750,
+          "quantity": 2,
+          "image": "/src/assets/images/watch.png",
+          "id": "blexNPSddOw"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "4",
+          "name": "Apple airpod-max",
+          "price": 5999,
+          "quantity": 1,
+          "image": "/src/assets/images/headphone.png",
+          "id": "AFEXUh55X9M"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "enANUlyhmzk",
+          "name": "Kreo gaming controller3",
+          "price": 3099,
+          "quantity": 1,
+          "image": "/src/assets/images/Kreo.png",
+          "id": "RWg7QCVuuVs"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "12",
+          "name": "Trimmer",
+          "price": 1650,
+          "quantity": 1,
+          "image": "/src/assets/images/Bombay%20Shaving%20Company.png",
+          "id": "n5YFSEMHK28"
+        },
+        {
+          "userId": "-m0FETpo9XQ",
+          "productId": "2",
+          "name": "Robot Speaker",
+          "price": 1299,
+          "quantity": 1,
+          "image": "/src/assets/images/robot.png",
+          "id": "XCF8iMIXgs0"
+        }
+      ],
+      "orderNumber": "ORD-1795499794146",
       "shippingInformation": {
         "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
         "city": "ramanattukara",
         "zip": "673631"
       },
       "paymentMethod": "cod",
-      "totalPrice": 11998,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-23T05:10:58.158Z",
-      "id": "4zEmWVeY12Y",
-      "status": "delivered"
+      "totalPrice": 30544,
+      "userId": "-m0FETpo9XQ",
+      "createdAt": "2026-11-24T05:56:34.146Z",
+      "id": "-uqyurHbe7U",
+      "status": "shipped"
     }
   ],
   "categories": [

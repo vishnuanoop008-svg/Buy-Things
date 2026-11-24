@@ -1,27 +1,59 @@
-import React, { useState } from 'react'
-
+import { useState } from 'react';
 
 const ChangeAddress = ({ setAddress, setIsModalOpen }) => {
-    const [newAddress , setNewAddress] = useState("")
-    const onClose  = () => {
-      setAddress(newAddress)
-      setIsModalOpen(false)
-    }
-  return (
-    <div>
-        <input type ='text'
-        placeholder ='Enter new address'
-        className ='border p-2 w-full mb-4'
-        onChange ={(e) => setNewAddress(e.target.value)}
-        />
-        <div className ='flex justify-end'>
-            <button className ='bg-gray-500 text-white py-2 px-4 rounded mr-2'
-            onClick ={() =>setIsModalOpen(false)}>Cancel</button>
-            <button className ='bg-green-400 text-white py-2 px-4 rounded'
-            onClick ={onClose}>Save Address</button>
-        </div>
-    </div>
-  )
-}
+  const [newAddress, setNewAddress] = useState('');
 
-export default ChangeAddress
+  const handleSave = () => {
+    const address = newAddress.trim();
+
+    if (!address) return;
+
+    setAddress(address);
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 text-[#173b32]">
+      <p className="mb-1 text-sm font-bold uppercase tracking-wider text-emerald-700">
+        Delivery details
+      </p>
+      <h2 className="mb-5 text-xl font-extrabold">Change address</h2>
+
+      <label
+        htmlFor="new-address"
+        className="mb-2 block text-sm font-semibold text-gray-700"
+      >
+        New address
+      </label>
+      <textarea
+        id="new-address"
+        value={newAddress}
+        onChange={(event) => setNewAddress(event.target.value)}
+        placeholder="Enter your delivery address"
+        rows={4}
+        className="mb-5 w-full resize-y rounded-lg border border-gray-300 bg-[#f5f8f6] p-3 text-sm text-[#173b32] outline-none placeholder:text-gray-400 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15"
+      />
+
+      <div className="flex justify-end gap-3">
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(false)}
+          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={!newAddress.trim()}
+          className="rounded-lg bg-emerald-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Save address
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChangeAddress;

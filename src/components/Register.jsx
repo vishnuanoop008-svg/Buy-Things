@@ -5,7 +5,7 @@ import { registerUser, closeAuthModal } from '../redux/authSlice';
 
 const Register = ({ openLogin = () => {} }) => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(state => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ const Register = ({ openLogin = () => {} }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setEmailError('');
     setPasswordError('');
@@ -47,26 +47,25 @@ const Register = ({ openLogin = () => {} }) => {
 
       dispatch(closeAuthModal());
     } catch (err) {
-      // The Redux auth error is displayed below the form.
       console.error('Registration failed:', err);
     }
   };
 
   const inputClassName =
-    'w-full rounded-lg border border-white/10 bg-[#09090b] px-3 py-2.5 text-white placeholder:text-gray-500 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20';
+    'w-full rounded-lg border border-gray-300 bg-[#f5f8f6] px-3 py-2.5 text-[#173b32] outline-none transition placeholder:text-gray-400 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15';
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[#111114] p-6 text-white shadow-2xl shadow-purple-950/30 sm:p-8">
-      <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 text-[#173b32] shadow-xl sm:p-8">
+      <p className="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
         Join us
       </p>
-      <h2 className="mb-6 text-2xl font-bold">Create your account</h2>
+      <h2 className="mb-6 text-2xl font-extrabold">Create your account</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
             htmlFor="register-name"
-            className="mb-2 block text-sm font-medium text-gray-300"
+            className="mb-2 block text-sm font-semibold text-gray-700"
           >
             Name
           </label>
@@ -74,7 +73,7 @@ const Register = ({ openLogin = () => {} }) => {
             id="register-name"
             type="text"
             value={name}
-            onChange={event => setName(event.target.value)}
+            onChange={(event) => setName(event.target.value)}
             className={inputClassName}
             placeholder="Enter your name"
             autoComplete="name"
@@ -85,7 +84,7 @@ const Register = ({ openLogin = () => {} }) => {
         <div className="mb-4">
           <label
             htmlFor="register-email"
-            className="mb-2 block text-sm font-medium text-gray-300"
+            className="mb-2 block text-sm font-semibold text-gray-700"
           >
             Email
           </label>
@@ -93,7 +92,7 @@ const Register = ({ openLogin = () => {} }) => {
             id="register-email"
             type="email"
             value={email}
-            onChange={event => {
+            onChange={(event) => {
               setEmail(event.target.value);
               setEmailError('');
             }}
@@ -103,14 +102,14 @@ const Register = ({ openLogin = () => {} }) => {
             required
           />
           {emailError && (
-            <p className="mt-1 text-sm text-red-400">{emailError}</p>
+            <p className="mt-1 text-sm text-red-600">{emailError}</p>
           )}
         </div>
 
         <div className="mb-4">
           <label
             htmlFor="register-password"
-            className="mb-2 block text-sm font-medium text-gray-300"
+            className="mb-2 block text-sm font-semibold text-gray-700"
           >
             Password
           </label>
@@ -118,7 +117,7 @@ const Register = ({ openLogin = () => {} }) => {
             id="register-password"
             type="password"
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             className={inputClassName}
             placeholder="Enter your password"
             autoComplete="new-password"
@@ -129,15 +128,15 @@ const Register = ({ openLogin = () => {} }) => {
         <div className="mb-4">
           <label
             htmlFor="register-confirm-password"
-            className="mb-2 block text-sm font-medium text-gray-300"
+            className="mb-2 block text-sm font-semibold text-gray-700"
           >
-            Confirm Password
+            Confirm password
           </label>
           <input
             id="register-confirm-password"
             type="password"
             value={confirmPassword}
-            onChange={event => {
+            onChange={(event) => {
               setConfirmPassword(event.target.value);
               setPasswordError('');
             }}
@@ -147,12 +146,12 @@ const Register = ({ openLogin = () => {} }) => {
             required
           />
           {passwordError && (
-            <p className="mt-1 text-sm text-red-400">{passwordError}</p>
+            <p className="mt-1 text-sm text-red-600">{passwordError}</p>
           )}
         </div>
 
         {error && (
-          <p className="mb-4 text-sm text-red-400">
+          <p className="mb-4 text-sm text-red-600">
             {typeof error === 'string' ? error : 'Registration failed.'}
           </p>
         )}
@@ -160,17 +159,17 @@ const Register = ({ openLogin = () => {} }) => {
         <button
           type="submit"
           disabled={loading}
-          className="mb-5 w-full rounded-lg bg-purple-700 py-2.5 font-semibold text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mb-5 w-full rounded-lg bg-emerald-800 py-2.5 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading ? 'Creating account...' : 'Sign Up'}
+          {loading ? 'Creating account...' : 'Sign up'}
         </button>
       </form>
 
-      <div className="text-center text-sm text-gray-400">
+      <div className="text-center text-sm text-gray-600">
         Already have an account?
         <button
           type="button"
-          className="ml-2 font-semibold text-purple-400 transition hover:text-purple-300"
+          className="ml-2 font-semibold text-emerald-800 transition hover:text-emerald-600"
           onClick={openLogin}
         >
           Login

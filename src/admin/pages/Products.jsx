@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import AdminTable from '../components/AdminTable';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { productImages } from '../../assets/mockData';
@@ -35,7 +36,6 @@ const Products = () => {
   }, []);
 
   const toggleActive = async (product) => {
-    // Out-of-stock products are always inactive.
     if (product.inStock === false) return;
 
     const isActive = product.active !== false;
@@ -49,7 +49,9 @@ const Products = () => {
 
       setProducts((current) =>
         current.map((item) =>
-          item.id === product.id ? { ...item, ...updatedProduct } : item
+          String(item.id) === String(product.id)
+            ? { ...item, ...updatedProduct }
+            : item
         )
       );
     } catch {
@@ -68,7 +70,9 @@ const Products = () => {
     try {
       await deleteProduct(deleteTarget.id);
       setProducts((current) =>
-        current.filter((product) => product.id !== deleteTarget.id)
+        current.filter(
+          (product) => String(product.id) !== String(deleteTarget.id)
+        )
       );
       setDeleteTarget(null);
     } catch {
@@ -87,9 +91,11 @@ const Products = () => {
           <img
             src={productImages[product.image] || product.image}
             alt={product.name}
-            className="h-12 w-12 rounded bg-white object-contain p-1"
+            className="h-12 w-12 rounded-lg bg-[#f3f5f3] object-contain p-1"
           />
-          <span className="font-medium text-white">{product.name}</span>
+          <span className="font-semibold text-[#173b32]">
+            {product.name}
+          </span>
         </div>
       ),
     },
@@ -110,7 +116,11 @@ const Products = () => {
         const hasStock = product.inStock !== false;
 
         return (
-          <span className={hasStock ? 'text-emerald-300' : 'text-red-400'}>
+          <span
+            className={
+              hasStock ? 'font-medium text-emerald-700' : 'font-medium text-red-600'
+            }
+          >
             {hasStock ? 'In stock' : 'Out of stock'}
           </span>
         );
@@ -134,8 +144,8 @@ const Products = () => {
             title={!hasStock ? 'Restock this product to activate it' : undefined}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-70 ${
               isActive
-                ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25'
-                : 'border-red-500/40 bg-red-500/15 text-red-400'
+                ? 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                : 'border-red-200 bg-red-50 text-red-700'
             }`}
           >
             {updatingId === product.id
@@ -154,14 +164,14 @@ const Products = () => {
         <div className="flex gap-3">
           <Link
             to={`/admin/products/${product.id}/edit`}
-            className="text-purple-300 hover:text-purple-200"
+            className="font-medium text-emerald-800 transition hover:text-emerald-600"
           >
             Edit
           </Link>
           <button
             type="button"
             onClick={() => setDeleteTarget(product)}
-            className="text-red-300 hover:text-red-200"
+            className="font-medium text-red-600 transition hover:text-red-800"
           >
             Delete
           </button>
@@ -171,27 +181,31 @@ const Products = () => {
   ];
 
   return (
-    <section>
+    <section className="text-[#173b32]">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Products</h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <h1 className="text-2xl font-extrabold">Products</h1>
+          <p className="mt-1 text-sm text-gray-600">
             Manage products and their visibility in your store.
           </p>
         </div>
 
         <Link
           to="/admin/products/new"
-          className="rounded-lg bg-purple-700 px-4 py-2.5 text-sm font-semibold hover:bg-purple-600"
+          className="rounded-lg bg-emerald-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
         >
           Add product
         </Link>
       </div>
 
-      {error && <p className="mt-5 text-sm text-red-300">{error}</p>}
+      {error && (
+        <p className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       {loading ? (
-        <p className="mt-6 text-gray-400">Loading products…</p>
+        <p className="mt-6 text-gray-600">Loading products…</p>
       ) : (
         <div className="mt-6">
           <AdminTable

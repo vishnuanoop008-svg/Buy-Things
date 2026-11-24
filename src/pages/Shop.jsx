@@ -1,16 +1,34 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/productCard';
 
 const PRODUCTS_PER_PAGE = 10;
 
 const Shop = () => {
-  const products = useSelector(state => state.product?.products ?? []);
+  const products = useSelector((state) => state.product?.products ?? []);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('');
 
+  const selectedCategory = searchParams.get('category')?.trim() ?? '';
+
+  const filteredProducts = useMemo(() => {
+    const availableProducts = products.filter(
+      (product) => product.active !== false && product.inStock !== false
+    );
+
+    if (!selectedCategory) return availableProducts;
+
+    return availableProducts.filter(
+      (product) =>
+        String(product.category ?? '').trim().toLowerCase() ===
+        selectedCategory.toLowerCase()
+    );
+  }, [products, selectedCategory]);
+
   const sortedProducts = useMemo(() => {
-    const sorted = [...products];
+    const sorted = [...filteredProducts];
 
     if (sortOrder === 'price-low-high') {
       sorted.sort((a, b) => Number(a.price) - Number(b.price));
@@ -19,7 +37,7 @@ const Shop = () => {
     }
 
     return sorted;
-  }, [products, sortOrder]);
+  }, [filteredProducts, sortOrder]);
 
   const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
@@ -29,39 +47,52 @@ const Shop = () => {
   );
 
   useEffect(() => {
-    setCurrentPage(page => Math.min(page, Math.max(totalPages, 1)));
+    setCurrentPage(1);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, Math.max(totalPages, 1)));
   }, [totalPages]);
 
-  const handleSortChange = event => {
+  const handleSortChange = (event) => {
     setSortOrder(event.target.value);
     setCurrentPage(1);
   };
 
-  const goToPreviousPage = () => {
-    setCurrentPage(page => Math.max(page - 1, 1));
-  };
-
-  const goToNextPage = () => {
-    setCurrentPage(page => Math.min(page + 1, totalPages));
+  const clearCategory = () => {
+    setSearchParams({});
+    setCurrentPage(1);
   };
 
   return (
-    <main className="mx-auto min-h-screen bg-[#09090b] px-4 pb-12 pt-10 text-white md:px-10 lg:px-16">
+    <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-20 text-[#173b32] md:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+            <p className="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
               Browse our collection
             </p>
-            <h1 className="text-3xl font-bold text-white">Shop</h1>
+            <h1 className="text-3xl font-extrabold">
+              {selectedCategory || 'Shop'}
+            </h1>
+
+            {selectedCategory && (
+              <button
+                type="button"
+                onClick={clearCategory}
+                className="mt-2 text-sm font-semibold text-emerald-800 hover:text-emerald-600"
+              >
+                Clear category filter
+              </button>
+            )}
           </div>
 
-          <label className="flex items-center gap-3 text-sm text-gray-300">
+          <label className="flex items-center gap-3 text-sm text-gray-600">
             <span>Sort by:</span>
             <select
               value={sortOrder}
               onChange={handleSortChange}
-              className="rounded-lg border border-white/10 bg-[#17171b] px-3 py-2 text-white outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30"
+              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-[#173b32] outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15"
             >
               <option value="">Featured</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -70,14 +101,16 @@ const Shop = () => {
           </label>
         </div>
 
-        {products.length === 0 ? (
-          <p className="py-16 text-center text-gray-400">
-            No products found. Make sure your products have loaded.
+        {sortedProducts.length === 0 ? (
+          <p className="rounded-xl border border-gray-200 bg-white px-6 py-12 text-center text-gray-600 shadow-sm">
+            {selectedCategory
+              ? `No products found in “${selectedCategory}”.`
+              : 'No products are currently available.'}
           </p>
         ) : (
           <>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-5">
-              {currentProducts.map(product => (
+              {currentProducts.map((product) => (
                 <ProductCard
                   key={product.productId ?? product.id}
                   product={product}
@@ -88,22 +121,26 @@ const Shop = () => {
             <div className="mt-10 flex items-center justify-center gap-4">
               <button
                 type="button"
-                onClick={goToPreviousPage}
+                onClick={() =>
+                  setCurrentPage((page) => Math.max(page - 1, 1))
+                }
                 disabled={currentPage === 1}
-                className="rounded-lg bg-purple-700 px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+                className="rounded-lg bg-emerald-800 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
               >
                 Previous
               </button>
 
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-gray-600">
                 Page {currentPage} of {Math.max(totalPages, 1)}
               </span>
 
               <button
                 type="button"
-                onClick={goToNextPage}
+                onClick={() =>
+                  setCurrentPage((page) => Math.min(page + 1, totalPages))
+                }
                 disabled={currentPage >= totalPages}
-                className="rounded-lg bg-purple-700 px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+                className="rounded-lg bg-emerald-800 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
               >
                 Next
               </button>

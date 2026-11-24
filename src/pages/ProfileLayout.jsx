@@ -1,30 +1,30 @@
 import { NavLink, Outlet } from 'react-router-dom';
 
 const tabClass = ({ isActive }) =>
-  `rounded-full px-5 py-2 text-sm font-semibold transition ${
+  `rounded-lg px-5 py-2.5 text-sm font-semibold transition ${
     isActive
-      ? 'bg-purple-600 text-white'
-      : 'border border-white/10 bg-white/5 text-gray-300 hover:border-purple-500/50 hover:text-white'
+      ? 'bg-emerald-800 text-white'
+      : 'border border-gray-200 bg-white text-gray-600 hover:border-emerald-700 hover:text-emerald-800'
   }`;
 
 const ProfileLayout = () => {
   return (
-    <main className="min-h-screen bg-[#09090b] px-4 pb-12 pt-32 text-white md:px-10">
+    <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-32 text-[#173b32] md:px-8">
       <div className="mx-auto max-w-5xl">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+        <p className="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
           Account
         </p>
-        <h1 className="mb-6 text-3xl font-bold">My Account</h1>
+        <h1 className="mb-6 text-3xl font-extrabold">My account</h1>
 
         <nav
           aria-label="Profile navigation"
-          className="mb-8 flex flex-wrap gap-3 border-b border-white/10 pb-5"
+          className="mb-8 flex flex-wrap gap-3 border-b border-gray-200 pb-5"
         >
           <NavLink to="/profile" end className={tabClass}>
             Profile
           </NavLink>
           <NavLink to="/profile/orders" className={tabClass}>
-            My Orders
+            My orders
           </NavLink>
         </nav>
 

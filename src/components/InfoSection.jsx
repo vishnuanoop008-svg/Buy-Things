@@ -6,52 +6,56 @@ import {
   FaTag,
 } from 'react-icons/fa';
 
-const InfoSection = () => {
-  const infoItems = [
-    {
-      icon: <FaShippingFast />,
-      title: 'Free Shipping',
-      description: 'Get your orders delivered with no extra cost',
-    },
-    {
-      icon: <FaHeadset />,
-      title: 'Support 24/7',
-      description: 'We are here to assist you anytime',
-    },
-    {
-      icon: <FaMoneyBillWave />,
-      title: '100% Money Back',
-      description: 'Full refund if you are not satisfied',
-    },
-    {
-      icon: <FaLock />,
-      title: 'Payment Secure',
-      description: 'Your payment information is safe with us',
-    },
-    {
-      icon: <FaTag />,
-      title: 'Discount',
-      description: 'Enjoy the best prices on our products',
-    },
-  ];
+const infoItems = [
+  {
+    icon: FaShippingFast,
+    title: 'Free Shipping',
+    description: 'On qualifying orders',
+  },
+  {
+    icon: FaHeadset,
+    title: 'Support 24/7',
+    description: 'We are here to help',
+  },
+  {
+    icon: FaMoneyBillWave,
+    title: 'Money Back',
+    description: 'Shop with confidence',
+  },
+  {
+    icon: FaLock,
+    title: 'Secure Payment',
+    description: 'Your payment is protected',
+  },
+  {
+    icon: FaTag,
+    title: 'Great Deals',
+    description: 'Save on your favorites',
+  },
+];
 
+const InfoSection = () => {
   return (
-    <section className="border-y border-white/10 bg-[#0d0d10] py-10">
-      <div className="container mx-auto grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-5">
-        {infoItems.map(item => (
+    <section className="border-y border-gray-200 bg-white py-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-3 px-4 sm:grid-cols-2 lg:grid-cols-5 sm:px-6 lg:px-8">
+        {infoItems.map(({ icon: Icon, title, description }) => (
           <div
-            key={item.title}
-            className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/5"
+            key={title}
+            className="flex items-center gap-3 rounded-xl bg-[#f5f8f6] p-4 transition hover:bg-[#eaf2ed]"
           >
-            <span className="text-3xl text-purple-500" aria-hidden="true">
-              {item.icon}
+            <span
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xl text-emerald-800"
+              aria-hidden="true"
+            >
+              <Icon />
             </span>
-            <h3 className="mt-4 text-lg font-semibold text-white">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-400">
-              {item.description}
-            </p>
+
+            <div>
+              <h3 className="text-sm font-bold text-[#173b32]">{title}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-gray-600">
+                {description}
+              </p>
+            </div>
           </div>
         ))}
       </div>

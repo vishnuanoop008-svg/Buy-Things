@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { getCustomers, getOrders, getProducts } from '../services/adminApi';
+import {
+  getCustomers,
+  getOrders,
+  getProducts,
+} from '../services/adminApi';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -21,8 +25,11 @@ const Dashboard = () => {
         ]);
 
         const revenue = orders
-          .filter(order => order.status !== 'cancelled')
-          .reduce((sum, order) => sum + Number(order.totalPrice || 0), 0);
+          .filter((order) => order.status !== 'cancelled')
+          .reduce(
+            (sum, order) => sum + Number(order.totalPrice || 0),
+            0
+          );
 
         setStats({
           products: products.length,
@@ -31,7 +38,9 @@ const Dashboard = () => {
           revenue,
         });
       } catch {
-        setError('Could not load dashboard data. Check that JSON Server is running.');
+        setError(
+          'Could not load dashboard data. Check that JSON Server is running.'
+        );
       } finally {
         setLoading(false);
       }
@@ -48,22 +57,29 @@ const Dashboard = () => {
   ];
 
   return (
-    <section>
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="mt-1 text-sm text-gray-400">Store overview</p>
+    <section className="text-[#173b32]">
+      <h1 className="text-2xl font-extrabold">Dashboard</h1>
+      <p className="mt-1 text-sm text-gray-600">Store overview</p>
 
-      {loading && <p className="mt-6 text-gray-400">Loading…</p>}
-      {error && <p className="mt-6 text-red-300">{error}</p>}
+      {loading && <p className="mt-6 text-gray-600">Loading…</p>}
+
+      {error && (
+        <p className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       {!loading && !error && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {cards.map(([label, value]) => (
             <article
               key={label}
-              className="rounded-xl border border-white/10 bg-[#111114] p-5"
+              className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
             >
-              <p className="text-sm text-gray-400">{label}</p>
-              <p className="mt-3 text-3xl font-bold text-white">{value}</p>
+              <p className="text-sm font-medium text-gray-500">{label}</p>
+              <p className="mt-3 text-3xl font-extrabold text-[#173b32]">
+                {value}
+              </p>
             </article>
           ))}
         </div>

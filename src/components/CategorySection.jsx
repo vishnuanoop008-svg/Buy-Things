@@ -1,41 +1,72 @@
-import ManCategory from '../assets/images/man.png';
-import WomanCategory from '../assets/images/woman.png';
-import KidCategory from '../assets/images/kid.png';
-
-const categories = [
-  { title: 'Men', imageUrl: ManCategory },
-  { title: 'Women', imageUrl: WomanCategory },
-  { title: 'Kids', imageUrl: KidCategory },
-];
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const CategorySection = () => {
+  const products = useSelector((state) => state.product?.products ?? []);
+
+  const categories = [
+    ...new Map(
+      products
+        .filter(
+          (product) =>
+            product.active !== false &&
+            product.inStock !== false &&
+            product.category &&
+            product.image
+        )
+        .map((product) => {
+          const name = String(product.category).trim();
+
+          return [
+            name.toLowerCase(),
+            {
+              name,
+              image: product.image,
+            },
+          ];
+        })
+    ).values(),
+  ].slice(0, 5);
+
+  if (categories.length === 0) return null;
+
   return (
-    <section className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 py-10">
-      <h2 className="mb-6 text-center text-2xl font-bold text-white">
-        Categories
-      </h2>
+    <section className="border-t border-gray-200 py-8 sm:py-10">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
+            Explore more
+          </p>
+          <h2 className="mt-1 text-xl font-extrabold text-[#173b32] sm:text-2xl">
+            A little of everything you love
+          </h2>
+        </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-        {categories.map(category => (
-          <div
-            key={category.title}
-            className="group relative h-64 cursor-pointer overflow-hidden rounded-lg border border-white/10 transition duration-300 hover:-translate-y-1 hover:border-purple-500/50"
+        <span className="hidden text-sm text-gray-500 sm:block">
+          Find something for you
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+        {categories.map((category) => (
+          <Link
+            key={category.name}
+            to={`/shop?category=${encodeURIComponent(category.name)}`}
+            aria-label={`Browse ${category.name} products`}
+            className="group w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
           >
-            <img
-              src={category.imageUrl}
-              alt={`${category.title} clothing`}
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/10 to-transparent" />
-
-            <div className="absolute left-8 top-1/2 -translate-y-1/2">
-              <p className="text-xl font-bold text-white drop-shadow-md">
-                {category.title}
-              </p>
-              <div className="mt-2 h-1 w-10 rounded-full bg-purple-500 transition-all duration-300 group-hover:w-16" />
+            <div className="aspect-[4/3] overflow-hidden bg-[#f3f5f3]">
+              <img
+                src={category.image}
+                alt=""
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
             </div>
-          </div>
+
+            <h3 className="px-3 py-3 text-sm font-semibold capitalize text-[#173b32]">
+              {category.name}
+            </h3>
+          </Link>
         ))}
       </div>
     </section>

@@ -8,14 +8,14 @@ import { productImages } from '../assets/mockData';
 import { addToCart } from '../redux/cartSlice';
 import {
   addToWishlist,
-  removeFromWishlist
+  removeFromWishlist,
 } from '../redux/wishlistSlice';
 
 function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth?.user);
   const wishlistItems = useSelector(
     (state) => state.wishlist?.items ?? []
   );
@@ -39,7 +39,7 @@ function ProductDetails() {
 
         setProduct({
           ...data,
-          image: productImages[data.image] ?? data.image
+          image: productImages[data.image] ?? data.image,
         });
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -60,15 +60,25 @@ function ProductDetails() {
     return () => controller.abort();
   }, [id]);
 
+  const productId = product?.productId ?? product?.id;
+
   const wishlistProduct = wishlistItems.find(
-    (item) => String(item.productId) === String(product?.id)
+    (item) =>
+      String(item.productId ?? item.id) === String(productId)
   );
 
   const isWishlisted = Boolean(wishlistProduct);
+  const isAvailable =
+    product?.active !== false && product?.inStock !== false;
 
   const handleAddToCart = async () => {
     if (!user?.id) {
       toast.error('Please log in first.');
+      return;
+    }
+
+    if (!isAvailable) {
+      toast.error('This product is currently unavailable.');
       return;
     }
 
@@ -101,9 +111,33 @@ function ProductDetails() {
     }
   };
 
-  if (loading) return <p className="p-8 pt-36">Loading product…</p>;
-  if (error) return <p className="p-8 pt-36 text-red-600">{error}</p>;
-  if (!product) return <p className="p-8 pt-36">Product not found.</p>;
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-36 text-[#173b32]">
+        <p className="mx-auto max-w-6xl rounded-xl border border-gray-200 bg-white p-6 text-gray-600">
+          Loading product…
+        </p>
+      </main>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-36 text-[#173b32]">
+        <section className="mx-auto max-w-2xl rounded-xl border border-gray-200 bg-white p-8 text-center">
+          <p className="text-red-700">
+            {error || 'Product not found.'}
+          </p>
+          <Link
+            to="/shop"
+            className="mt-5 inline-flex rounded-lg bg-emerald-800 px-5 py-2.5 font-semibold text-white transition hover:bg-emerald-700"
+          >
+            Back to shop
+          </Link>
+        </section>
+      </main>
+    );
+  }
 
   const rating = Math.max(0, Math.min(5, Number(product.rating) || 0));
   const fullStars = Math.floor(rating);
@@ -111,69 +145,88 @@ function ProductDetails() {
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
-    <main className="mx-auto grid max-w-6xl gap-8 px-6 pb-12 pt-36 md:grid-cols-2">
-      <div className="flex min-h-96 items-center justify-center rounded border bg-gray-50 p-6">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="max-h-96 max-w-full object-contain"
-        />
-      </div>
-
-      <section>
-        <h1 className="text-3xl font-bold">{product.name}</h1>
-        <p className="mt-4 text-2xl font-semibold">₹{product.price}</p>
-
-        <div
-          className="mt-3 text-xl text-amber-500"
-          role="img"
-          aria-label={`Rating: ${rating} out of 5`}
-        >
-          {'★'.repeat(fullStars)}
-          {hasHalfStar ? '½' : ''}
-          {'☆'.repeat(emptyStars)}
-          <span className="ml-2 text-sm text-gray-600">{rating}/5</span>
-        </div>
-
-        <p
-          className={`mt-3 font-medium ${
-            product.inStock ? 'text-green-700' : 'text-red-600'
-          }`}
-        >
-          {product.inStock ? 'In stock' : 'Out of stock'}
-        </p>
-
-        <h2 className="mt-6 text-lg font-semibold">Description</h2>
-        <p className="mt-2 text-gray-700">
-          {product.description || 'Product details coming soon.'}
-        </p>
-
-        <div className="mt-8 flex gap-3">
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className="rounded bg-violet-900 px-6 py-3 text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
-          >
-            Add to Cart
-          </button>
-
-          <button
-            type="button"
-            onClick={handleWishlist}
-            className="rounded border border-violet-900 px-6 py-3 text-violet-900 hover:bg-violet-50"
-          >
-            {isWishlisted ? 'Remove from Wishlist ♥' : 'Add to Wishlist ♡'}
-          </button>
-        </div>
-
+    <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-36 text-[#173b32]">
+      <div className="mx-auto max-w-6xl">
         <Link
           to="/shop"
-          className="mt-6 inline-block text-violet-700 underline"
+          className="mb-6 inline-flex items-center text-sm font-semibold text-emerald-800 transition hover:text-emerald-600"
         >
-          Back to shop
+          ← Back to shop
         </Link>
-      </section>
+
+        <div className="grid gap-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8 md:grid-cols-2">
+          <div className="flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-[#f3f5f3] p-5">
+            {product.image ? (
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <span className="text-sm text-gray-400">Image unavailable</span>
+            )}
+          </div>
+
+          <section className="flex flex-col justify-center">
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">
+              Product details
+            </p>
+
+            <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">
+              {product.name}
+            </h1>
+
+            <p className="mt-4 text-2xl font-bold text-[#173b32]">
+              ₹{product.price}
+            </p>
+
+            <div
+              className="mt-3 text-xl text-amber-500"
+              role="img"
+              aria-label={`Rating: ${rating} out of 5`}
+            >
+              {'★'.repeat(fullStars)}
+              {hasHalfStar ? '½' : ''}
+              {'☆'.repeat(emptyStars)}
+              <span className="ml-2 text-sm text-gray-500">{rating}/5</span>
+            </div>
+
+            <p
+              className={`mt-3 font-semibold ${
+                isAvailable ? 'text-emerald-700' : 'text-red-600'
+              }`}
+            >
+              {isAvailable ? 'In stock' : 'Currently unavailable'}
+            </p>
+
+            <div className="mt-6 border-t border-gray-200 pt-5">
+              <h2 className="text-lg font-bold">Description</h2>
+              <p className="mt-2 leading-7 text-gray-600">
+                {product.description || 'Product details coming soon.'}
+              </p>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={!isAvailable}
+                className="rounded-lg bg-emerald-800 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+              >
+                Add to cart
+              </button>
+
+              <button
+                type="button"
+                onClick={handleWishlist}
+                className="rounded-lg border border-emerald-800 px-6 py-3 font-semibold text-emerald-800 transition hover:bg-emerald-50"
+              >
+                {isWishlisted ? 'Remove from wishlist ♥' : 'Add to wishlist ♡'}
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
     </main>
   );
 }

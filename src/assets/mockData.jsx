@@ -28,6 +28,7 @@ import image27 from './images/trimmer.png';
 import image28 from './images/water bottle.png';
 import image29 from './images/water2.png';
 import image30 from './images/wallet.png';
+import image31 from './images/Kreo.png';
 
 export const productImages = {
   image1,
@@ -60,4 +61,5 @@ export const productImages = {
   image28,
   image29,
   image30,
+  image31
 };

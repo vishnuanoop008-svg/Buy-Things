@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import ProductForm from '../components/ProductForm';
 import { createProduct } from '../services/adminApi';
 
@@ -8,9 +9,10 @@ const AddProduct = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async product => {
+  const handleSubmit = async (product) => {
     setBusy(true);
     setError('');
+
     try {
       await createProduct(product);
       navigate('/admin/products');
@@ -22,13 +24,27 @@ const AddProduct = () => {
   };
 
   return (
-    <section>
-      <Link to="/admin/products" className="text-sm text-purple-300 hover:text-white">
+    <section className="text-[#173b32]">
+      <Link
+        to="/admin/products"
+        className="text-sm font-semibold text-emerald-800 transition hover:text-emerald-600"
+      >
         ← Back to products
       </Link>
-      <h1 className="mb-6 mt-3 text-2xl font-bold">Add product</h1>
-      {error && <p className="mb-4 text-red-300">{error}</p>}
-      <ProductForm onSubmit={handleSubmit} busy={busy} />
+
+      <h1 className="mb-6 mt-3 text-2xl font-extrabold">Add product</h1>
+
+      {error && (
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
+
+      <ProductForm
+        onSubmit={handleSubmit}
+        busy={busy}
+        submitLabel="Add product"
+      />
     </section>
   );
 };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import AdminTable from '../components/AdminTable';
 import ConfirmDialog from '../components/ConfirmDialog';
 import {
@@ -30,14 +31,15 @@ const Categories = () => {
     load();
   }, []);
 
-  const add = async event => {
+  const add = async (event) => {
     event.preventDefault();
     if (!name.trim()) return;
 
     setBusy(true);
+
     try {
       const category = await createCategory({ name: name.trim() });
-      setCategories(current => [...current, category]);
+      setCategories((current) => [...current, category]);
       setName('');
       setError('');
     } catch {
@@ -48,11 +50,14 @@ const Categories = () => {
   };
 
   const remove = async () => {
+    if (!deleteTarget) return;
+
     setBusy(true);
+
     try {
       await deleteCategory(deleteTarget.id);
-      setCategories(current =>
-        current.filter(item => item.id !== deleteTarget.id)
+      setCategories((current) =>
+        current.filter((item) => item.id !== deleteTarget.id)
       );
       setDeleteTarget(null);
     } catch {
@@ -67,11 +72,11 @@ const Categories = () => {
     {
       key: 'actions',
       label: 'Actions',
-      render: row => (
+      render: (row) => (
         <button
           type="button"
           onClick={() => setDeleteTarget(row)}
-          className="text-red-300 hover:text-red-200"
+          className="font-medium text-red-600 transition hover:text-red-800"
         >
           Delete
         </button>
@@ -80,29 +85,38 @@ const Categories = () => {
   ];
 
   return (
-    <section>
-      <h1 className="text-2xl font-bold">Categories</h1>
-      <p className="mt-1 text-sm text-gray-400">Add and remove product categories.</p>
+    <section className="text-[#173b32]">
+      <h1 className="text-2xl font-extrabold">Categories</h1>
+      <p className="mt-1 text-sm text-gray-600">
+        Add and remove product categories.
+      </p>
 
       <form onSubmit={add} className="mt-6 flex max-w-xl gap-3">
         <input
           value={name}
-          onChange={event => setName(event.target.value)}
+          onChange={(event) => setName(event.target.value)}
           placeholder="Category name"
-          className="min-w-0 flex-1 rounded-lg border border-white/10 bg-[#111114] px-3 py-2.5 text-white outline-none focus:border-purple-500"
+          aria-label="Category name"
+          required
+          className="min-w-0 flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-[#173b32] outline-none placeholder:text-gray-400 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15"
         />
         <button
           type="submit"
           disabled={busy}
-          className="rounded-lg bg-purple-700 px-4 py-2.5 font-semibold hover:bg-purple-600 disabled:opacity-60"
+          className="rounded-lg bg-emerald-800 px-4 py-2.5 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Add
+          {busy ? 'Adding…' : 'Add'}
         </button>
       </form>
 
-      {error && <p className="mt-4 text-red-300">{error}</p>}
+      {error && (
+        <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
+
       {loading ? (
-        <p className="mt-6 text-gray-400">Loading categories…</p>
+        <p className="mt-6 text-gray-600">Loading categories…</p>
       ) : (
         <div className="mt-6">
           <AdminTable columns={columns} rows={categories} />
