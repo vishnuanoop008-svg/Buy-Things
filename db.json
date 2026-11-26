@@ -50,9 +50,9 @@
       "price": 1299,
       "description": "Interactive robot toy for imaginative play.",
       "rating": 5,
-      "inStock": true,
+      "inStock": false,
       "category": "Gadgets",
-      "active": true,
+      "active": false,
       "isDeleted": false
     },
     {
@@ -93,7 +93,7 @@
       "description": "Dove personal care product for a gentle everyday routine.",
       "rating": 4.1,
       "inStock": true,
-      "category": "Others",
+      "category": "Gadgets",
       "active": true
     },
     {
@@ -120,12 +120,13 @@
     {
       "id": "9",
       "image": "image2",
-      "name": "Chappal",
+      "name": "Bricken Stockes",
       "price": 799,
       "description": "Comfortable sandals for everyday outings.",
       "rating": 4.1,
       "inStock": true,
-      "category": "Fashion"
+      "category": "Fashion",
+      "active": true
     },
     {
       "id": "10",
@@ -317,7 +318,8 @@
       "description": "Reusable water bottle for carrying drinks on the go.",
       "rating": 4.1,
       "inStock": true,
-      "category": "Accessories"
+      "category": "Others",
+      "active": true
     },
     {
       "id": "29",
@@ -327,7 +329,8 @@
       "description": "Water bottle with a practical design for everyday use.",
       "rating": 4,
       "inStock": false,
-      "category": "Accessories"
+      "category": "Others",
+      "active": false
     },
     {
       "id": "30",
@@ -446,7 +449,7 @@
       "description": "Stylish smartwatch with a bright display for everyday use.",
       "rating": 5,
       "inStock": true,
-      "category": "watches",
+      "category": "Fashion",
       "active": true
     },
     {
@@ -1022,7 +1025,7 @@
       "userId": "-m0FETpo9XQ",
       "createdAt": "2026-11-24T05:56:34.146Z",
       "id": "-uqyurHbe7U",
-      "status": "delivered"
+      "status": "shipped"
     },
     {
       "products": [

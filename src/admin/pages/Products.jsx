@@ -14,6 +14,7 @@ import {
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -37,17 +38,31 @@ const Products = () => {
     loadProducts();
   }, []);
 
+  // Build the category list from products, so newly added categories appear automatically.
+  const categories = useMemo(
+    () =>
+      [...new Set(products.map((product) => product.category).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b)),
+    [products]
+  );
+
   const filteredProducts = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
 
-    if (!query) return products;
+    return products.filter((product) => {
+      const matchesSearch =
+        !query ||
+        [product.name, product.category, product.description]
+          .filter(Boolean)
+          .some((value) => String(value).toLowerCase().includes(query));
 
-    return products.filter((product) =>
-      [product.name, product.category, product.description]
-        .filter(Boolean)
-        .some((value) => String(value).toLowerCase().includes(query))
-    );
-  }, [products, searchTerm]);
+      const matchesCategory =
+        selectedCategory === 'all' ||
+        product.category?.toLowerCase() === selectedCategory.toLowerCase();
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
   const toggleActive = async (product) => {
     if (product.inStock === false) return;
@@ -201,17 +216,33 @@ const Products = () => {
 
   return (
     <section className="text-[#173b32]">
-      <label className="mb-5 flex max-w-md items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm focus-within:border-emerald-700">
-        <FaSearch className="shrink-0 text-gray-400" aria-hidden="true" />
-        <input
-          type="search"
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          placeholder="Search products by name or category…"
-          aria-label="Search products"
-          className="min-w-0 flex-1 bg-transparent text-sm text-[#173b32] outline-none placeholder:text-gray-400"
-        />
-      </label>
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="flex max-w-md flex-1 items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm focus-within:border-emerald-700">
+          <FaSearch className="shrink-0 text-gray-400" aria-hidden="true" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Search products by name or category…"
+            aria-label="Search products"
+            className="min-w-0 flex-1 bg-transparent text-sm text-[#173b32] outline-none placeholder:text-gray-400"
+          />
+        </label>
+
+        <select
+          value={selectedCategory}
+          onChange={(event) => setSelectedCategory(event.target.value)}
+          aria-label="Filter products by category"
+          className="rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-[#173b32] shadow-sm outline-none focus:border-emerald-700"
+        >
+          <option value="all">All categories</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
@@ -243,8 +274,8 @@ const Products = () => {
             columns={columns}
             rows={filteredProducts}
             emptyMessage={
-              searchTerm.trim()
-                ? 'No products match your search.'
+              searchTerm.trim() || selectedCategory !== 'all'
+                ? 'No products match these filters.'
                 : 'No products yet.'
             }
           />
