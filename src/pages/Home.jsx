@@ -9,7 +9,7 @@ import Frame3 from '../assets/images/frame3.jpg';
 
 import CategorySection from '../components/CategorySection';
 import InfoSection from '../components/InfoSection';
-import ProductCard from '../components/productCard';
+import ProductCard from '../components/ProductCard';
 
 import { setProducts } from '../redux/productSlice';
 import { productImages } from '../assets/mockData';

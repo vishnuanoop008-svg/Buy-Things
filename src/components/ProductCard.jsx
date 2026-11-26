@@ -1,285 +1,190 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import LuxuryBags from '../assets/images/luxury-bags.png';
-import NeonStorefront from '../assets/images/neon-storefront.png';
-import RetailStage from '../assets/images/retail-stage.png';
+import { addToCart } from '../redux/cartSlice';
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from '../redux/wishlistSlice';
 
-import CategorySection from '../components/CategorySection';
-import InfoSection from '../components/InfoSection';
-import ProductCard from '../components/productCard';
-
-import { setProducts } from '../redux/productSlice';
-import { productImages } from '../assets/mockData';
-
-const slides = [
-  {
-    image: LuxuryBags,
-    alt: 'Shopping bags on display',
-    eyebrow: 'Thoughtful finds for every day',
-    title: 'Big finds.',
-    highlight: 'Small prices.',
-    description: 'Discover something special at a price you will love.',
-  },
-  {
-    image: NeonStorefront,
-    alt: 'Online shopping storefront',
-    eyebrow: 'Everything you want, in one place',
-    title: 'Shop more.',
-    highlight: 'Spend less.',
-    description: 'Find great offers across your favorite categories.',
-  },
-  {
-    image: RetailStage,
-    alt: 'Retail display with special offers',
-    eyebrow: 'Fresh deals are waiting',
-    title: 'Find your',
-    highlight: 'next favorite.',
-    description: 'Shop the best products at prices you will love.',
-  },
-];
-
-const Home = () => {
+const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.product?.products ?? []);
+  const navigate = useNavigate();
 
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:5000/products');
-
-        const productsWithImages = data.map((product) => ({
-          ...product,
-          image: productImages[product.image] || product.image,
-        }));
-
-        dispatch(setProducts(productsWithImages));
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      }
-    };
-
-    fetchProducts();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isPaused) return undefined;
-
-    const timer = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % slides.length);
-    }, 4000);
-
-    return () => window.clearInterval(timer);
-  }, [isPaused]);
-
-  useEffect(() => {
-    const handleScroll = () => setShowBackToTop(window.scrollY > 300);
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const availableProducts = products.filter(
-    (product) => product.active !== false && product.inStock !== false
+  const user = useSelector((state) => state.auth?.user);
+  const wishlistItems = useSelector(
+    (state) => state.wishlist?.items ?? []
   );
-  const currentSlide = slides[activeSlide];
+
+  const productId = product.productId ?? product.id;
+
+  const wishlistProduct = wishlistItems.find(
+    (item) =>
+      String(item.productId ?? item.id) === String(productId)
+  );
+
+  const isWishlisted = Boolean(wishlistProduct);
+  const rating = Math.max(0, Math.min(5, Number(product.rating) || 0));
+  const isInStock = product.inStock !== false;
+  const isActive = product.active !== false;
+  const isAvailable = isInStock && isActive;
+
+  const availabilityLabel = !isInStock
+    ? 'Out of stock'
+    : !isActive
+      ? 'Inactive'
+      : 'In stock';
+
+  const openProduct = () => {
+    if (productId != null) {
+      navigate(`/product/${productId}`);
+    }
+  };
+
+  const handleCardKeyDown = (event) => {
+    if (event.target !== event.currentTarget) return;
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openProduct();
+    }
+  };
+
+  const handleWishlist = async (event) => {
+    event.stopPropagation();
+
+    if (!user?.id) {
+      toast.error('Please log in first.');
+      return;
+    }
+
+    try {
+      if (isWishlisted) {
+        await dispatch(removeFromWishlist(wishlistProduct.id)).unwrap();
+        toast.success('Removed from wishlist.');
+      } else {
+        await dispatch(addToWishlist(product)).unwrap();
+        toast.success('Added to wishlist.');
+      }
+    } catch (error) {
+      toast.error(
+        typeof error === 'string' ? error : 'Wishlist operation failed.'
+      );
+    }
+  };
+
+  const handleAddToCart = async (event) => {
+    event.stopPropagation();
+
+    if (!user?.id) {
+      toast.error('Please log in first.');
+      return;
+    }
+
+    if (!isAvailable) {
+      toast.error('This product is currently unavailable.');
+      return;
+    }
+
+    try {
+      await dispatch(addToCart(product)).unwrap();
+      toast.success('Product added to cart successfully!');
+    } catch (error) {
+      toast.error(
+        typeof error === 'string' ? error : 'Unable to add product to cart.'
+      );
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-[#f5f7f5] pt-28 text-[#173b32]">
-      {/* Featured carousel */}
-      <section className="mx-auto max-w-7xl px-4 pb-6 pt-5 sm:px-6 lg:px-8">
-        <div
-          className="relative grid min-h-[310px] overflow-hidden rounded-2xl bg-[#e5f0e9] md:grid-cols-2"
-          aria-roledescription="carousel"
-          aria-label="Featured offers"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onFocus={() => setIsPaused(true)}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setIsPaused(false);
-            }
-          }}
-        >
-          <div className="relative z-10 flex flex-col items-start justify-center px-6 py-9 sm:px-10 md:px-12">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
-              {currentSlide.eyebrow}
-            </p>
-
-            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
-              {currentSlide.title}
-              <span className="block text-emerald-700">
-                {currentSlide.highlight}
-              </span>
-            </h1>
-
-            <p className="mt-3 max-w-md text-sm leading-6 text-gray-600 sm:text-base">
-              {currentSlide.description}
-            </p>
-
-            <Link
-              to="/shop"
-              className="mt-5 inline-flex items-center rounded-lg bg-emerald-800 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
-            >
-              Shop now <span className="ml-3 text-lg">→</span>
-            </Link>
-
-            <div className="mt-5 flex gap-2" aria-label="Choose banner">
-              {slides.map((slide, index) => (
-                <button
-                  key={slide.image}
-                  type="button"
-                  onClick={() => setActiveSlide(index)}
-                  aria-label={`Show banner ${index + 1}`}
-                  aria-current={index === activeSlide}
-                  className={`h-2.5 rounded-full transition-all ${
-                    index === activeSlide
-                      ? 'w-7 bg-emerald-800'
-                      : 'w-2.5 bg-emerald-800/25 hover:bg-emerald-800/50'
-                  }`}
-                />
-              ))}
-            </div>
+    <article
+      role="link"
+      tabIndex={0}
+      onClick={openProduct}
+      onKeyDown={handleCardKeyDown}
+      aria-label={`View ${product.name}`}
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white text-[#173b32] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+    >
+      <div className="relative aspect-square w-full overflow-hidden bg-[#f3f5f3]">
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-sm text-gray-400">
+            Image unavailable
           </div>
+        )}
 
-          <div className="relative min-h-56 md:min-h-full">
-            {slides.map((slide, index) => (
-              <img
-                key={slide.image}
-                src={slide.image}
-                alt={slide.alt}
-                aria-hidden={index !== activeSlide}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  index === activeSlide ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
-            ))}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#e5f0e9] via-transparent to-transparent md:w-1/3" />
-          </div>
-        </div>
-      </section>
-
-      <InfoSection />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Today's best deals */}
-        <section className="py-8 sm:py-10">
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
-                Hand-picked for you
-              </p>
-              <h2 className="mt-1 text-2xl font-extrabold sm:text-3xl">
-                Today&apos;s best deals
-              </h2>
-            </div>
-
-            <Link
-              to="/shop"
-              className="shrink-0 text-sm font-semibold text-emerald-800 hover:text-emerald-600"
-            >
-              View all →
-            </Link>
-          </div>
-
-          {availableProducts.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-              {availableProducts.slice(0, 5).map((product) => (
-                <ProductCard
-                  key={product.productId ?? product.id}
-                  product={product}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="rounded-xl border border-gray-200 bg-white p-6 text-center text-sm text-gray-500">
-              Products will appear here when they have loaded.
-            </p>
-          )}
-        </section>
-
-        {/* Category cards: heading and cards are defined in CategorySection.jsx */}
-        <CategorySection />
-      </div>
-
-      {/* Promotional banner */}
-      <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#145344] px-6 py-8 text-white sm:flex-row sm:items-center sm:px-10">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200">
-              A little extra for you
-            </p>
-            <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">
-              Your first cart deserves a little extra.
-            </h2>
-            <p className="mt-2 text-sm text-emerald-50/80">
-              Explore the collection and find something you love.
-            </p>
-            <Link
-              to="/shop"
-              className="mt-5 inline-flex rounded-lg bg-emerald-200 px-5 py-2.5 text-sm font-bold text-[#145344] transition hover:bg-white"
-            >
-              Discover deals
-            </Link>
-          </div>
-
-          <p className="text-5xl font-black text-amber-300 sm:text-6xl">
-            10%
-          </p>
-        </div>
-      </section>
-
-      {/* More products */}
-      {availableProducts.length > 5 && (
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
-                More to love
-              </p>
-              <h2 className="mt-1 text-2xl font-extrabold">
-                Picked for you
-              </h2>
-            </div>
-
-            <Link
-              to="/shop"
-              className="shrink-0 text-sm font-semibold text-emerald-800 hover:text-emerald-600"
-            >
-              Explore more →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {availableProducts.slice(5, 10).map((product) => (
-              <ProductCard
-                key={product.productId ?? product.id}
-                product={product}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {showBackToTop && (
         <button
           type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 z-50 rounded-full bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-700"
+          onClick={handleWishlist}
+          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-600 shadow-md transition hover:text-red-500"
         >
-          Back to top ↑
+          {isWishlisted ? (
+            <FaHeart className="text-sm text-red-500" />
+          ) : (
+            <FaRegHeart className="text-sm" />
+          )}
         </button>
-      )}
-    </main>
+
+        {!isAvailable && (
+          <span className="absolute bottom-2 left-2 rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700">
+            {availabilityLabel}
+          </span>
+        )}
+      </div>
+
+      <div className="bg-white p-3">
+        <h3 className="truncate text-sm font-semibold text-[#173b32]">
+          {product.name}
+        </h3>
+
+        <p className="mt-1 text-sm text-gray-600">
+          ₹{Number(product.price || 0).toLocaleString('en-IN')}
+        </p>
+
+        <div
+          className="mt-2 flex gap-0.5"
+          role="img"
+          aria-label={`Rating: ${rating} out of 5`}
+        >
+          {[1, 2, 3, 4, 5].map((star) => (
+            <FaStar
+              key={star}
+              aria-hidden="true"
+              className={`text-xs ${
+                star <= rating ? 'text-amber-400' : 'text-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+
+        <p
+          className={`mt-1 text-xs font-medium ${
+            isAvailable ? 'text-emerald-700' : 'text-red-600'
+          }`}
+        >
+          {availabilityLabel}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        disabled={!isAvailable}
+        aria-label={`Add ${product.name} to cart`}
+        className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-lg text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+      >
+        +
+      </button>
+    </article>
   );
 };
 
-export default Home;
+export default ProductCard;
