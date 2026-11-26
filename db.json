@@ -4,7 +4,8 @@
       "name": "Vishnu p",
       "email": "vishnuanoop008@gmail.com",
       "password": "12345678",
-      "id": "7DTE_Dy6FoE"
+      "id": "7DTE_Dy6FoE",
+      "blocked": false
     },
     {
       "id": "store-admin",
@@ -778,7 +779,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-24T05:52:22.542Z",
       "id": "2bODWyq9ZQw",
-      "status": "processing"
+      "status": "delivered"
     },
     {
       "products": [
@@ -803,7 +804,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-24T05:52:51.605Z",
       "id": "FPEw74ZvQ6w",
-      "status": "placed"
+      "status": "delivered"
     },
     {
       "products": [
@@ -907,7 +908,7 @@
       "userId": "-m0FETpo9XQ",
       "createdAt": "2026-11-24T05:56:34.146Z",
       "id": "-uqyurHbe7U",
-      "status": "cancelled"
+      "status": "delivered"
     }
   ],
   "categories": [
@@ -927,5 +928,6 @@
       "name": "fashion",
       "id": "DmSEbYla4dg"
     }
-  ]
-  }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

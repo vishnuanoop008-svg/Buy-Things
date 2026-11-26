@@ -9,17 +9,19 @@ export const registerUser = createAsyncThunk(
     try {
       const email = userData.email.trim().toLowerCase();
 
-      const existingUsers = await axios.get(API_URL, {
+      const { data: existingUsers } = await axios.get("http://localhost:5000/users", {
         params: { email },
       });
 
-      if (existingUsers.data.length > 0) {
+      if (existingUsers.length > 0) {
         return rejectWithValue('Email already registered.');
       }
 
-      const response = await axios.post(API_URL, {
+      const response = await axios.post("http://localhost:5000/users", {
         ...userData,
         email,
+        role: 'customer',
+        blocked: false,
       });
 
       const { password, ...safeUser } = response.data;
@@ -36,14 +38,25 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(API_URL, {
-        params: { email: email.trim().toLowerCase() },
+      const normalizedEmail = email.trim().toLowerCase();
+
+      const { data: users } = await axios.get("http://localhost:5000/users", {
+        params: { email: normalizedEmail },
       });
 
-      const user = response.data.find(item => item.password === password);
+      const user = users.find(
+        (item) =>
+          item.email?.trim().toLowerCase() === normalizedEmail
+      );
 
-      if (!user) {
+      if (!user || user.password !== password) {
         return rejectWithValue('Invalid email or password.');
+      }
+
+      if (user.role !== 'admin' && user.blocked === true) {
+        return rejectWithValue(
+          'This account has been blocked. Please contact support.'
+        );
       }
 
       const { password: savedPassword, ...safeUser } = user;
@@ -68,6 +81,7 @@ const getSavedUser = () => {
 
 const authSlice = createSlice({
   name: 'auth',
+
   initialState: {
     user: getSavedUser(),
     loading: false,
@@ -75,25 +89,29 @@ const authSlice = createSlice({
     authModalOpen: false,
     authModalMode: 'login',
   },
+
   reducers: {
-    logout: state => {
+    logout: (state) => {
       state.user = null;
       state.error = null;
       localStorage.removeItem('user');
     },
+
     openAuthModal: (state, action) => {
       state.authModalOpen = true;
       state.authModalMode = action.payload || 'login';
       state.error = null;
     },
-    closeAuthModal: state => {
+
+    closeAuthModal: (state) => {
       state.authModalOpen = false;
       state.error = null;
     },
   },
-  extraReducers: builder => {
+
+  extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, state => {
+      .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -106,7 +124,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Registration failed.';
       })
-      .addCase(loginUser.pending, state => {
+      .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -118,6 +136,15 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Login failed.';
+
+        // Clear a stale session if the blocked-account login was rejected.
+        if (
+          typeof action.payload === 'string' &&
+          action.payload.includes('blocked')
+        ) {
+          state.user = null;
+          localStorage.removeItem('user');
+        }
       });
   },
 });
