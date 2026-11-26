@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 import AdminSidebar from './AdminSidebar';
 
+
 const AdminLayout = () => (
   <div className="min-h-screen bg-[#f5f7f5] text-[#173b32] lg:h-screen lg:overflow-hidden">
     <AdminSidebar />

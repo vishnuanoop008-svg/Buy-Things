@@ -6,6 +6,7 @@ const links = [
   { to: '/admin/orders', label: 'Orders' },
   { to: '/admin/customers', label: 'Customers' },
   { to: '/admin/categories', label: 'Categories' },
+  { to: '/admin/trash', label: 'Trash Bin' },
 ];
 
 const AdminSidebar = () => (
@@ -27,7 +28,7 @@ const AdminSidebar = () => (
           to={link.to}
           end={link.end}
           className={({ isActive }) =>
-            `shrink-0 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+            `flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition ${
               isActive
                 ? 'bg-emerald-800 text-white'
                 : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'

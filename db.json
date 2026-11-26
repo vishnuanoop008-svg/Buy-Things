@@ -18,7 +18,16 @@
       "name": "Anshid",
       "email": "anshid@gmail.com",
       "password": "12345678",
-      "id": "-m0FETpo9XQ"
+      "id": "-m0FETpo9XQ",
+      "blocked": true
+    },
+    {
+      "name": "Fabis",
+      "email": "fabis@gmail.com",
+      "password": "12345678",
+      "role": "customer",
+      "blocked": false,
+      "id": "NU8hTSiwoNk"
     }
   ],
   "products": [
@@ -31,7 +40,8 @@
       "rating": 5,
       "inStock": true,
       "category": "watches",
-      "active": true
+      "active": true,
+      "isDeleted": false
     },
     {
       "id": "2",
@@ -42,7 +52,8 @@
       "rating": 5,
       "inStock": true,
       "category": "Gadgets",
-      "active": true
+      "active": true,
+      "isDeleted": false
     },
     {
       "id": "3",
@@ -674,7 +685,7 @@
       "productId": "2",
       "name": "Robot Speaker",
       "price": 1299,
-      "quantity": 1,
+      "quantity": 2,
       "image": "/src/assets/images/robot.png",
       "id": "MZM2Mk6z9Og"
     },
@@ -740,6 +751,87 @@
       "quantity": 1,
       "image": "/src/assets/images/robot.png",
       "id": "XCF8iMIXgs0"
+    },
+    {
+      "userId": "NU8hTSiwoNk",
+      "productId": "34",
+      "name": "Iphone 16 pro (512)",
+      "price": 81000,
+      "quantity": 1,
+      "image": "/src/assets/images/16%20pro.png",
+      "id": "1h87cE-p5fY"
+    },
+    {
+      "userId": "NU8hTSiwoNk",
+      "productId": "36",
+      "name": "Apple airpod 2nd gen",
+      "price": 13000,
+      "quantity": 1,
+      "image": "/src/assets/images/Apple%20airpod%202nd.png",
+      "id": "wSu37w5q3HA"
+    },
+    {
+      "userId": "NU8hTSiwoNk",
+      "productId": "38",
+      "name": "Apple Watch 2 series",
+      "price": 12999,
+      "quantity": 1,
+      "image": "/src/assets/images/Apple%20Watch.png",
+      "id": "ElMLYuKqDZ4"
+    },
+    {
+      "userId": "NU8hTSiwoNk",
+      "productId": "51",
+      "name": "skull candy mike",
+      "price": 6999,
+      "quantity": 1,
+      "image": "/src/assets/images/Mice.png",
+      "id": "jcDZmh4nTfg"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "50",
+      "name": "Macbook M5 air (16/256)",
+      "price": 110000,
+      "quantity": 1,
+      "image": "/src/assets/images/M5%20air.png",
+      "id": "pXvyyL2fr04"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "8",
+      "name": "Old money watch",
+      "price": 750,
+      "quantity": 1,
+      "image": "/src/assets/images/watch.png",
+      "id": "0OKdrCocBZA"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "34",
+      "name": "Iphone 16 pro (512)",
+      "price": 81000,
+      "quantity": 1,
+      "image": "/src/assets/images/16%20pro.png",
+      "id": "51kuJrvyH9c"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "60",
+      "name": "Light stand",
+      "price": 1899,
+      "quantity": 36,
+      "image": "/src/assets/images/stand.png",
+      "id": "sy9uMK1rSok"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "1",
+      "name": "Ultra 8 series",
+      "price": 1999,
+      "quantity": 1,
+      "image": "/src/assets/images/wwatch.png",
+      "id": "M-TXbupsCRc"
     }
   ],
   "wishlist": [
@@ -753,6 +845,28 @@
       "rating": 5,
       "inStock": true,
       "id": "iDAHLRen2bc"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "9",
+      "name": "Chappal",
+      "image": "/src/assets/images/sandle.png",
+      "price": 799,
+      "description": "Comfortable sandals for everyday outings.",
+      "rating": 4.1,
+      "inStock": true,
+      "id": "WU29mTA3hBI"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "2",
+      "name": "Robot Speaker",
+      "image": "/src/assets/images/robot.png",
+      "price": 1299,
+      "description": "Interactive robot toy for imaginative play.",
+      "rating": 5,
+      "inStock": true,
+      "id": "bzXS84AkwPg"
     }
   ],
   "orders": [
@@ -804,7 +918,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-24T05:52:51.605Z",
       "id": "FPEw74ZvQ6w",
-      "status": "delivered"
+      "status": "shipped"
     },
     {
       "products": [
@@ -829,7 +943,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-24T05:53:43.759Z",
       "id": "jWN3KmgaFhk",
-      "status": "delivered"
+      "status": "processing"
     },
     {
       "products": [
@@ -909,6 +1023,116 @@
       "createdAt": "2026-11-24T05:56:34.146Z",
       "id": "-uqyurHbe7U",
       "status": "delivered"
+    },
+    {
+      "products": [
+        {
+          "userId": "NU8hTSiwoNk",
+          "productId": "34",
+          "name": "Iphone 16 pro (512)",
+          "price": 81000,
+          "quantity": 1,
+          "image": "/src/assets/images/16%20pro.png",
+          "id": "1h87cE-p5fY"
+        },
+        {
+          "userId": "NU8hTSiwoNk",
+          "productId": "36",
+          "name": "Apple airpod 2nd gen",
+          "price": 13000,
+          "quantity": 1,
+          "image": "/src/assets/images/Apple%20airpod%202nd.png",
+          "id": "wSu37w5q3HA"
+        },
+        {
+          "userId": "NU8hTSiwoNk",
+          "productId": "38",
+          "name": "Apple Watch 2 series",
+          "price": 12999,
+          "quantity": 1,
+          "image": "/src/assets/images/Apple%20Watch.png",
+          "id": "ElMLYuKqDZ4"
+        },
+        {
+          "userId": "NU8hTSiwoNk",
+          "productId": "51",
+          "name": "skull candy mike",
+          "price": 6999,
+          "quantity": 1,
+          "image": "/src/assets/images/Mice.png",
+          "id": "jcDZmh4nTfg"
+        }
+      ],
+      "orderNumber": "ORD-1795676265228",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "dc",
+      "totalPrice": 113998,
+      "userId": "NU8hTSiwoNk",
+      "createdAt": "2026-11-26T06:57:45.228Z",
+      "id": "OB-o3nzE1cI",
+      "status": "cancelled"
+    },
+    {
+      "products": [
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "50",
+          "name": "Macbook M5 air (16/256)",
+          "price": 110000,
+          "quantity": 1,
+          "image": "/src/assets/images/M5%20air.png",
+          "id": "pXvyyL2fr04"
+        },
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "8",
+          "name": "Old money watch",
+          "price": 750,
+          "quantity": 1,
+          "image": "/src/assets/images/watch.png",
+          "id": "0OKdrCocBZA"
+        }
+      ],
+      "orderNumber": "ORD-1795676739691",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "cod",
+      "totalPrice": 110750,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-26T07:05:39.691Z",
+      "id": "gnGw0Y4suSg"
+    },
+    {
+      "products": [
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "34",
+          "name": "Iphone 16 pro (512)",
+          "price": 81000,
+          "quantity": 1,
+          "image": "/src/assets/images/16%20pro.png",
+          "id": "51kuJrvyH9c"
+        }
+      ],
+      "orderNumber": "ORD-1795681288413",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "cod",
+      "totalPrice": 81000,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-26T08:21:28.413Z",
+      "id": "sdLA5fn-NUE",
+      "status": "processing"
     }
   ],
   "categories": [

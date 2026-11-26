@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { FaSearch, FaTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import AdminTable from '../components/AdminTable';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { productImages } from '../../assets/mockData';
 import {
-  deleteProduct,
   getProducts,
+  trashProduct,
   updateProduct,
 } from '../services/adminApi';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -34,6 +36,18 @@ const Products = () => {
   useEffect(() => {
     loadProducts();
   }, []);
+
+  const filteredProducts = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
+
+    if (!query) return products;
+
+    return products.filter((product) =>
+      [product.name, product.category, product.description]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(query))
+    );
+  }, [products, searchTerm]);
 
   const toggleActive = async (product) => {
     if (product.inStock === false) return;
@@ -61,22 +75,24 @@ const Products = () => {
     }
   };
 
-  const confirmDelete = async () => {
+  const moveToTrash = async () => {
     if (!deleteTarget) return;
 
     setDeleting(true);
     setError('');
 
     try {
-      await deleteProduct(deleteTarget.id);
+      await trashProduct(deleteTarget.id);
+
       setProducts((current) =>
         current.filter(
           (product) => String(product.id) !== String(deleteTarget.id)
         )
       );
+
       setDeleteTarget(null);
     } catch {
-      setError('Could not delete product.');
+      setError('Could not move the product to the Trash Bin.');
     } finally {
       setDeleting(false);
     }
@@ -93,9 +109,7 @@ const Products = () => {
             alt={product.name}
             className="h-12 w-12 rounded-lg bg-[#f3f5f3] object-contain p-1"
           />
-          <span className="font-semibold text-[#173b32]">
-            {product.name}
-          </span>
+          <span className="font-semibold text-[#173b32]">{product.name}</span>
         </div>
       ),
     },
@@ -118,7 +132,9 @@ const Products = () => {
         return (
           <span
             className={
-              hasStock ? 'font-medium text-emerald-700' : 'font-medium text-red-600'
+              hasStock
+                ? 'font-medium text-emerald-700'
+                : 'font-medium text-red-600'
             }
           >
             {hasStock ? 'In stock' : 'Out of stock'}
@@ -161,19 +177,22 @@ const Products = () => {
       key: 'actions',
       label: 'Actions',
       render: (product) => (
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <Link
             to={`/admin/products/${product.id}/edit`}
             className="font-medium text-emerald-800 transition hover:text-emerald-600"
           >
             Edit
           </Link>
+
           <button
             type="button"
             onClick={() => setDeleteTarget(product)}
-            className="font-medium text-red-600 transition hover:text-red-800"
+            aria-label={`Move ${product.name} to Trash Bin`}
+            title="Move to Trash Bin"
+            className="inline-flex items-center text-red-600 transition hover:text-red-800"
           >
-            Delete
+            <FaTrashAlt aria-hidden="true" />
           </button>
         </div>
       ),
@@ -182,6 +201,18 @@ const Products = () => {
 
   return (
     <section className="text-[#173b32]">
+      <label className="mb-5 flex max-w-md items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm focus-within:border-emerald-700">
+        <FaSearch className="shrink-0 text-gray-400" aria-hidden="true" />
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder="Search products by name or category…"
+          aria-label="Search products"
+          className="min-w-0 flex-1 bg-transparent text-sm text-[#173b32] outline-none placeholder:text-gray-400"
+        />
+      </label>
+
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold">Products</h1>
@@ -210,18 +241,22 @@ const Products = () => {
         <div className="mt-6">
           <AdminTable
             columns={columns}
-            rows={products}
-            emptyMessage="No products yet."
+            rows={filteredProducts}
+            emptyMessage={
+              searchTerm.trim()
+                ? 'No products match your search.'
+                : 'No products yet.'
+            }
           />
         </div>
       )}
 
       <ConfirmDialog
         open={Boolean(deleteTarget)}
-        title="Delete product?"
-        message={`Delete “${deleteTarget?.name}”? This cannot be undone.`}
+        title="Move product to Trash Bin?"
+        message={`Move “${deleteTarget?.name}” to the Trash Bin? You can restore it later.`}
         onCancel={() => setDeleteTarget(null)}
-        onConfirm={confirmDelete}
+        onConfirm={moveToTrash}
         busy={deleting}
       />
     </section>

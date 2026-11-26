@@ -29,6 +29,7 @@ import EditProduct from './admin/pages/EditProduct';
 import AdminOrders from './admin/pages/Orders';
 import Customers from './admin/pages/Customers';
 import Categories from './admin/pages/Categories';
+import TrashBin from './admin/pages/TrashBin';
 
 function LoginModalRoute() {
   const dispatch = useDispatch();
@@ -69,10 +70,11 @@ function AppContent({ order, setOrder }) {
         <Route path="/about" element={<About />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/filter-data" element={<FilterData />} />
+           <Route path="/contact" element={<Contact />} />
 
         {/* Customer-facing protected pages */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/contact" element={<Contact />} />
+       
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
 
@@ -109,6 +111,7 @@ function AppContent({ order, setOrder }) {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="customers" element={<Customers />} />
             <Route path="categories" element={<Categories />} />
+            <Route path="trash" element={<TrashBin />} />
           </Route>
         </Route>
       </Routes>
