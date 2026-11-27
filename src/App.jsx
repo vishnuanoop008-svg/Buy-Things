@@ -30,6 +30,7 @@ import AdminOrders from './admin/pages/Orders';
 import Customers from './admin/pages/Customers';
 import Categories from './admin/pages/Categories';
 import TrashBin from './admin/pages/TrashBin';
+import Messages from './admin/pages/Messages';
 
 function LoginModalRoute() {
   const dispatch = useDispatch();
@@ -112,6 +113,7 @@ function AppContent({ order, setOrder }) {
             <Route path="customers" element={<Customers />} />
             <Route path="categories" element={<Categories />} />
             <Route path="trash" element={<TrashBin />} />
+            <Route path="messages" element={<Messages />} />
           </Route>
         </Route>
       </Routes>
