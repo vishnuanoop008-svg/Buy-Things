@@ -38,9 +38,9 @@
       "price": 1999,
       "description": "Stylish smartwatch with a bright display for everyday use.",
       "rating": 5,
-      "inStock": false,
+      "inStock": true,
       "category": "watches",
-      "active": false,
+      "active": true,
       "isDeleted": false
     },
     {
@@ -876,81 +876,6 @@
     {
       "products": [
         {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "enANUlyhmzk",
-          "name": "Kreo gaming controller3",
-          "price": 3099,
-          "quantity": 1,
-          "image": "/src/assets/images/Kreo.png",
-          "id": "JlpVKVogKTc"
-        }
-      ],
-      "orderNumber": "ORD-1795499542542",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 3099,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-24T05:52:22.542Z",
-      "id": "2bODWyq9ZQw",
-      "status": "delivered"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "10",
-          "name": "Leather Bag",
-          "price": 2000,
-          "quantity": 1,
-          "image": "/src/assets/images/bag.png",
-          "id": "Pntmq-1SDoE"
-        }
-      ],
-      "orderNumber": "ORD-1795499571605",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 2000,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-24T05:52:51.605Z",
-      "id": "FPEw74ZvQ6w",
-      "status": "delivered"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "4",
-          "name": "Apple airpod-max",
-          "price": 5999,
-          "quantity": 2,
-          "image": "/src/assets/images/headphone.png",
-          "id": "6ljR525xHas"
-        }
-      ],
-      "orderNumber": "ORD-1795499623759",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "dc",
-      "totalPrice": 11998,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-24T05:53:43.759Z",
-      "id": "jWN3KmgaFhk",
-      "status": "processing"
-    },
-    {
-      "products": [
-        {
           "userId": "-m0FETpo9XQ",
           "productId": "24",
           "name": "Fossil watch",
@@ -1078,89 +1003,6 @@
       "createdAt": "2026-11-26T06:57:45.228Z",
       "id": "OB-o3nzE1cI",
       "status": "cancelled"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "50",
-          "name": "Macbook M5 air (16/256)",
-          "price": 110000,
-          "quantity": 1,
-          "image": "/src/assets/images/M5%20air.png",
-          "id": "pXvyyL2fr04"
-        },
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "8",
-          "name": "Old money watch",
-          "price": 750,
-          "quantity": 1,
-          "image": "/src/assets/images/watch.png",
-          "id": "0OKdrCocBZA"
-        }
-      ],
-      "orderNumber": "ORD-1795676739691",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 110750,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-26T07:05:39.691Z",
-      "id": "gnGw0Y4suSg"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "34",
-          "name": "Iphone 16 pro (512)",
-          "price": 81000,
-          "quantity": 1,
-          "image": "/src/assets/images/16%20pro.png",
-          "id": "51kuJrvyH9c"
-        }
-      ],
-      "orderNumber": "ORD-1795681288413",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 81000,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-26T08:21:28.413Z",
-      "id": "sdLA5fn-NUE",
-      "status": "processing"
-    },
-    {
-      "products": [
-        {
-          "userId": "7DTE_Dy6FoE",
-          "productId": "34",
-          "name": "Iphone 16 pro (512)",
-          "price": 81000,
-          "quantity": 2,
-          "image": "/src/assets/images/16%20pro.png",
-          "id": "51kuJrvyH9c"
-        }
-      ],
-      "orderNumber": "ORD-1795703829227",
-      "shippingInformation": {
-        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
-        "city": "ramanattukara",
-        "zip": "673631"
-      },
-      "paymentMethod": "cod",
-      "totalPrice": 162000,
-      "userId": "7DTE_Dy6FoE",
-      "createdAt": "2026-11-26T14:37:09.227Z",
-      "id": "geEgbCzuztI",
-      "status": "delivered"
     }
   ],
   "categories": [

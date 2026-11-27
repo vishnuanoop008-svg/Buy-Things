@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import { FaTrashAlt, FaUndo } from 'react-icons/fa';
 
 import AdminTable from '../components/AdminTable';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { productImages } from '../../assets/mockData';
-import { getTrashedProducts, restoreProduct } from '../services/adminApi';
+import {
+  deleteProduct,
+  getTrashedProducts,
+  restoreProduct,
+} from '../services/adminApi';
 
 const TrashBin = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -37,6 +43,27 @@ const TrashBin = () => {
       );
     } catch {
       setError(`Could not restore "${product.name}".`);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handlePermanentDelete = async () => {
+    if (!deleteTarget) return;
+
+    setBusyId(deleteTarget.id);
+    setError('');
+
+    try {
+      await deleteProduct(deleteTarget.id);
+      setProducts((current) =>
+        current.filter(
+          (item) => String(item.id) !== String(deleteTarget.id)
+        )
+      );
+      setDeleteTarget(null);
+    } catch {
+      setError(`Could not permanently delete "${deleteTarget.name}".`);
     } finally {
       setBusyId(null);
     }
@@ -71,15 +98,29 @@ const TrashBin = () => {
       key: 'actions',
       label: 'Actions',
       render: (product) => (
-        <button
-          type="button"
-          onClick={() => handleRestore(product)}
-          disabled={busyId === product.id}
-          className="inline-flex items-center gap-2 font-semibold text-emerald-800 hover:text-emerald-600 disabled:opacity-50"
-        >
-          <FaUndo aria-hidden="true" />
-          {busyId === product.id ? 'Restoring…' : 'Restore'}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => handleRestore(product)}
+            disabled={busyId === product.id}
+            aria-label={`Restore ${product.name}`}
+            title={busyId === product.id ? 'Restoring…' : 'Restore'}
+            className="inline-flex items-center text-lg text-emerald-800 transition hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <FaUndo aria-hidden="true" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setDeleteTarget(product)}
+            disabled={busyId === product.id}
+            aria-label={`Permanently delete ${product.name}`}
+            title="Permanently delete"
+            className="inline-flex items-center text-lg text-red-600 transition hover:text-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <FaTrashAlt aria-hidden="true" />
+          </button>
+        </div>
       ),
     },
   ];
@@ -92,7 +133,7 @@ const TrashBin = () => {
       </div>
 
       <p className="mt-1 text-sm text-gray-600">
-        Restore products to make them available in your product list again.
+        Restore products or permanently delete them.
       </p>
 
       {error && (
@@ -112,6 +153,15 @@ const TrashBin = () => {
           />
         </div>
       )}
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Permanently delete product?"
+        message={`Permanently delete “${deleteTarget?.name}”? This action cannot be undone.`}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={handlePermanentDelete}
+        busy={busyId === deleteTarget?.id}
+      />
     </section>
   );
 };
