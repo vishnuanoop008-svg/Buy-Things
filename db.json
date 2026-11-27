@@ -5,7 +5,8 @@
       "email": "vishnuanoop008@gmail.com",
       "password": "12345678",
       "id": "7DTE_Dy6FoE",
-      "blocked": false
+      "blocked": false,
+      "address": "kailasa nivas , kallikoodam perumugham road, feroke ,673631"
     },
     {
       "id": "store-admin",
@@ -19,7 +20,7 @@
       "email": "anshid@gmail.com",
       "password": "12345678",
       "id": "-m0FETpo9XQ",
-      "blocked": true
+      "blocked": false
     },
     {
       "name": "Fabis",
@@ -28,6 +29,14 @@
       "role": "customer",
       "blocked": false,
       "id": "NU8hTSiwoNk"
+    },
+    {
+      "name": "Fabis",
+      "email": "fabis123@gmail.com",
+      "password": "12345678",
+      "role": "customer",
+      "blocked": false,
+      "id": "6MaJJ5jUj5M"
     }
   ],
   "products": [
@@ -835,6 +844,60 @@
       "quantity": 1,
       "image": "/src/assets/images/wwatch.png",
       "id": "M-TXbupsCRc"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "6",
+      "name": "Kreo gaming keyboard",
+      "price": 2399,
+      "quantity": 1,
+      "image": "/src/assets/images/keyboard1.png",
+      "id": "WAwt1BnLwaQ"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "10",
+      "name": "Leather Bag",
+      "price": 2000,
+      "quantity": 1,
+      "image": "/src/assets/images/bag.png",
+      "id": "Y827p41lfwM"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "13",
+      "name": "Timberland Boots",
+      "price": 3000,
+      "quantity": 1,
+      "image": "/src/assets/images/boot2.png",
+      "id": "4w63BgNBs4g"
+    },
+    {
+      "userId": "6MaJJ5jUj5M",
+      "productId": "31",
+      "name": "Kreo gaming controller3",
+      "price": 3099,
+      "quantity": 1,
+      "image": "/src/assets/images/Kreo.png",
+      "id": "qivTXATq-JE"
+    },
+    {
+      "userId": "6MaJJ5jUj5M",
+      "productId": "17",
+      "name": "Hotwheels",
+      "price": 1999,
+      "quantity": 1,
+      "image": "/src/assets/images/hotwheels.png",
+      "id": "a8hmslemG9M"
+    },
+    {
+      "userId": "6MaJJ5jUj5M",
+      "productId": "26",
+      "name": "Remote car",
+      "price": 1999,
+      "quantity": 1,
+      "image": "/src/assets/images/toy%20car.png",
+      "id": "rKufGZimaVs"
     }
   ],
   "wishlist": [
@@ -876,133 +939,106 @@
     {
       "products": [
         {
-          "userId": "-m0FETpo9XQ",
-          "productId": "24",
-          "name": "Fossil watch",
-          "price": 5500,
-          "quantity": 2,
-          "image": "/src/assets/images/men%20watch2.png",
-          "id": "ZJCSXn6i_4E"
+          "userId": "7DTE_Dy6FoE",
+          "productId": "6",
+          "name": "Kreo gaming keyboard",
+          "price": 2399,
+          "quantity": 1,
+          "image": "/src/assets/images/keyboard1.png",
+          "id": "WAwt1BnLwaQ"
         },
         {
-          "userId": "-m0FETpo9XQ",
-          "productId": "1",
-          "name": "Ultra 8 series",
-          "price": 1999,
-          "quantity": 3,
-          "image": "/src/assets/images/wwatch.png",
-          "id": "f-2MR-MGhZ8"
-        },
-        {
-          "userId": "-m0FETpo9XQ",
-          "productId": "8",
-          "name": "Old money watch",
-          "price": 750,
-          "quantity": 2,
-          "image": "/src/assets/images/watch.png",
-          "id": "blexNPSddOw"
-        },
-        {
-          "userId": "-m0FETpo9XQ",
+          "userId": "7DTE_Dy6FoE",
           "productId": "4",
           "name": "Apple airpod-max",
           "price": 5999,
           "quantity": 1,
           "image": "/src/assets/images/headphone.png",
-          "id": "AFEXUh55X9M"
+          "id": "HcVVWKg2FeA"
         },
         {
-          "userId": "-m0FETpo9XQ",
-          "productId": "enANUlyhmzk",
-          "name": "Kreo gaming controller3",
-          "price": 3099,
+          "userId": "7DTE_Dy6FoE",
+          "productId": "8",
+          "name": "Old money watch",
+          "price": 750,
           "quantity": 1,
-          "image": "/src/assets/images/Kreo.png",
-          "id": "RWg7QCVuuVs"
+          "image": "/src/assets/images/watch.png",
+          "id": "0OKdrCocBZA"
         },
         {
-          "userId": "-m0FETpo9XQ",
-          "productId": "12",
-          "name": "Trimmer",
-          "price": 1650,
+          "userId": "7DTE_Dy6FoE",
+          "productId": "10",
+          "name": "Leather Bag",
+          "price": 2000,
           "quantity": 1,
-          "image": "/src/assets/images/Bombay%20Shaving%20Company.png",
-          "id": "n5YFSEMHK28"
+          "image": "/src/assets/images/bag.png",
+          "id": "Y827p41lfwM"
         },
         {
-          "userId": "-m0FETpo9XQ",
-          "productId": "2",
-          "name": "Robot Speaker",
-          "price": 1299,
+          "userId": "7DTE_Dy6FoE",
+          "productId": "13",
+          "name": "Timberland Boots",
+          "price": 3000,
           "quantity": 1,
-          "image": "/src/assets/images/robot.png",
-          "id": "XCF8iMIXgs0"
+          "image": "/src/assets/images/boot2.png",
+          "id": "4w63BgNBs4g"
         }
       ],
-      "orderNumber": "ORD-1795499794146",
+      "orderNumber": "ORD-1795760010967",
       "shippingInformation": {
         "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
         "city": "ramanattukara",
         "zip": "673631"
       },
       "paymentMethod": "cod",
-      "totalPrice": 30544,
-      "userId": "-m0FETpo9XQ",
-      "createdAt": "2026-11-24T05:56:34.146Z",
-      "id": "-uqyurHbe7U",
-      "status": "shipped"
+      "totalPrice": 14148,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-27T06:13:30.967Z",
+      "id": "1Jrxs3LsD8M",
+      "status": "processing"
     },
     {
       "products": [
         {
-          "userId": "NU8hTSiwoNk",
-          "productId": "34",
-          "name": "Iphone 16 pro (512)",
-          "price": 81000,
+          "userId": "6MaJJ5jUj5M",
+          "productId": "31",
+          "name": "Kreo gaming controller3",
+          "price": 3099,
           "quantity": 1,
-          "image": "/src/assets/images/16%20pro.png",
-          "id": "1h87cE-p5fY"
+          "image": "/src/assets/images/Kreo.png",
+          "id": "qivTXATq-JE"
         },
         {
-          "userId": "NU8hTSiwoNk",
-          "productId": "36",
-          "name": "Apple airpod 2nd gen",
-          "price": 13000,
+          "userId": "6MaJJ5jUj5M",
+          "productId": "17",
+          "name": "Hotwheels",
+          "price": 1999,
           "quantity": 1,
-          "image": "/src/assets/images/Apple%20airpod%202nd.png",
-          "id": "wSu37w5q3HA"
+          "image": "/src/assets/images/hotwheels.png",
+          "id": "a8hmslemG9M"
         },
         {
-          "userId": "NU8hTSiwoNk",
-          "productId": "38",
-          "name": "Apple Watch 2 series",
-          "price": 12999,
+          "userId": "6MaJJ5jUj5M",
+          "productId": "26",
+          "name": "Remote car",
+          "price": 1999,
           "quantity": 1,
-          "image": "/src/assets/images/Apple%20Watch.png",
-          "id": "ElMLYuKqDZ4"
-        },
-        {
-          "userId": "NU8hTSiwoNk",
-          "productId": "51",
-          "name": "skull candy mike",
-          "price": 6999,
-          "quantity": 1,
-          "image": "/src/assets/images/Mice.png",
-          "id": "jcDZmh4nTfg"
+          "image": "/src/assets/images/toy%20car.png",
+          "id": "rKufGZimaVs"
         }
       ],
-      "orderNumber": "ORD-1795676265228",
+      "orderNumber": "ORD-1795760112039",
       "shippingInformation": {
         "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
         "city": "ramanattukara",
         "zip": "673631"
       },
-      "paymentMethod": "dc",
-      "totalPrice": 113998,
-      "userId": "NU8hTSiwoNk",
-      "createdAt": "2026-11-26T06:57:45.228Z",
-      "id": "OB-o3nzE1cI",
-      "status": "cancelled"
+      "paymentMethod": "cod",
+      "totalPrice": 7097,
+      "userId": "6MaJJ5jUj5M",
+      "createdAt": "2026-11-27T06:15:12.039Z",
+      "id": "q2LUtscOswA",
+      "status": "shipped"
     }
   ],
   "categories": [

@@ -1,7 +1,12 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/users';
+
+const removePassword = (user) => {
+  const { password, ...safeUser } = user;
+  return safeUser;
+};
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -9,23 +14,26 @@ export const registerUser = createAsyncThunk(
     try {
       const email = userData.email.trim().toLowerCase();
 
-      const { data: existingUsers } = await axios.get("http://localhost:5000/users", {
+      const { data: existingUsers } = await axios.get(API_URL, {
         params: { email },
       });
 
-      if (existingUsers.length > 0) {
+      const emailExists = existingUsers.some(
+        (user) => user.email?.trim().toLowerCase() === email
+      );
+
+      if (emailExists) {
         return rejectWithValue('Email already registered.');
       }
 
-      const response = await axios.post("http://localhost:5000/users", {
+      const response = await axios.post(API_URL, {
         ...userData,
         email,
         role: 'customer',
         blocked: false,
       });
 
-      const { password, ...safeUser } = response.data;
-      return safeUser;
+      return removePassword(response.data);
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Registration failed.'
@@ -40,13 +48,12 @@ export const loginUser = createAsyncThunk(
     try {
       const normalizedEmail = email.trim().toLowerCase();
 
-      const { data: users } = await axios.get("http://localhost:5000/users", {
+      const { data: users } = await axios.get(API_URL, {
         params: { email: normalizedEmail },
       });
 
       const user = users.find(
-        (item) =>
-          item.email?.trim().toLowerCase() === normalizedEmail
+        (item) => item.email?.trim().toLowerCase() === normalizedEmail
       );
 
       if (!user || user.password !== password) {
@@ -59,12 +66,9 @@ export const loginUser = createAsyncThunk(
         );
       }
 
-      const { password: savedPassword, ...safeUser } = user;
-      return safeUser;
+      return removePassword(user);
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || 'Login failed.'
-      );
+      return rejectWithValue(error.response?.data?.message || 'Login failed.');
     }
   }
 );
@@ -95,6 +99,14 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
       localStorage.removeItem('user');
+    },
+
+    updateUserProfile: (state, action) => {
+      if (!state.user) return;
+
+      const { password, ...safeUpdates } = action.payload;
+      state.user = { ...state.user, ...safeUpdates };
+      localStorage.setItem('user', JSON.stringify(state.user));
     },
 
     openAuthModal: (state, action) => {
@@ -137,10 +149,9 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Login failed.';
 
-        // Clear a stale session if the blocked-account login was rejected.
         if (
           typeof action.payload === 'string' &&
-          action.payload.includes('blocked')
+          action.payload.toLowerCase().includes('blocked')
         ) {
           state.user = null;
           localStorage.removeItem('user');
@@ -151,6 +162,7 @@ const authSlice = createSlice({
 
 export const {
   logout,
+  updateUserProfile,
   openAuthModal,
   closeAuthModal,
 } = authSlice.actions;
