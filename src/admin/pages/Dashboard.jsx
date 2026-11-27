@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import {
   getCustomers,
   getOrders,
@@ -37,6 +39,8 @@ const formatCurrency = (value) =>
   })}`;
 
 const Dashboard = () => {
+  const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
@@ -48,6 +52,8 @@ const Dashboard = () => {
     let isMounted = true;
 
     const loadDashboard = async () => {
+      setLoading(true);
+
       try {
         const [productData, orderData, customerData] = await Promise.all([
           getProducts(),
@@ -77,7 +83,7 @@ const Dashboard = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [location.key]);
 
   const revenue = useMemo(
     () =>
@@ -120,9 +126,9 @@ const Dashboard = () => {
         if (!order.createdAt) return;
 
         const date = new Date(order.createdAt);
-        const isToday = date.toDateString() === now.toDateString();
-
-        if (isToday) buckets[date.getHours()].count += 1;
+        if (date.toDateString() === now.toDateString()) {
+          buckets[date.getHours()].count += 1;
+        }
       });
 
       return buckets;
@@ -206,6 +212,29 @@ const Dashboard = () => {
 
   return (
     <section className="space-y-6 text-[#173b32]">
+      <style>{`
+        @keyframes donut-flow {
+          from {
+            transform: rotate(-360deg) scale(0.9);
+            opacity: 0.6;
+          }
+          to {
+            transform: rotate(0deg) scale(1);
+            opacity: 1;
+          }
+        }
+
+        .donut-flow {
+          animation: donut-flow 900ms ease-out both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .donut-flow {
+            animation: none;
+          }
+        }
+      `}</style>
+
       <div>
         <h1 className="text-2xl font-extrabold">Dashboard</h1>
         <p className="mt-1 text-sm text-gray-600">
@@ -225,7 +254,6 @@ const Dashboard = () => {
         </p>
       ) : (
         <>
-          {/* Summary cards */}
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {statCards.map((card) => (
               <article
@@ -242,7 +270,6 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* Order charts */}
           <div className="grid gap-5 xl:grid-cols-2">
             <article className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -298,10 +325,7 @@ const Dashboard = () => {
                     const barHeight =
                       bucket.count === 0
                         ? 0
-                        : Math.max(
-                            (bucket.count / maxBucketCount) * 88,
-                            5
-                          );
+                        : Math.max((bucket.count / maxBucketCount) * 88, 5);
 
                     return (
                       <div
@@ -334,16 +358,21 @@ const Dashboard = () => {
 
               <div className="flex flex-col items-center justify-center gap-6 py-6 sm:flex-row sm:gap-8">
                 <div
-                  className="relative h-48 w-48 shrink-0 rounded-full"
+                  className="relative h-48 w-48 shrink-0"
                   role="img"
                   aria-label={`Order status chart for ${statusTotal} orders`}
-                  style={{
-                    background:
-                      statusTotal > 0
-                        ? `conic-gradient(${statusGradient})`
-                        : '#e5e7eb',
-                  }}
                 >
+                  <div
+                    key={location.key}
+                    className="donut-flow absolute inset-0 rounded-full"
+                    style={{
+                      background:
+                        statusTotal > 0
+                          ? `conic-gradient(${statusGradient})`
+                          : '#e5e7eb',
+                    }}
+                  />
+
                   <div className="absolute inset-8 flex flex-col items-center justify-center rounded-full bg-white">
                     <span className="text-3xl font-extrabold">
                       {statusTotal}
@@ -375,7 +404,6 @@ const Dashboard = () => {
             </article>
           </div>
 
-          {/* Recent orders */}
           <article className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 sm:px-6">
               <div>
@@ -425,9 +453,9 @@ const Dashboard = () => {
                           </td>
                           <td className="px-5 py-4 text-gray-600">
                             {order.createdAt
-                              ? new Date(
-                                  order.createdAt
-                                ).toLocaleDateString('en-IN')
+                              ? new Date(order.createdAt).toLocaleDateString(
+                                  'en-IN'
+                                )
                               : '—'}
                           </td>
                           <td className="px-5 py-4">{itemCount}</td>

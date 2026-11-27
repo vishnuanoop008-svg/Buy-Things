@@ -20,7 +20,7 @@
       "email": "anshid@gmail.com",
       "password": "12345678",
       "id": "-m0FETpo9XQ",
-      "blocked": false
+      "blocked": true
     },
     {
       "name": "Fabis",
@@ -995,7 +995,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-27T06:13:30.967Z",
       "id": "1Jrxs3LsD8M",
-      "status": "processing"
+      "status": "shipped"
     },
     {
       "products": [
@@ -1038,7 +1038,7 @@
       "userId": "6MaJJ5jUj5M",
       "createdAt": "2026-11-27T06:15:12.039Z",
       "id": "q2LUtscOswA",
-      "status": "shipped"
+      "status": "delivered"
     }
   ],
   "categories": [
