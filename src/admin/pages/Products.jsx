@@ -11,10 +11,13 @@ import {
   updateProduct,
 } from '../services/adminApi';
 
+const PRODUCTS_PER_PAGE = 10;
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -38,11 +41,15 @@ const Products = () => {
     loadProducts();
   }, []);
 
-  // Build the category list from products, so newly added categories appear automatically.
   const categories = useMemo(
     () =>
-      [...new Set(products.map((product) => product.category).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b)),
+      [
+        ...new Set(
+          products
+            .map((product) => product.category?.trim())
+            .filter(Boolean)
+        ),
+      ].sort((a, b) => a.localeCompare(b)),
     [products]
   );
 
@@ -63,6 +70,24 @@ const Products = () => {
       return matchesSearch && matchesCategory;
     });
   }, [products, searchTerm, selectedCategory]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+  );
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const paginatedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + PRODUCTS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages));
+  }, [totalPages]);
 
   const toggleActive = async (product) => {
     if (product.inStock === false) return;
@@ -269,17 +294,60 @@ const Products = () => {
       {loading ? (
         <p className="mt-6 text-gray-600">Loading products…</p>
       ) : (
-        <div className="mt-6">
-          <AdminTable
-            columns={columns}
-            rows={filteredProducts}
-            emptyMessage={
-              searchTerm.trim() || selectedCategory !== 'all'
-                ? 'No products match these filters.'
-                : 'No products yet.'
-            }
-          />
-        </div>
+        <>
+          <div className="mt-6">
+            <AdminTable
+              columns={columns}
+              rows={paginatedProducts}
+              emptyMessage={
+                searchTerm.trim() || selectedCategory !== 'all'
+                  ? 'No products match these filters.'
+                  : 'No products yet.'
+              }
+            />
+          </div>
+
+          {filteredProducts.length > 0 && (
+            <div className="mt-5 flex flex-col items-center justify-between gap-3 sm:flex-row">
+              <p className="text-sm text-gray-600">
+                Showing {startIndex + 1}–
+                {Math.min(
+                  startIndex + PRODUCTS_PER_PAGE,
+                  filteredProducts.length
+                )}{' '}
+                of {filteredProducts.length} products
+              </p>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage((page) => Math.max(page - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-[#173b32] hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Previous
+                </button>
+
+                <span className="text-sm text-gray-600">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage((page) => Math.min(page + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-[#173b32] hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <ConfirmDialog
