@@ -1,12 +1,22 @@
+import {
+  FaBoxOpen,
+  FaClipboardList,
+  FaEnvelope,
+  FaTachometerAlt,
+  FaTrashAlt,
+  FaUserCircle,
+  FaUsers,
+} from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 const links = [
-  { to: '/admin', label: 'Dashboard', end: true },
-  { to: '/admin/products', label: 'Products' },
-  { to: '/admin/orders', label: 'Orders' },
-  { to: '/admin/customers', label: 'Customers' },
-  { to: '/admin/trash', label: 'Trash Bin' },
-  { to: '/admin/messages', label: 'Messages' },
+  { to: '/admin', label: 'Dashboard', end: true, icon: FaTachometerAlt },
+  { to: '/admin/products', label: 'Products', icon: FaBoxOpen },
+  { to: '/admin/orders', label: 'Orders', icon: FaClipboardList },
+  { to: '/admin/customers', label: 'Customers', icon: FaUsers },
+  { to: '/admin/trash', label: 'Trash Bin', icon: FaTrashAlt },
+  { to: '/admin/messages', label: 'Messages', icon: FaEnvelope },
+  { to: '/admin/profile', label: 'Admin Profile', icon: FaUserCircle },
 ];
 
 const AdminSidebar = () => (
@@ -22,20 +32,21 @@ const AdminSidebar = () => (
       aria-label="Admin navigation"
       className="flex gap-2 overflow-x-auto lg:flex-col"
     >
-      {links.map((link) => (
+      {links.map(({ to, label, end, icon: Icon }) => (
         <NavLink
-          key={link.to}
-          to={link.to}
-          end={link.end}
+          key={to}
+          to={to}
+          end={end}
           className={({ isActive }) =>
-            `flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+            `flex shrink-0 items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
               isActive
                 ? 'bg-emerald-800 text-white'
                 : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
             }`
           }
         >
-          {link.label}
+          <Icon aria-hidden="true" className="shrink-0" />
+          {label}
         </NavLink>
       ))}
     </nav>
