@@ -5,6 +5,9 @@ import {
   FaMapMarkerAlt,
   FaClock,
 } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+
+import { submitContactMessage } from '../services/contactApi';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,22 +16,39 @@ const Contact = () => {
     subject: '',
     message: '',
   });
+  const [sending, setSending] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert('Thank you! Your message has been submitted.');
+    setSending(true);
 
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    });
+    try {
+      await submitContactMessage({
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        createdAt: new Date().toISOString(),
+        status: 'new',
+      });
+
+      toast.success('Thank you! Your message has been sent.');
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+    } catch {
+      toast.error('Could not send your message. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputClass =
@@ -170,9 +190,10 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full rounded-lg bg-emerald-800 py-3 font-semibold text-white transition hover:bg-emerald-700"
+                disabled={sending}
+                className="w-full rounded-lg bg-emerald-800 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Send message
+                {sending ? 'Sending…' : 'Send message'}
               </button>
             </form>
           </div>
