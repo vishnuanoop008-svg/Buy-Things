@@ -1,6 +1,6 @@
 const AdminTable = ({
-  columns,
-  rows,
+  columns = [],
+  rows = [],
   emptyMessage = 'No records found.',
 }) => (
   <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -8,7 +8,11 @@ const AdminTable = ({
       <thead className="border-b border-gray-200 bg-[#f5f8f6] text-xs uppercase tracking-wide text-gray-500">
         <tr>
           {columns.map((column) => (
-            <th key={column.key} scope="col" className="px-4 py-3 font-semibold">
+            <th
+              key={column.key}
+              scope="col"
+              className="px-4 py-3 font-semibold"
+            >
               {column.label}
             </th>
           ))}
@@ -19,7 +23,7 @@ const AdminTable = ({
         {rows.length > 0 ? (
           rows.map((row, index) => (
             <tr
-              key={row.id ?? index}
+              key={row.id ?? row.productId ?? index}
               className="text-[#173b32] transition hover:bg-[#f8faf8]"
             >
               {columns.map((column) => (
@@ -34,7 +38,7 @@ const AdminTable = ({
         ) : (
           <tr>
             <td
-              colSpan={columns.length}
+              colSpan={columns.length || 1}
               className="px-4 py-10 text-center text-gray-500"
             >
               {emptyMessage}
