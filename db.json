@@ -921,7 +921,7 @@
       "userId": "7DTE_Dy6FoE",
       "createdAt": "2026-11-24T05:52:51.605Z",
       "id": "FPEw74ZvQ6w",
-      "status": "shipped"
+      "status": "delivered"
     },
     {
       "products": [
@@ -1181,5 +1181,16 @@
       "id": "DmSEbYla4dg"
     }
   ],
-   "messages": []
+  "messages": [
+    {
+      "name": "Vishnu",
+      "email": "vishnuanoop008@gmail.com",
+      "subject": "Replace the product",
+      "message": "From your store i purchased a shoe its not in my size i want to replace and get that my correct size . its from my fault while selecting another size.",
+      "createdAt": "2026-11-27T04:35:29.408Z",
+      "status": "new",
+      "id": "DXaKb3214-I"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
