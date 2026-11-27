@@ -835,15 +835,6 @@
       "quantity": 1,
       "image": "/src/assets/images/wwatch.png",
       "id": "M-TXbupsCRc"
-    },
-    {
-      "userId": "7DTE_Dy6FoE",
-      "productId": "40",
-      "name": "Converse chuck taylor",
-      "price": 2899,
-      "quantity": 1,
-      "image": "/src/assets/images/converse.png",
-      "id": "fCIJJFfieOs"
     }
   ],
   "wishlist": [
@@ -1190,5 +1181,5 @@
       "id": "DmSEbYla4dg"
     }
   ],
-  "$schema": "./node_modules/json-server/schema.json"
+   "messages": []
 }
