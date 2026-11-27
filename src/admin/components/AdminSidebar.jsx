@@ -6,6 +6,7 @@ const links = [
   { to: '/admin/orders', label: 'Orders' },
   { to: '/admin/customers', label: 'Customers' },
   { to: '/admin/trash', label: 'Trash Bin' },
+  { to: '/admin/messages', label: 'Messages' },
 ];
 
 const AdminSidebar = () => (
