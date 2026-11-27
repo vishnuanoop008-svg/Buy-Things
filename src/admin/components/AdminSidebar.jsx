@@ -10,13 +10,13 @@ import {
 import { NavLink } from 'react-router-dom';
 
 const links = [
+  { to: '/admin/profile', label: 'Admin Profile', icon: FaUserCircle },
   { to: '/admin', label: 'Dashboard', end: true, icon: FaTachometerAlt },
   { to: '/admin/products', label: 'Products', icon: FaBoxOpen },
   { to: '/admin/orders', label: 'Orders', icon: FaClipboardList },
   { to: '/admin/customers', label: 'Customers', icon: FaUsers },
-  { to: '/admin/trash', label: 'Trash Bin', icon: FaTrashAlt },
   { to: '/admin/messages', label: 'Messages', icon: FaEnvelope },
-  { to: '/admin/profile', label: 'Admin Profile', icon: FaUserCircle },
+  { to: '/admin/trash', label: 'Trash Bin', icon: FaTrashAlt },
 ];
 
 const AdminSidebar = () => (
