@@ -59,9 +59,9 @@
       "price": 1299,
       "description": "Interactive robot toy for imaginative play.",
       "rating": 5,
-      "inStock": false,
+      "inStock": true,
       "category": "Gadgets",
-      "active": false,
+      "active": true,
       "isDeleted": false
     },
     {
