@@ -38,9 +38,9 @@
       "price": 1999,
       "description": "Stylish smartwatch with a bright display for everyday use.",
       "rating": 5,
-      "inStock": true,
+      "inStock": false,
       "category": "watches",
-      "active": true,
+      "active": false,
       "isDeleted": false
     },
     {
@@ -814,7 +814,7 @@
       "productId": "34",
       "name": "Iphone 16 pro (512)",
       "price": 81000,
-      "quantity": 1,
+      "quantity": 2,
       "image": "/src/assets/images/16%20pro.png",
       "id": "51kuJrvyH9c"
     },
@@ -835,6 +835,15 @@
       "quantity": 1,
       "image": "/src/assets/images/wwatch.png",
       "id": "M-TXbupsCRc"
+    },
+    {
+      "userId": "7DTE_Dy6FoE",
+      "productId": "40",
+      "name": "Converse chuck taylor",
+      "price": 2899,
+      "quantity": 1,
+      "image": "/src/assets/images/converse.png",
+      "id": "fCIJJFfieOs"
     }
   ],
   "wishlist": [
@@ -1136,6 +1145,31 @@
       "createdAt": "2026-11-26T08:21:28.413Z",
       "id": "sdLA5fn-NUE",
       "status": "processing"
+    },
+    {
+      "products": [
+        {
+          "userId": "7DTE_Dy6FoE",
+          "productId": "34",
+          "name": "Iphone 16 pro (512)",
+          "price": 81000,
+          "quantity": 2,
+          "image": "/src/assets/images/16%20pro.png",
+          "id": "51kuJrvyH9c"
+        }
+      ],
+      "orderNumber": "ORD-1795703829227",
+      "shippingInformation": {
+        "address": "kailasam nivas, kallikudam ,perumugham road ,feroke kozhikode",
+        "city": "ramanattukara",
+        "zip": "673631"
+      },
+      "paymentMethod": "cod",
+      "totalPrice": 162000,
+      "userId": "7DTE_Dy6FoE",
+      "createdAt": "2026-11-26T14:37:09.227Z",
+      "id": "geEgbCzuztI",
+      "status": "delivered"
     }
   ],
   "categories": [
