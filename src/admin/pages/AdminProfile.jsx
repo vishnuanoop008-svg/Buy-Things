@@ -3,17 +3,19 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+const USERS_API_URL = 'http://localhost:5000/users';
+
 const AdminProfile = () => {
-  const user = useSelector((state) => state.auth.user);
+  const admin = useSelector(state => state.admin?.admin);
 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    if (!user?.id) {
+    if (!admin?.id) {
       toast.error('Could not find the admin account. Please sign in again.');
       return;
     }
@@ -32,7 +34,7 @@ const AdminProfile = () => {
 
     try {
       await axios.patch(
-        `http://localhost:5000/users/${encodeURIComponent(user.id)}`,
+        `${USERS_API_URL}/${encodeURIComponent(admin.id)}`,
         { password: newPassword }
       );
 
@@ -49,11 +51,13 @@ const AdminProfile = () => {
   const inputClass =
     'mt-2 w-full rounded-lg border border-gray-300 bg-[#f5f8f6] px-3 py-2.5 text-[#173b32] outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15';
 
-  if (!user) {
+  if (!admin) {
     return (
       <section className="text-[#173b32]">
         <h1 className="text-2xl font-extrabold">Admin Profile</h1>
-        <p className="mt-2 text-gray-600">Please sign in to view this page.</p>
+        <p className="mt-2 text-gray-600">
+          Please sign in to view this page.
+        </p>
       </section>
     );
   }
@@ -72,23 +76,30 @@ const AdminProfile = () => {
         <dl className="space-y-5">
           <div className="border-b border-gray-100 pb-4">
             <dt className="text-sm text-gray-500">Name</dt>
-            <dd className="mt-1 font-semibold">{user.name || 'Store Admin'}</dd>
+            <dd className="mt-1 font-semibold">
+              {admin.name || 'Store Admin'}
+            </dd>
           </div>
 
           <div className="border-b border-gray-100 pb-4">
             <dt className="text-sm text-gray-500">Email</dt>
-            <dd className="mt-1 break-all font-semibold">{user.email || '—'}</dd>
+            <dd className="mt-1 break-all font-semibold">
+              {admin.email || '—'}
+            </dd>
           </div>
 
           <div>
             <dt className="text-sm text-gray-500">Role</dt>
             <dd className="mt-1 font-semibold capitalize">
-              {user.role || 'admin'}
+              {admin.role || 'admin'}
             </dd>
           </div>
         </dl>
 
-        <form onSubmit={handleSubmit} className="mt-8 border-t border-gray-100 pt-6">
+        <form
+          onSubmit={handleSubmit}
+          className="mt-8 border-t border-gray-100 pt-6"
+        >
           <h2 className="text-xl font-bold">Update password</h2>
 
           <label
@@ -101,7 +112,7 @@ const AdminProfile = () => {
             id="admin-new-password"
             type="password"
             value={newPassword}
-            onChange={(event) => setNewPassword(event.target.value)}
+            onChange={event => setNewPassword(event.target.value)}
             autoComplete="new-password"
             minLength={8}
             required
@@ -119,7 +130,7 @@ const AdminProfile = () => {
             id="admin-confirm-password"
             type="password"
             value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={event => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
             minLength={8}
             required

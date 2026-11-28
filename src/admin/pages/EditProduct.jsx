@@ -17,13 +17,35 @@ const EditProduct = () => {
     let isMounted = true;
 
     const loadProduct = async () => {
+      setLoading(true);
+      setError('');
+
       try {
         const result = await getProduct(id);
-        if (isMounted) setProduct(result);
+
+        if (isMounted) {
+          const quantity =
+            result.quantity != null
+              ? Math.max(0, Number(result.quantity) || 0)
+              : result.inStock === false
+                ? 0
+                : 10;
+
+          setProduct({
+            ...result,
+            quantity,
+            inStock: quantity > 0,
+            active: quantity > 0 && result.active !== false,
+          });
+        }
       } catch {
-        if (isMounted) setError('Could not find this product.');
+        if (isMounted) {
+          setError('Could not find this product.');
+        }
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -34,12 +56,20 @@ const EditProduct = () => {
     };
   }, [id]);
 
-  const handleSubmit = async (changes) => {
+  const handleSubmit = async changes => {
     setBusy(true);
     setError('');
 
+    const quantity = Math.max(0, Number(changes.quantity) || 0);
+
     try {
-      await updateProduct(id, changes);
+      await updateProduct(id, {
+        ...changes,
+        quantity,
+        inStock: quantity > 0,
+        active: quantity > 0 && Boolean(changes.active),
+      });
+
       navigate('/admin/products');
     } catch {
       setError('Could not save product changes.');
@@ -59,9 +89,7 @@ const EditProduct = () => {
 
       <h1 className="mb-6 mt-3 text-2xl font-extrabold">Edit product</h1>
 
-      {loading && (
-        <p className="text-gray-600">Loading product…</p>
-      )}
+      {loading && <p className="text-gray-600">Loading product…</p>}
 
       {error && (
         <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -69,8 +97,9 @@ const EditProduct = () => {
         </p>
       )}
 
-      {product && (
+      {!loading && product && (
         <ProductForm
+          key={product.id}
           initialValues={product}
           onSubmit={handleSubmit}
           submitLabel="Save changes"

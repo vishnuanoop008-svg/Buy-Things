@@ -15,10 +15,8 @@ function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth?.user);
-  const wishlistItems = useSelector(
-    (state) => state.wishlist?.items ?? []
-  );
+  const user = useSelector(state => state.auth?.user);
+  const wishlistItems = useSelector(state => state.wishlist?.items ?? []);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +31,7 @@ function ProductDetails() {
         setError('');
 
         const { data } = await axios.get(
-          `http://localhost:5000/products/${id}`,
+          `http://localhost:5000/products/${encodeURIComponent(id)}`,
           { signal: controller.signal }
         );
 
@@ -63,13 +61,19 @@ function ProductDetails() {
   const productId = product?.productId ?? product?.id;
 
   const wishlistProduct = wishlistItems.find(
-    (item) =>
-      String(item.productId ?? item.id) === String(productId)
+    item => String(item.productId ?? item.id) === String(productId)
   );
 
   const isWishlisted = Boolean(wishlistProduct);
+  const quantity = product
+    ? Math.max(
+        0,
+        Number(product.quantity ?? (product.inStock === false ? 0 : 10))
+      )
+    : 0;
   const isAvailable =
-    product?.active !== false && product?.inStock !== false;
+    product?.active !== false && product?.inStock !== false && quantity > 0;
+  const isLowStock = quantity > 0 && quantity < 5;
 
   const handleAddToCart = async () => {
     if (!user?.id) {
@@ -125,9 +129,7 @@ function ProductDetails() {
     return (
       <main className="min-h-screen bg-[#f5f7f5] px-4 pb-12 pt-36 text-[#173b32]">
         <section className="mx-auto max-w-2xl rounded-xl border border-gray-200 bg-white p-8 text-center">
-          <p className="text-red-700">
-            {error || 'Product not found.'}
-          </p>
+          <p className="text-red-700">{error || 'Product not found.'}</p>
           <Link
             to="/shop"
             className="mt-5 inline-flex rounded-lg bg-emerald-800 px-5 py-2.5 font-semibold text-white transition hover:bg-emerald-700"
@@ -193,10 +195,14 @@ function ProductDetails() {
 
             <p
               className={`mt-3 font-semibold ${
-                isAvailable ? 'text-emerald-700' : 'text-red-600'
+                !isAvailable || isLowStock
+                  ? 'text-red-600'
+                  : 'text-emerald-700'
               }`}
             >
-              {isAvailable ? 'In stock' : 'Currently unavailable'}
+              {isAvailable
+                ? `In stock (${quantity} stock available)`
+                : 'Currently unavailable'}
             </p>
 
             <div className="mt-6 border-t border-gray-200 pt-5">

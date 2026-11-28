@@ -45,9 +45,7 @@ const Products = () => {
     () =>
       [
         ...new Set(
-          products
-            .map((product) => product.category?.trim())
-            .filter(Boolean)
+          products.map((product) => product.category?.trim()).filter(Boolean)
         ),
       ].sort((a, b) => a.localeCompare(b)),
     [products]
@@ -178,6 +176,24 @@ const Products = () => {
             }
           >
             {hasStock ? 'In stock' : 'Out of stock'}
+          </span>
+        );
+      },
+    },
+    {
+      key: 'quantity',
+      label: 'Quantity',
+      render: (product) => {
+        const quantity = Math.max(0, Number(product.quantity) || 0);
+        const isLowStock = quantity <= 6;
+
+        return (
+          <span
+            className={`font-semibold ${
+              isLowStock ? 'text-red-600' : 'text-emerald-700'
+            }`}
+          >
+            {quantity}
           </span>
         );
       },

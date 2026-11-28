@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ProductForm from '../components/ProductForm';
 import { createProduct } from '../services/adminApi';
@@ -9,7 +9,7 @@ const AddProduct = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (product) => {
+  const handleSubmit = async product => {
     setBusy(true);
     setError('');
 
@@ -25,12 +25,13 @@ const AddProduct = () => {
 
   return (
     <section className="text-[#173b32]">
-      <Link
-        to="/admin/products"
+      <button
+        type="button"
+        onClick={() => navigate('/admin/products')}
         className="text-sm font-semibold text-emerald-800 transition hover:text-emerald-600"
       >
         ← Back to products
-      </Link>
+      </button>
 
       <h1 className="mb-6 mt-3 text-2xl font-extrabold">Add product</h1>
 
